@@ -10,6 +10,7 @@ from data import administrador_repo
 app = FastAPI()
 app.mount("/static", StaticFiles(directory="static"), name="static")
 templates = Jinja2Templates(directory="templates")
+ 
 
 administrador_repo.criar_tabela()
 
@@ -44,11 +45,12 @@ async def get_administrador_cadastrar():
 @app.post("/admin/administradores/cadastrar")
 async def post_administrador_cadastrar(
     nome: str = Form(...),
-    descricao: str = Form(...),
-    preco: float = Form(...),
-    quantidade: int = Form(...)
+    email: str = Form(...),
+    senha: float = Form(...),
+    telefone: int = Form(...),
+    endereco: str = Form(...)
 ):
-    administrador = administrador(0, nome, descricao, preco, quantidade)  # 0 = autoincremento
+    administrador = administrador(0, nome, email, senha, telefone, endereco)  # 0 = autoincremento
     id_administrador = administrador_repo.inserir(administrador)
     if id_administrador == None:
         raise Exception("Erro ao inserir administrador.")
