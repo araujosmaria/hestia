@@ -1,48 +1,61 @@
-from fastapi import FastAPI
+from fastapi import FastAPI, Form
+from fastapi.responses import RedirectResponse
 from fastapi.staticfiles import StaticFiles
 from fastapi.templating import Jinja2Templates
 import uvicorn
 
-from data import produto_repo
-from data import cliente_repo
-from data import forma_pagamento_repo
+from data import administrador_repo
 
 
 app = FastAPI()
 app.mount("/static", StaticFiles(directory="static"), name="static")
 templates = Jinja2Templates(directory="templates")
+ 
 
-produto_repo.criar_tabela()
-cliente_repo.criar_tabela()
-forma_pagamento_repo.criar_tabela()
+administrador_repo.criar_tabela()
 
 
 @app.get("/")
 async def get_root():
-    produtos = produto_repo.obter_todos()
-    response = templates.TemplateResponse("index.html", {"request": {}, "produtos": produtos})
+    administradores = administrador_repo.obter_todos()
+    response = templates.TemplateResponse("index.html", {"request": {}, "administradores": administradores})
     return response
 
 
-@app.get("/produtos")
-async def get_produtos():
-    produtos = produto_repo.obter_todos()
-    response = templates.TemplateResponse("produtos.html", {"request": {}, "produtos": produtos})
+@app.get("/admin/administradores")
+async def get_administradores():
+    administradores = administrador_repo.obter_todos()
+    response = templates.TemplateResponse("administradores.html", {"request": {}, "administradores": administradores})
     return response
 
 
-@app.get("/clientes")
-async def get_clientes():
-    clientes = cliente_repo.obter_todos()
-    response = templates.TemplateResponse("clientes.html", {"request": {}, "clientes": clientes})
+@app.get("/administradores/{id}")
+async def get_administrador_por_id(id: int):
+    administrador = administrador_repo.obter_por_id(id)
+    response = templates.TemplateResponse("administrador.html", {"request": {}, "administrador": administrador})
     return response
 
 
-@app.get("/formas_pagamento")
-async def get_formas_pagamento():
-    formas_pagamento = forma_pagamento_repo.obter_todas()
-    response = templates.TemplateResponse("formas_pagamento.html", {"request": {}, "formas_pagamento": formas_pagamento})
+@app.get("/admin/administradores/cadastrar")
+async def get_administrador_cadastrar():
+    response = templates.TemplateResponse("cadastrar_administrador.html", {"request": {}})
     return response
+
+
+@app.post("/admin/administradores/cadastrar")
+async def post_administrador_cadastrar(
+    nome: str = Form(...),
+    email: str = Form(...),
+    senha: float = Form(...),
+    telefone: int = Form(...),
+    endereco: str = Form(...)
+):
+    administrador = administrador(0, nome, email, senha, telefone, endereco)  # 0 = autoincremento
+    id_administrador = administrador_repo.inserir(administrador)
+    if id_administrador == None:
+        raise Exception("Erro ao inserir administrador.")
+    else:
+        return RedirectResponse("/administradors", status_code=303)
 
 
 if __name__ == "__main__":
