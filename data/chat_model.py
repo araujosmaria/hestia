@@ -9,4 +9,5 @@ class Chat:
     id_remetente: int
     id_destinatario: int
     
-    
+     
+     
