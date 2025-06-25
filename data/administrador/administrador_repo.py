@@ -2,19 +2,19 @@ from asyncio import open_connection
 from typing import Optional
 
 from data.administrador_model import Administrador
-from data.administrador_sql import CRIAR_TABELA, INSERIR, OBTER_TODOS
+from data.administrador_sql import CRIAR_TABELA_ADMINISTRADOR, INSERIR_ADMINISTRADOR, OBTER_TODOS_ADMINISTRADOR
 
 
 def criar_tabela() -> bool:
     with open_connection() as conn:
         cursor = conn.cursor()
-        cursor.execute(CRIAR_TABELA)
+        cursor.execute(CRIAR_TABELA_ADMINISTRADOR)
         return cursor.rowcount > 0
 
 def inserir(administrador: Administrador) -> Optional[int]:
     with open_connection() as conn:
         cursor = conn.cursor()
-        cursor.execute(INSERIR, (
+        cursor.execute(INSERIR_ADMINISTRADOR, (
             administrador.nome,  
             administrador.email, 
             administrador.senha,
@@ -25,7 +25,7 @@ def inserir(administrador: Administrador) -> Optional[int]:
 def obter_todos() -> list[Administrador]:
     with open_connection() as conn:
         cursor = conn.cursor()
-        cursor.execute(OBTER_TODOS)
+        cursor.execute(OBTER_TODOS_ADMINISTRADOR)
         rows = cursor.fetchall()
         administradores = [
             Administrador(

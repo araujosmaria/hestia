@@ -1,4 +1,4 @@
-CRIAR_TABELA = """
+CRIAR_TABELA_ADMINISTRADOR = """
 CREATE TABLE IF NOT EXISTS administrador (
 id INTEGER PRIMARY KEY AUTOINCREMENT,
 nome TEXT NOT NULL,
@@ -9,12 +9,12 @@ endereco TEXT NOT NULL,
 )
 """
 
-INSERIR = """
+INSERIR_ADMINISTRADOR = """
 INSERT INTO administrador (nome, email, senha, telefone, endereco ) 
 VALUES (?, ?, ?, ?, ?)
 """
 
-OBTER_TODOS = """
+OBTER_TODOS_ADMINISTRADOR = """
 SELECT 
 id, nome, email, senha, telefone, endereco
 FROM administrador
