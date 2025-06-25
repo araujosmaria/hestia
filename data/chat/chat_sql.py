@@ -19,3 +19,13 @@ SELECT
 FROM chat
 ORDER BY dataHora
 """ 
+ATUALIZAR_CHAT = """
+UPDATE chat
+SET conteudo = ?, dataHora = ?
+WHERE id = ?
+"""
+
+EXCLUIR_CHAT = """
+DELETE FROM chat
+WHERE id = ?
+"""

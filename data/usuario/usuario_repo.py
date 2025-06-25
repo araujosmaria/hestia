@@ -1,15 +1,19 @@
-from asyncio import open_connection
 from typing import Optional
 
-from data.usuario_model import Usuario
-from data.usuario_sql import CRIAR_TABELA_USUARIO, INSERIR_USUARIO, OBTER_TODOS_USUARIO
+from data.usuario.usuario_model import Usuario
+from data.usuario.usuario_sql import *
+from data.util import open_connection
 
 
 def criar_tabela() -> bool:
-    with open_connection() as conn:
-        cursor = conn.cursor()
-        cursor.execute(CRIAR_TABELA_USUARIO)
-        return cursor.rowcount > 0
+    try:
+        with open_connection() as conn:
+            cursor = conn.cursor()
+            cursor.execute(CRIAR_TABELA_USUARIO)
+            return True
+    except Exception as e:
+        print(f"Erro ao criar tabela de usuarios: {e}")
+        return False  
 
 def inserir(usuario: Usuario) -> Optional[int]:
     with open_connection() as conn:

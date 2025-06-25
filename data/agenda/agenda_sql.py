@@ -19,3 +19,13 @@ SELECT
 FROM agenda
 ORDER BY dataHora
 """
+ATUALIZAR_AGENDA = """
+UPDATE agenda
+SET dataHrora = ?, disponibilidade = ?
+WHERE id = ?
+"""
+
+EXCLUIR_AGENDA = """
+DELETE FROM agenda
+WHERE id = ?
+"""

@@ -12,12 +12,22 @@ FOREIGN KEY (id_atendimento) REFERENCES atendimento(id_atendimento)
 
 INSERIR_AVALIACAO = """
 INSERT INTO avaliacao (nota, comentario, dataAvaliacao, id_atendimento) 
-VALUES (?, ?, ?, ?);
+VALUES (?, ?, ?, ?)
 """
 
 OBTER_TODOS_AVALIACAO = """
 SELECT 
-id_avaliacao, nota, comentario, dataAvaliacao, id_atendimento
+    id_avaliacao, nota, comentario, dataAvaliacao, id_atendimento
 FROM avaliacao
 ORDER BY dataAvaliacao DESC
 """ 
+ATUALIZAR_AVALIACAO = """
+UPDATE avaliacao
+SET nota = ?, comentario = ?, dataAvaliacao = ?
+WHERE id = ?
+"""
+
+EXCLUIR_AVALIACAO = """
+DELETE FROM avaliacao
+WHERE id = ?
+"""

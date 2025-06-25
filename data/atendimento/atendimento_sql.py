@@ -21,3 +21,13 @@ SELECT
 FROM atendimento
 ORDER BY dataInicio
 """
+ATUALIZAR_ATENDIMENTO = """
+UPDATE atendimento
+SET dataInicio = ?, dataFim = ?
+WHERE id = ?
+"""
+
+EXCLUIR_ATENDIMENTO = """
+DELETE FROM atendimento
+WHERE id = ?
+"""

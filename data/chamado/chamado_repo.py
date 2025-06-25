@@ -1,15 +1,19 @@
-from asyncio import open_connection
 from typing import Optional
 
-from data.chamado_model import Chamado
-from data.chamado_sql import CRIAR_TABELA_CHAMADO, INSERIR_CHAMADO, OBTER_TODOS_CHAMADO
+from data.chamado.chamado_model import Chamado
+from data.chamado.chamado_sql import *
+from data.util import open_connection
 
 
 def criar_tabela() -> bool:
-    with open_connection() as conn:
-        cursor = conn.cursor()
-        cursor.execute(CRIAR_TABELA_CHAMADO)
-        return cursor.rowcount > 0
+    try:
+        with open_connection() as conn:
+            cursor = conn.cursor()
+            cursor.execute(CRIAR_TABELA_CHAMADO)
+            return True
+    except Exception as e:
+        print(f"Erro ao criar tabela de chamados: {e}")
+        return False  
 
 def inserir(chamado: Chamado) -> Optional[int]:
     with open_connection() as conn:
@@ -24,7 +28,7 @@ def inserir(chamado: Chamado) -> Optional[int]:
 def obter_todos() -> list[Chamado]:
     with open_connection() as conn:
         cursor = conn.cursor()
-        cursor.execute(OBTER_TODOS_CHAMADO)
+        cursor.execute(OBTER_TODOS_CHAMADOS)
         rows = cursor.fetchall()
         chamados = [
             Chamado(
@@ -35,3 +39,22 @@ def obter_todos() -> list[Chamado]:
                 dataCriacao=row["dataCriacao"]) 
                 for row in rows]
         return chamados
+    
+def atualizar(chamado: Chamado) -> bool:
+    with open_connection() as conn:
+        cursor = conn.cursor()
+        cursor.execute(ATUALIZAR_CHAMADO, (
+            chamado.titulo,
+            chamado.descricao,
+            chamado.status,
+            chamado.dataCriacao,
+            chamado.id
+        ))
+        return cursor.rowcount > 0
+
+
+def excluir(chamado_id: int) -> bool:
+    with open_connection() as conn:
+        cursor = conn.cursor()
+        cursor.execute(EXCLUIR_CHAMADO, (chamado_id,))
+        return cursor.rowcount > 0

@@ -1,0 +1,23 @@
+body {
+  font-family: 'Segoe UI', sans-serif;
+}
+
+h1, h2 {
+  color: #2e4d41;
+}
+
+.btn-success {
+  background-color: #4CAF50;
+  border: none;
+}
+
+footer {
+  font-size: 0.85rem;
+}
+
+.benefit-card {
+  min-height: 180px; /* ou outro valor conforme desejado */
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}

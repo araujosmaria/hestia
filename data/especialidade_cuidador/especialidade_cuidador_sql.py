@@ -1,15 +1,19 @@
+CRIAR_TABELA_ESPECIALIDADE_CUIDADOR = """
 CREATE TABLE IF NOT EXISTS especialidade_cuidador (
     id_cuidador INTEGER,
     id_especialidade INTEGER,
     PRIMARY KEY (id_cuidador, id_especialidade),
     FOREIGN KEY (id_cuidador) REFERENCES cuidador(id_cuidador) ON DELETE CASCADE,
     FOREIGN KEY (id_especialidade) REFERENCES especialidade(id_especialidade) ON DELETE CASCADE
-);
+)
+"""
 
+INSERIR_ESPECIALIDADE_CUIDADOR = """
 INSERT INTO especialidade_cuidador (id_cuidador, id_especialidade)
-VALUES (?, ?);
-        
+VALUES (?, ?)
+"""    
 
+OBTER_TODOS_ESPECIALIDADE_CUIDADOR = """
 SELECT 
     ec.id_cuidador,
     c.experiencia,
@@ -23,3 +27,4 @@ JOIN
     especialidade e ON ec.id_especialidade = e.id_especialidade
 ORDER BY 
     c.id_cuidador;
+"""

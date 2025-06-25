@@ -1,15 +1,19 @@
-from asyncio import open_connection
 from typing import Optional
 
-from data.agenda_model import Agenda
-from data.agenda_sql import CRIAR_TABELA_AGENDA, INSERIR_AGENDA, OBTER_TODOS_AGENDA
+from data.agenda.agenda_model import Agenda
+from data.agenda.agenda_sql import *
+from data.util import open_connection
 
 
 def criar_tabela() -> bool:
-    with open_connection() as conn:
-        cursor = conn.cursor()
-        cursor.execute(CRIAR_TABELA_AGENDA)
-        return cursor.rowcount > 0
+    try:
+        with open_connection() as conn:
+            cursor = conn.cursor()
+            cursor.execute(CRIAR_TABELA_AGENDA)
+            return True
+    except Exception as e:
+        print(f"Erro ao criar tabela de agendas: {e}")
+        return False  
 
 def inserir(agenda: Agenda) -> Optional[int]:
     with open_connection() as conn:
@@ -31,3 +35,20 @@ def obter_todos() -> list[Agenda]:
                 disponibilidade=row["disponibilidade"]) 
                 for row in rows]
         return agendas
+    
+def atualizar(agenda: Agenda) -> bool:
+    with open_connection() as conn:
+        cursor = conn.cursor()
+        cursor.execute(ATUALIZAR_AGENDA, (
+            agenda.dataHrora,
+            agenda.disponibilidade,
+            agenda.id
+        ))
+        return cursor.rowcount > 0
+
+
+def excluir(agenda_id: int) -> bool:
+    with open_connection() as conn:
+        cursor = conn.cursor()
+        cursor.execute(EXCLUIR_AGENDA, (agenda_id,))
+        return cursor.rowcount > 0

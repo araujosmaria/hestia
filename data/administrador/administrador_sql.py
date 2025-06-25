@@ -20,3 +20,20 @@ id, nome, email, senha, telefone, endereco
 FROM administrador
 ORDER BY nome
 """ 
+
+OBTER_ADMINISTRADOR_POR_ID = """
+SELECT id, nome, email, senha, telefone, endereco
+FROM administrador
+WHERE id = ?
+"""
+
+ATUALIZAR_ADMINISTRADOR = """
+UPDATE administrador
+SET nome = ?, email = ?, senha = ?, telefone = ?, endereco = ?
+WHERE id = ?
+"""
+
+EXCLUIR_ADMINISTRADOR = """
+DELETE FROM administrador
+WHERE id = ?
+"""

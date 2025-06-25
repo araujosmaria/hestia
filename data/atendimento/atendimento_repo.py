@@ -1,15 +1,19 @@
-from asyncio import open_connection
 from typing import Optional
 
-from data.atendimento_model import Atendimento
-from data.atendimento_sql import CRIAR_TABELA_ATENDIMENTO, INSERIR_ATENDIMENTO, OBTER_TODOS_ATENDIMENTO
+from data.atendimento.atendimento_model import Atendimento
+from data.atendimento.atendimento_sql import *
+from data.util import open_connection
 
 
 def criar_tabela() -> bool:
-    with open_connection() as conn:
-        cursor = conn.cursor()
-        cursor.execute(CRIAR_TABELA_ATENDIMENTO)
-        return cursor.rowcount > 0
+    try:
+        with open_connection() as conn:
+            cursor = conn.cursor()
+            cursor.execute(CRIAR_TABELA_ATENDIMENTO)
+            return True
+    except Exception as e:
+        print(f"Erro ao criar tabela de atendimentos: {e}")
+        return False  
 
 def inserir(atendimento: Atendimento) -> Optional[int]:
     with open_connection() as conn:
@@ -31,3 +35,20 @@ def obter_todos() -> list[Atendimento]:
                 dataFim=row["dataFim"]) 
                 for row in rows]
         return atendimentos
+    
+def atualizar(atendimento: Atendimento) -> bool:
+    with open_connection() as conn:
+        cursor = conn.cursor()
+        cursor.execute(ATUALIZAR_ATENDIMENTO, (
+            atendimento.dataInicio,
+            atendimento.dataFim,
+            atendimento.id
+        ))
+        return cursor.rowcount > 0
+
+
+def excluir(atendimento_id: int) -> bool:
+    with open_connection() as conn:
+        cursor = conn.cursor()
+        cursor.execute(EXCLUIR_ATENDIMENTO, (atendimento_id,))
+        return cursor.rowcount > 0

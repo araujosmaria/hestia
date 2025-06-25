@@ -1,15 +1,19 @@
-from asyncio import open_connection
 from typing import Optional
 
-from data.avaliacao_model import Avaliacao
-from data.avaliacao_sql import CRIAR_TABELA_AVALIACAO, INSERIR_AVALIACAO, OBTER_TODOS_AVALIACAO
+from data.avaliacao.avaliacao_model import Avaliacao
+from data.avaliacao.avaliacao_sql import *
+from data.util import open_connection
 
 
 def criar_tabela() -> bool:
-    with open_connection() as conn:
-        cursor = conn.cursor()
-        cursor.execute(CRIAR_TABELA_AVALIACAO)
-        return cursor.rowcount > 0
+    try:
+        with open_connection() as conn:
+            cursor = conn.cursor()
+            cursor.execute(CRIAR_TABELA_AVALIACAO)
+            return True
+    except Exception as e:
+        print(f"Erro ao criar tabela de avaliações: {e}")
+        return False  
 
 def inserir(avaliacao: Avaliacao) -> Optional[int]:
     with open_connection() as conn:
@@ -33,3 +37,21 @@ def obter_todos() -> list[Avaliacao]:
                 dataAvaliacao=row["dataAvaliacao"]) 
                 for row in rows]
         return avaliacoes
+    
+def atualizar(avaliacao: Avaliacao) -> bool:
+    with open_connection() as conn:
+        cursor = conn.cursor()
+        cursor.execute(ATUALIZAR_AVALIACAO, (
+            avaliacao.nota,
+            avaliacao.comentario,
+            avaliacao.dataAvaliacao,
+            avaliacao.id
+        ))
+        return cursor.rowcount > 0
+
+
+def excluir(avaliacao_id: int) -> bool:
+    with open_connection() as conn:
+        cursor = conn.cursor()
+        cursor.execute(EXCLUIR_AVALIACAO, (avaliacao_id,))
+        return cursor.rowcount > 0

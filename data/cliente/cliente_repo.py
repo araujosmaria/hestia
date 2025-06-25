@@ -1,15 +1,19 @@
-from asyncio import open_connection
 from typing import Optional
 
-from data.cliente_model import Cliente
-from data.cliente_sql import CRIAR_TABELA_CLIENTE, INSERIR_CLIENTE, OBTER_TODOS_CLIENTE
+from data.cliente.cliente_model import Cliente
+from data.cliente.cliente_sql import *
+from data.util import open_connection
 
 
 def criar_tabela() -> bool:
-    with open_connection() as conn:
-        cursor = conn.cursor()
-        cursor.execute(CRIAR_TABELA_CLIENTE)
-        return cursor.rowcount > 0
+    try:
+        with open_connection() as conn:
+            cursor = conn.cursor()
+            cursor.execute(CRIAR_TABELA_CLIENTE)
+            return True
+    except Exception as e:
+        print(f"Erro ao criar tabela de clientes: {e}")
+        return False  
 
 def inserir(cliente: Cliente) -> Optional[int]:
     with open_connection() as conn:

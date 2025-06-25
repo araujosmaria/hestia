@@ -11,7 +11,7 @@ CREATE TABLE IF NOT EXISTS usuario (
 
 INSERIR_USUARIO = """
 INSERT INTO usuario (nome, email, senha, telefone, endereco)
-VALUES (?, ?, ?, ?, ?);
+VALUES (?, ?, ?, ?, ?)
 """
 
 OBTER_TODOS_USUARIO = """ 

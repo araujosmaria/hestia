@@ -4,21 +4,21 @@ from fastapi.staticfiles import StaticFiles
 from fastapi.templating import Jinja2Templates
 import uvicorn
 
-from data import administrador_repo
+from data.administrador import administrador_repo
 
 
 app = FastAPI()
 app.mount("/static", StaticFiles(directory="static"), name="static")
 templates = Jinja2Templates(directory="templates")
  
-
+ 
 administrador_repo.criar_tabela()
 
 
 @app.get("/")
 async def get_root():
     administradores = administrador_repo.obter_todos()
-    response = templates.TemplateResponse("index.html", {"request": {}, "administradores": administradores})
+    response = templates.TemplateResponse("home.html", {"request": {}, "administradores": administradores})
     return response
 
 

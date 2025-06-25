@@ -21,3 +21,13 @@ SELECT
 FROM chamado
 ORDER BY dataCriacao DESC
 """
+ATUALIZAR_CHAMADO = """
+UPDATE chamado
+SET titulo = ?, descricao = ?, status = ?, dataCriacao = ?
+WHERE id = ?
+"""
+
+EXCLUIR_CHAMADO = """
+DELETE FROM chamado
+WHERE id = ?
+"""
