@@ -74,9 +74,4 @@ class TestEspecialidadeRepo:
         assert len(lista_especialidades) >= 2, "Deveria retornar pelo menos 2 especialidades"
         nomes = [e.nome for e in lista_especialidades]
         assert "Especialidade A" in nomes, "Especialidade A deveria estar na lista"
-        assert "Especialidade B" in nomes, "Especialidade B deveria estar na lista"
-
-
-
-    
-        
+        assert "Especialidade B" in nomes, "Especialidade B deveria estar na lista"       

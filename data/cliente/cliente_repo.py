@@ -3,6 +3,7 @@ from typing import Optional
 from data.cliente.cliente_model import Cliente
 from data.cliente.cliente_sql import *
 from data.util import open_connection
+from data.usuario import usuario_repo
 
 
 def criar_tabela() -> bool:
@@ -16,14 +17,10 @@ def criar_tabela() -> bool:
         return False  
 
 def inserir(cliente: Cliente) -> Optional[int]:
+    id_cliente = usuario_repo.inserir(cliente)
     with open_connection() as conn:
         cursor = conn.cursor()
-        cursor.execute(INSERIR_CLIENTE, (
-            cliente.nome,  
-            cliente.email, 
-            cliente.senha,
-            cliente.telefone, 
-            cliente.endereco))
+        cursor.execute(INSERIR_CLIENTE, (id_cliente,))
         return cursor.lastrowid
 
 def obter_todos() -> list[Cliente]:
@@ -41,3 +38,39 @@ def obter_todos() -> list[Cliente]:
                 endereco=row["endereco"]) 
                 for row in rows]
         return clientes
+    
+def obter_por_id(id_cliente: int) -> Optional[Cliente]:
+    with open_connection() as conn:
+        cursor = conn.cursor()
+        cursor.execute(OBTER_CLIENTE_POR_ID,(id_cliente,))
+        row = cursor.fetchone()
+        if row:
+            return Cliente(
+                id=row["id"],
+                nome=row["nome"],
+                email=row["email"],
+                senha=row["senha"],
+                telefone=row["telefone"],
+                endereco=row["endereco"])     
+        return None
+    
+def atualizar(cliente: Cliente) -> bool:
+    with open_connection() as conn:
+        cursor = conn.cursor()
+        cursor.execute(ATUALIZAR_CLIENTE, (
+            cliente.nome,
+            cliente.email,
+            cliente.senha,
+            cliente.telefone,
+            cliente.endereco,
+            cliente.id
+        ))
+        return cursor.rowcount > 0
+
+
+def excluir(cliente_id: int) -> bool:
+    with open_connection() as conn:
+        cursor = conn.cursor()
+        cursor.execute(EXCLUIR_CLIENTE, (cliente_id,))
+        return cursor.rowcount > 0
+    

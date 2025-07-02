@@ -19,13 +19,22 @@ SELECT
 FROM agenda
 ORDER BY dataHora
 """
+
+OBTER_POR_ID = """
+SELECT 
+    id_agenda, dataHora, disponibilidade, id_cuidador
+FROM agenda
+WHERE id_agenda = ?
+ORDER BY dataHora
+"""
+
 ATUALIZAR_AGENDA = """
 UPDATE agenda
-SET dataHrora = ?, disponibilidade = ?
-WHERE id = ?
+SET dataHora = ?, disponibilidade = ?, id_cuidador = ?
+WHERE id_agenda = ?
 """
 
 EXCLUIR_AGENDA = """
 DELETE FROM agenda
-WHERE id = ?
+WHERE id_agenda = ?
 """

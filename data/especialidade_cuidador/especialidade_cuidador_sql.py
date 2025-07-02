@@ -16,7 +16,7 @@ VALUES (?, ?)
 OBTER_TODOS_ESPECIALIDADE_CUIDADOR = """
 SELECT 
     ec.id_cuidador,
-    c.experiencia,
+    c.experiencia(anos),
     ec.id_especialidade,
     e.nome AS nome_especialidade
 FROM 

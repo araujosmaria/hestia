@@ -1,10 +1,11 @@
 from dataclasses import dataclass
+import datetime
 
 
 @dataclass
 class Agenda:
-    id: int
+    id_agenda: int
     dataHora: datetime
-    disponibilidade: boolean
+    disponibilidade: bool
     id_cuidador: int
     

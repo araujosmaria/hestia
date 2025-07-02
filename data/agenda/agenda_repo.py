@@ -19,8 +19,9 @@ def inserir(agenda: Agenda) -> Optional[int]:
     with open_connection() as conn:
         cursor = conn.cursor()
         cursor.execute(INSERIR_AGENDA, (
-            agenda.dataHrora,  
-            agenda.disponibilidade))
+            agenda.dataHora,  
+            agenda.disponibilidade,
+            agenda.id_cuidador))
         return cursor.lastrowid
 
 def obter_todos() -> list[Agenda]:
@@ -30,25 +31,40 @@ def obter_todos() -> list[Agenda]:
         rows = cursor.fetchall()
         agendas = [
             Agenda(
-                id=row["id"], 
-                dataHrora=row["dataHrora"], 
-                disponibilidade=row["disponibilidade"]) 
+                id_agenda=row["id_agenda"], 
+                dataHora=row["dataHora"],
+                disponibilidade=row["disponibilidade"],
+                id_cuidador=row["id_cuidador"]) 
                 for row in rows]
         return agendas
-    
+
+def obter_por_id(id_agenda) -> Agenda:
+    with open_connection() as conn:
+        cursor = conn.cursor()
+        cursor.execute(OBTER_POR_ID, (id_agenda,))
+        row = cursor.fetchone()
+        agenda = Agenda(
+            id_agenda=row["id_agenda"], 
+            dataHora=row["dataHora"],
+            disponibilidade=row["disponibilidade"],
+            id_cuidador=row["id_cuidador"]
+        ) 
+        return agenda
+
 def atualizar(agenda: Agenda) -> bool:
     with open_connection() as conn:
         cursor = conn.cursor()
         cursor.execute(ATUALIZAR_AGENDA, (
-            agenda.dataHrora,
+            agenda.dataHora,
             agenda.disponibilidade,
-            agenda.id
+            agenda.id_cuidador,
+            agenda.id_agenda
         ))
         return cursor.rowcount > 0
 
 
-def excluir(agenda_id: int) -> bool:
+def excluir(id_agenda: int) -> bool:
     with open_connection() as conn:
         cursor = conn.cursor()
-        cursor.execute(EXCLUIR_AGENDA, (agenda_id,))
+        cursor.execute(EXCLUIR_AGENDA, (id_agenda,))
         return cursor.rowcount > 0

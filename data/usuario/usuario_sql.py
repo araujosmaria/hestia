@@ -16,7 +16,24 @@ VALUES (?, ?, ?, ?, ?)
 
 OBTER_TODOS_USUARIO = """ 
 SELECT 
-id_usuario, nome, email, telefone, endereco
+id_usuario, nome, email, senha, telefone, endereco
 FROM usuario
 ORDER BY nome;
+"""
+OBTER_USUARIO_POR_ID = """
+SELECT 
+id_usuario, nome, email, senha, telefone, endereco
+FROM usuario
+WHERE id_usuario = ?
+"""
+
+EXCLUIR_USUARIO = """
+DELETE FROM usuario
+WHERE id_usuario = ?
+"""
+
+ATUALIZAR_USUARIO = """
+UPDATE usuario
+SET nome = ?, email = ?, senha = ?, telefone = ?, endereco = ?
+WHERE id_usuario = ?
 """

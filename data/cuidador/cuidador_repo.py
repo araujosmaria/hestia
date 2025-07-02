@@ -1,7 +1,8 @@
 from typing import Optional
-
 from data.cuidador.cuidador_model import Cuidador
 from data.cuidador.cuidador_sql import *
+from data.usuario import usuario_repo
+from data.usuario.usuario_sql import *  # para atualizar/excluir usuario
 from data.util import open_connection
 
 
@@ -15,16 +16,17 @@ def criar_tabela() -> bool:
         print(f"Erro ao criar tabela de cuidadores: {e}")
         return False  
 
+
 def inserir(cuidador: Cuidador) -> Optional[int]:
+    cuidador.id = usuario_repo.inserir(cuidador)
     with open_connection() as conn:
         cursor = conn.cursor()
         cursor.execute(INSERIR_CUIDADOR, (
-            cuidador.nome,  
-            cuidador.email, 
-            cuidador.senha,
-            cuidador.telefone, 
-            cuidador.endereco))
+            cuidador.id,
+            cuidador.experiencia_anos
+        ))
         return cursor.lastrowid
+
 
 def obter_todos() -> list[Cuidador]:
     with open_connection() as conn:
@@ -33,30 +35,31 @@ def obter_todos() -> list[Cuidador]:
         rows = cursor.fetchall()
         cuidadores = [
             Cuidador(
-                id=row["id"], 
-                nome=row["nome"], 
-                email=row["email"],
-                senha=row["senha"],
-                telefone=row["telefone"],
-                endereco=row["endereco"]) 
-                for row in rows]
+                id_cuidador=row["id_cuidador"], 
+                nome=row.get("nome"),
+                experiencia_anos=row.get("experiencia_anos")
+            )
+            for row in rows
+        ]
         return cuidadores
-    
-def adicionar_especialidade(cuidador_id: int, especialidade: str) -> bool:
-    with open_connection() as conn:
-        cursor = conn.cursor()
-        cursor.execute("""
-            INSERT INTO cuidador_especialidades (cuidador_id, especialidade)
-            VALUES (?, ?)
-        """, (cuidador_id, especialidade))
-        return cursor.rowcount > 0
 
-def obter_especialidades(cuidador_id: int) -> list[str]:
+
+def atualizar(cuidador: Cuidador) -> bool:
+    usuario_repo.atualizar(cuidador)
+    with open_connection() as conn:
+        cursor = conn.cursor()        
+        cursor.execute(ATUALIZAR_CUIDADOR, (
+            cuidador.experiencia_anos,
+            cuidador.id_cuidador
+        ))
+        cuidador_ok = cursor.rowcount > 0
+        return cuidador_ok
+
+
+def excluir(id_cuidador: int) -> bool:
     with open_connection() as conn:
         cursor = conn.cursor()
-        cursor.execute("""
-            SELECT especialidade FROM cuidador_especialidades
-            WHERE cuidador_id = ?
-        """, (cuidador_id,))
-        rows = cursor.fetchall()
-        return [row["especialidade"] for row in rows]
+        cursor.execute(EXCLUIR_CUIDADOR, (id_cuidador,))
+        cuidador_excluido = cursor.rowcount > 0
+        usuario_excluido = usuario_repo.excluir(id_cuidador)
+        return cuidador_excluido and usuario_excluido

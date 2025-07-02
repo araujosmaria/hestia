@@ -32,7 +32,25 @@ def obter_todos() -> list[Chat]:
             Chat(
                 id=row["id"], 
                 conteudo=row["conteudo"], 
-                dataHor=row["dataHora"]) 
+                dataHora=row["dataHora"]) 
                 for row in rows]
         return chamados
+    
+def atualizar(chat: Chat) -> bool:
+    with open_connection() as conn:
+        cursor = conn.cursor()
+        cursor.execute(ATUALIZAR_CHAT, (
+            chat.conteudo,
+            chat.dataHora,
+            chat.id
+        ))
+        return cursor.rowcount > 0
+
+
+def excluir(chat_id: int) -> bool:
+    with open_connection() as conn:
+        cursor = conn.cursor()
+        cursor.execute(EXCLUIR_CHAT, (chat_id,))
+        return cursor.rowcount > 0
+
     
