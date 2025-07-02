@@ -54,23 +54,14 @@ def obter_por_id(id_cliente: int) -> Optional[Cliente]:
                 endereco=row["endereco"])     
         return None
     
-def atualizar(cliente: Cliente) -> bool:
-    with open_connection() as conn:
-        cursor = conn.cursor()
-        cursor.execute(ATUALIZAR_CLIENTE, (
-            cliente.nome,
-            cliente.email,
-            cliente.senha,
-            cliente.telefone,
-            cliente.endereco,
-            cliente.id
-        ))
-        return cursor.rowcount > 0
-
-
 def excluir(cliente_id: int) -> bool:
     with open_connection() as conn:
         cursor = conn.cursor()
-        cursor.execute(EXCLUIR_CLIENTE, (cliente_id,))
+            
+        # Exclui da tabela cliente primeiro (para não violar a FK)
+        cursor.execute("DELETE FROM cliente WHERE id_cliente = ?", (cliente_id,))
+            
+        # Agora exclui da tabela usuario
+        cursor.execute("DELETE FROM usuario WHERE id_usuario = ?", (cliente_id,))
+            
         return cursor.rowcount > 0
-    

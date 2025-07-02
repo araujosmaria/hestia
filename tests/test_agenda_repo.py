@@ -2,7 +2,7 @@ from typing import Optional
 from data.agenda.agenda_model import Agenda
 from data.agenda.agenda_sql import *
 from data.util import open_connection
-from hestia.data.agenda.agenda_repo import criar_tabela, inserir, obter_todos, excluir, obter_por_id, atualizar
+from data.agenda.agenda_repo import criar_tabela, inserir, obter_todos, excluir, obter_por_id, atualizar
 
 class TestAgendaRepo:
     def test_criar_tabela(self) -> bool:
@@ -27,8 +27,6 @@ class TestAgendaRepo:
         )
         id_agenda = inserir(agenda_teste)
         assert isinstance(id_agenda, int) and id_agenda > 0
-
-        # Buscar todas as agendas para verificar se a inserção foi feita
         agendas = obter_todos()
 
         agenda_inserida = next((a for a in agendas if a.id_agenda == id_agenda), None)
@@ -87,5 +85,3 @@ class TestAgendaRepo:
         resultado = excluir(id_agenda)
         # Assert
         assert resultado == True, "O resultado da exclusão deveria retornar True"
-        # especialidade_db = obter_por_id(id_especialidade_inserida)
-        # assert especialidade_db is None, "A especialidade excluida deveria ser None"

@@ -19,8 +19,11 @@ def inserir(chat: Chat) -> Optional[int]:
     with open_connection() as conn:
         cursor = conn.cursor()
         cursor.execute(INSERIR_CHAT, (
-            chat.conteudo,  
-            chat.dataHora))
+            chat.conteudo,
+            chat.dataHora,
+            chat.id_remetente,
+            chat.id_destinatario
+        ))
         return cursor.lastrowid
 
 def obter_todos() -> list[Chat]:
@@ -28,14 +31,18 @@ def obter_todos() -> list[Chat]:
         cursor = conn.cursor()
         cursor.execute(OBTER_TODOS_CHATS)
         rows = cursor.fetchall()
-        chamados = [
+        chats = [
             Chat(
                 id=row["id"], 
                 conteudo=row["conteudo"], 
-                dataHora=row["dataHora"]) 
-                for row in rows]
-        return chamados
-    
+                dataHora=row["dataHora"],
+                id_remetente=row["id_remetente"],
+                id_destinatario=row["id_destinatario"]
+            ) 
+            for row in rows
+        ]
+        return chats
+
 def atualizar(chat: Chat) -> bool:
     with open_connection() as conn:
         cursor = conn.cursor()

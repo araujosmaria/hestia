@@ -61,8 +61,6 @@ class TestEspecialidadeRepo:
         assert especialidade_db.id == id_especialidade_inserida, "O ID da especialidade buscada deveria ser igual ao id da especialidade inserida"
         assert especialidade_db.nome == especialidade_teste.nome, "O nome da especialidade buscada deveria ser igual ao nome da categoria inserida"
 
-    
-
     def test_obter_todos(self, test_db):
         # Arrange
         criar_tabela()

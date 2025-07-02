@@ -36,4 +36,4 @@ ATUALIZAR_USUARIO = """
 UPDATE usuario
 SET nome = ?, email = ?, senha = ?, telefone = ?, endereco = ?
 WHERE id_usuario = ?
-"""
+""" 

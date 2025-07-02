@@ -24,10 +24,10 @@ ORDER BY dataInicio
 ATUALIZAR_ATENDIMENTO = """
 UPDATE atendimento
 SET dataInicio = ?, dataFim = ?
-WHERE id = ?
+WHERE id_atendimento = ?
 """
 
 EXCLUIR_ATENDIMENTO = """
 DELETE FROM atendimento
-WHERE id = ?
+WHERE id_atendimento = ?
 """

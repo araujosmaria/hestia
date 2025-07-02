@@ -1,7 +1,8 @@
 CRIAR_TABELA_ESPECIALIDADE_CUIDADOR = """
 CREATE TABLE IF NOT EXISTS especialidade_cuidador (
-    id_cuidador INTEGER,
-    id_especialidade INTEGER,
+    id_cuidador INTEGER NOT NULL,
+    id_especialidade INTEGER NOT NULL,
+    anos_experiencia INTEGER NOT NULL,
     PRIMARY KEY (id_cuidador, id_especialidade),
     FOREIGN KEY (id_cuidador) REFERENCES cuidador(id_cuidador) ON DELETE CASCADE,
     FOREIGN KEY (id_especialidade) REFERENCES especialidade(id_especialidade) ON DELETE CASCADE
@@ -9,22 +10,28 @@ CREATE TABLE IF NOT EXISTS especialidade_cuidador (
 """
 
 INSERIR_ESPECIALIDADE_CUIDADOR = """
-INSERT INTO especialidade_cuidador (id_cuidador, id_especialidade)
-VALUES (?, ?)
-"""    
+INSERT INTO especialidade_cuidador (id_cuidador, id_especialidade, anos_experiencia)
+VALUES (?, ?, ?)
+"""   
 
-OBTER_TODOS_ESPECIALIDADE_CUIDADOR = """
+ATUALIZAR_ESPECIALIDADE_CUIDADOR = """
+UPDATE especialidade_cuidador
+SET anos_experiencia = ?
+WHERE id_cuidador = ? AND id_especialidade = ?
+"""
+
+OBTER_ESPECIALIDADES_POR_CUIDADOR = """
 SELECT 
-    ec.id_cuidador,
-    c.experiencia(anos),
-    ec.id_especialidade,
-    e.nome AS nome_especialidade
+    id_cuidador,    
+    id_especialidade,
+    anos_experiencia
 FROM 
-    especialidade_cuidador ec
-JOIN 
-    cuidador c ON ec.id_cuidador = c.id_cuidador
-JOIN 
-    especialidade e ON ec.id_especialidade = e.id_especialidade
-ORDER BY 
-    c.id_cuidador;
+    especialidade_cuidador
+WHERE
+    id_cuidador = ?;
+"""
+
+EXCLUIR_ESPECIALIDADE_CUIDADOR = """
+DELETE FROM especialidade_cuidador
+WHERE id_cuidador = ? AND id_especialidade = ?
 """

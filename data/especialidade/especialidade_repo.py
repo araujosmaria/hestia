@@ -1,6 +1,5 @@
 import sqlite3
 from typing import Optional
-
 from data.especialidade.especialidade_model import Especialidade
 from data.especialidade.especialidade_sql import *
 from data.util import open_connection
@@ -25,7 +24,7 @@ def inserir(especialidade: Especialidade) -> Optional[int]:
     
 def obter_por_id(especialidade_id: int) -> Optional[Especialidade]:
     with open_connection() as conn:
-        conn.row_factory = sqlite3.Row  # garante acesso por nome de coluna
+        conn.row_factory = sqlite3.Row  
         cursor = conn.cursor()
         cursor.execute(OBTER_ESPECIALIDADE_POR_ID, (especialidade_id,))
         row = cursor.fetchone()

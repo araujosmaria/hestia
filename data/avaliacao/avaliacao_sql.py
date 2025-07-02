@@ -24,10 +24,10 @@ ORDER BY dataAvaliacao DESC
 ATUALIZAR_AVALIACAO = """
 UPDATE avaliacao
 SET nota = ?, comentario = ?, dataAvaliacao = ?
-WHERE id = ?
+WHERE id_avaliacao = ?
 """
 
 EXCLUIR_AVALIACAO = """
 DELETE FROM avaliacao
-WHERE id = ?
+WHERE id_avaliacao = ?
 """

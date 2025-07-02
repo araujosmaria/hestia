@@ -38,5 +38,5 @@ WHERE id_cliente = ?
 
 EXCLUIR_CLIENTE = """
 DELETE FROM usuario
-WHERE id_cliente = ?
+WHERE id_usuario = ?
 """

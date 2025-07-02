@@ -3,11 +3,11 @@ import datetime
 
 
 @dataclass
-class Avaliação:
+class Avaliacao:
     id: int
     nota: float
     comentario: str
-    dataAvaliacao: datetime
+    dataAvaliacao: datetime.datetime
     id_atendimento: int
    
     

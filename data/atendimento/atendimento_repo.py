@@ -19,8 +19,11 @@ def inserir(atendimento: Atendimento) -> Optional[int]:
     with open_connection() as conn:
         cursor = conn.cursor()
         cursor.execute(INSERIR_ATENDIMENTO, (
-            atendimento.dataInicio,  
-            atendimento.dataFim))
+            atendimento.dataInicio,
+            atendimento.dataFim,
+            atendimento.id_cliente,
+            atendimento.id_cuidador
+        ))
         return cursor.lastrowid
 
 def obter_todos() -> list[Atendimento]:
@@ -30,12 +33,16 @@ def obter_todos() -> list[Atendimento]:
         rows = cursor.fetchall()
         atendimentos = [
             Atendimento(
-                id=row["id"], 
-                dataInicio=row["dataInicio"], 
-                dataFim=row["dataFim"]) 
-                for row in rows]
+                id=row["id_atendimento"],
+                dataInicio=row["dataInicio"],
+                dataFim=row["dataFim"],
+                id_cliente=row["id_cliente"],
+                id_cuidador=row["id_cuidador"]
+            )
+            for row in rows
+        ]
         return atendimentos
-    
+ 
 def atualizar(atendimento: Atendimento) -> bool:
     with open_connection() as conn:
         cursor = conn.cursor()

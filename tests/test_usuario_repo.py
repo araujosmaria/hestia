@@ -93,6 +93,7 @@ class TestUsuarioRepo:
     def test_excluir_usuario(self, test_db):
         # Arrange
         criar_tabela()
+        
         usuario_teste = Usuario(
             id=0,
             nome="Usuario Teste",

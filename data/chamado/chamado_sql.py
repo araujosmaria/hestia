@@ -17,17 +17,17 @@ VALUES (?, ?, ?, ?, ?)
 
 OBTER_TODOS_CHAMADOS = """
 SELECT 
-    id_chamado, titulo, descricao, status, dataCriacao, id_administrador
+id_chamado, titulo, descricao, status, dataCriacao, id_administrador
 FROM chamado
 ORDER BY dataCriacao DESC
 """
 ATUALIZAR_CHAMADO = """
 UPDATE chamado
-SET titulo = ?, descricao = ?, status = ?, dataCriacao = ?
-WHERE id = ?
+SET titulo = ?, descricao = ?, status = ?, dataCriacao = ?, id_administrador = ?
+WHERE id_chamado = ?
 """
 
 EXCLUIR_CHAMADO = """
 DELETE FROM chamado
-WHERE id = ?
+WHERE id_chamado = ?
 """

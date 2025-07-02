@@ -19,10 +19,12 @@ def inserir(chamado: Chamado) -> Optional[int]:
     with open_connection() as conn:
         cursor = conn.cursor()
         cursor.execute(INSERIR_CHAMADO, (
-            chamado.titulo,  
-            chamado.descricao, 
+            chamado.titulo,
+            chamado.descricao,
             chamado.status,
-            chamado.dataCriacao))
+            chamado.data_criacao,
+            chamado.id_administrador  # <- campo faltando
+        ))
         return cursor.lastrowid
 
 def obter_todos() -> list[Chamado]:
@@ -32,14 +34,18 @@ def obter_todos() -> list[Chamado]:
         rows = cursor.fetchall()
         chamados = [
             Chamado(
-                id=row["id"], 
-                titulo=row["titulo"], 
+                id=row["id_chamado"],
+                titulo=row["titulo"],
                 descricao=row["descricao"],
                 status=row["status"],
-                dataCriacao=row["dataCriacao"]) 
-                for row in rows]
+                data_criacao=row["dataCriacao"],
+                id_administrador=row["id_administrador"]
+            )
+            for row in rows
+        ]
         return chamados
-    
+
+
 def atualizar(chamado: Chamado) -> bool:
     with open_connection() as conn:
         cursor = conn.cursor()
@@ -47,8 +53,9 @@ def atualizar(chamado: Chamado) -> bool:
             chamado.titulo,
             chamado.descricao,
             chamado.status,
-            chamado.dataCriacao,
-            chamado.id
+            chamado.data_criacao,
+            chamado.id_administrador,  # faltava este campo aqui
+            chamado.id  # id do chamado para WHERE
         ))
         return cursor.rowcount > 0
 

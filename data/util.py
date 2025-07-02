@@ -6,3 +6,5 @@ def open_connection():
     conexao = sqlite3.connect(database_path)
     conexao.row_factory = sqlite3.Row
     return conexao
+
+

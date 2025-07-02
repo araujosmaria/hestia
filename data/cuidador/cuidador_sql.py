@@ -1,27 +1,48 @@
+
 CRIAR_TABELA_CUIDADOR = """
 CREATE TABLE IF NOT EXISTS cuidador (
     id_cuidador INTEGER PRIMARY KEY,
-    experiencia_anos INTEGER NOT NULLL,
+    experiencia_anos INTEGER NOT NULL DEFAULT 0,
     FOREIGN KEY (id_cuidador) REFERENCES usuario(id_usuario)
-)
+);
 """
 
 INSERIR_CUIDADOR = """
-INSERT INTO cuidador (id_cuidador, experiencia_anos)
-VALUES (?, ?)
+INSERT INTO cuidador (nome, email, senha, telefone, endereco, experiencia_anos)
+VALUES (?, ?, ?, ?, ?, ?)
 """
 
 OBTER_TODOS_CUIDADOR = """
-SELECT 
-cu.id_cuidador, u.nome, cu.experiencia_anos
+SELECT  
+    cu.id_cuidador, 
+    u.nome, 
+    u.email, 
+    u.senha, 
+    u.telefone, 
+    u.endereco,
+    cu.experiencia_anos
 FROM cuidador cu
 JOIN usuario u ON cu.id_cuidador = u.id_usuario
 ORDER BY u.nome
 """
 
+OBTER_CUIDADOR_POR_ID = """
+SELECT
+    cu.id_cuidador,
+    u.nome,
+    u.email,
+    u.senha,
+    u.telefone,
+    u.endereco,
+    cu.experiencia_anos
+FROM cuidador cu
+JOIN usuario u ON cu.id_cuidador = u.id_usuario
+WHERE cu.id_cuidador = ?;
+"""
+
 ATUALIZAR_CUIDADOR = """
 UPDATE cuidador
-SET experiencia_anos = ?
+SET nome = ?, email = ?, senha = ?, telefone = ?, endereco = ?, experiencia_anos = ?
 WHERE id_cuidador = ?
 """
 
