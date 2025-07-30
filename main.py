@@ -12,10 +12,7 @@ templates = Jinja2Templates(directory="templates")
 
 @app.get("/")
 async def read_root():
-    response = HTMLResponse(
-        content="<h1>Bem-vindo à Loja Virtual!</h1>",
-        status_code=200
-    )
+    response = templates.TemplateResponse("index.html", {"request": {}})
     return response
 
 
