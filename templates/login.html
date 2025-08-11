@@ -1,11 +1,37 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="pt-BR">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>login</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Entrar no Hestia</title>
+<link rel="stylesheet" href="/static/css/login.css">
 </head>
-<body>
-    <h1>login</h1>
+<body class="login-page">
+
+  <!-- Botão de voltar -->
+  <a href="/" class="voltar">×</a>
+
+  <div class="container login-container">
+      <h1>Entrar no Hestia</h1>
+
+      <button class="google-btn" type="button">
+          <span class="google-icon">G</span>
+          <span class="google-text">Entrar com o Google</span>
+      </button>
+
+      <label for="email">Email</label>
+      <input type="email" id="email" placeholder="Digite seu email">
+
+      <label for="senha">Senha</label>
+      <input type="password" id="senha" placeholder="Digite sua senha">
+
+      <button class="btn-green btn-login" type="button">Entrar</button>
+
+      <p class="signup">
+        Não tem cadastro ainda?
+        <a href="/cadastro">Cadastre-se aqui</a>
+      </p>
+  </div>
+
 </body>
 </html>

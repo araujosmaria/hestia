@@ -1,0 +1,58 @@
+
+
+body {
+    margin: 0;
+    padding: 0;
+    font-family: Arial, sans-serif;
+    background-color: rgba(43, 140, 106, 0.24); /* 24% de opacidade */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+    position: relative;
+}
+
+/* Botão de voltar */
+.voltar {
+    position: absolute;
+    top: 20px;
+    left: 20px;
+    text-decoration: none;
+    font-size: 32px;
+    color: black;
+    font-weight: bold;
+}
+
+/* Quadrado central */
+.container {
+    background-color: rgba(255, 255, 255, 0.37); /* 37% opacidade */
+    padding: 40px;
+    border-radius: 10px;
+    text-align: center;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+}
+
+.container h1 {
+    font-size: 24px;
+    margin-bottom: 30px;
+}
+
+/* Botões */
+.botoes {
+    display: flex;
+    gap: 15px;
+    justify-content: center;
+}
+
+.btn {
+    background-color: white;
+    border: 1px solid #000;
+    padding: 10px 20px;
+    font-size: 14px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.btn:hover {
+    background-color: #f0f0f0;
+}
