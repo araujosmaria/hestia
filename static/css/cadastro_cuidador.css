@@ -1,0 +1,499 @@
+/* Cadastro Cuidador CSS */
+
+.cadastro-cuidador-page {
+    background-color: rgba(43, 140, 106, 0.24);
+    min-height: 100vh;
+    padding: 20px 0;
+    font-family: Arial, sans-serif;
+}
+
+.voltar {
+    position: fixed;
+    top: 20px;
+    left: 20px;
+    text-decoration: none;
+    font-size: 28px;
+    color: #083f2e;
+    font-weight: bold;
+    z-index: 1000;
+    background: rgba(255, 255, 255, 0.9);
+    border-radius: 50%;
+    width: 45px;
+    height: 45px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    transition: all 0.3s ease;
+}
+
+.voltar:hover {
+    color: #2b8c6a;
+    background: rgba(255, 255, 255, 1);
+    transform: scale(1.05);
+}
+
+.cadastro-container {
+    background-color: rgba(255, 255, 255, 0.95);
+    max-width: 900px;
+    margin: 0 auto;
+    border-radius: 15px;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+    margin-top: 40px;
+}
+
+.header-cadastro {
+    text-align: center;
+    padding: 40px 40px 20px;
+    background: linear-gradient(135deg, #f1f7f5 0%, #e8f5f0 100%);
+    border-bottom: 1px solid rgba(43, 140, 106, 0.2);
+}
+
+.logo-cadastro {
+    height: 50px;
+    margin-bottom: 15px;
+}
+
+.header-cadastro h1 {
+    color: #083f2e;
+    font-size: 28px;
+    font-weight: bold;
+    margin-bottom: 8px;
+}
+
+.subtitle {
+    color: #2c7a5f;
+    font-size: 16px;
+    margin: 0;
+}
+
+.cadastro-form {
+    padding: 30px 40px 40px;
+}
+
+.form-section {
+    margin-bottom: 35px;
+    border-bottom: 1px solid #e9ecef;
+    padding-bottom: 30px;
+}
+
+.form-section:last-child {
+    border-bottom: none;
+    margin-bottom: 0;
+    padding-bottom: 0;
+}
+
+.section-title {
+    color: #083f2e;
+    font-size: 20px;
+    font-weight: 600;
+    margin-bottom: 20px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.section-title i {
+    color: #2b8c6a;
+    font-size: 22px;
+}
+
+.form-label {
+    color: #083f2e;
+    font-weight: 500;
+    margin-bottom: 6px;
+    font-size: 14px;
+}
+
+.form-control, .form-select {
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    padding: 12px;
+    font-size: 14px;
+    transition: all 0.3s ease;
+    background-color: #fff;
+}
+
+.form-control:focus, .form-select:focus {
+    border-color: #2b8c6a;
+    box-shadow: 0 0 0 0.2rem rgba(43, 140, 106, 0.25);
+    background-color: #fff;
+}
+
+.form-control[readonly] {
+    background-color: #f8f9fa;
+    color: #6c757d;
+}
+
+.form-text {
+    color: #6c757d;
+    font-size: 12px;
+    margin-top: 4px;
+}
+
+.row {
+    margin-bottom: 15px;
+}
+
+.row:last-child {
+    margin-bottom: 0;
+}
+
+/* Upload de Foto */
+.foto-upload {
+    margin-top: 20px;
+}
+
+.upload-area {
+    border: 2px dashed #2b8c6a;
+    border-radius: 12px;
+    padding: 30px;
+    text-align: center;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    background-color: #f8fffe;
+    position: relative;
+}
+
+.upload-area:hover {
+    border-color: #245f4a;
+    background-color: #f1f7f5;
+}
+
+.upload-area i {
+    font-size: 32px;
+    color: #2b8c6a;
+    display: block;
+    margin-bottom: 10px;
+}
+
+.upload-area span {
+    color: #083f2e;
+    font-weight: 500;
+}
+
+.upload-area input[type="file"] {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    opacity: 0;
+    cursor: pointer;
+}
+
+/* Disponibilidade Grid */
+.disponibilidade-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 15px;
+    margin-top: 15px;
+}
+
+.periodo-item {
+    background-color: #f8f9fa;
+    border: 1px solid #e9ecef;
+    border-radius: 10px;
+    padding: 15px;
+    transition: all 0.3s ease;
+}
+
+.periodo-item:hover {
+    border-color: #2b8c6a;
+    background-color: #f1f7f5;
+}
+
+.periodo-item input[type="checkbox"] {
+    display: none;
+}
+
+.periodo-item label {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    cursor: pointer;
+    margin: 0;
+    font-weight: 500;
+    color: #495057;
+}
+
+.periodo-item label i {
+    font-size: 20px;
+    color: #6c757d;
+}
+
+.periodo-item input[type="checkbox"]:checked + label {
+    color: #083f2e;
+}
+
+.periodo-item input[type="checkbox"]:checked + label i {
+    color: #2b8c6a;
+}
+
+.periodo-item input[type="checkbox"]:checked ~ {
+    background-color: #f1f7f5;
+    border-color: #2b8c6a;
+}
+
+/* Especialidades Grid */
+.especialidades-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 15px;
+    margin-top: 15px;
+}
+
+.especialidade-item {
+    background-color: #f8f9fa;
+    border: 1px solid #e9ecef;
+    border-radius: 10px;
+    padding: 15px;
+    transition: all 0.3s ease;
+}
+
+.especialidade-item:hover {
+    border-color: #2b8c6a;
+    background-color: #f1f7f5;
+}
+
+.especialidade-item input[type="checkbox"] {
+    display: none;
+}
+
+.especialidade-item label {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    cursor: pointer;
+    margin: 0;
+    font-weight: 500;
+    color: #495057;
+}
+
+.especialidade-item label i {
+    font-size: 20px;
+    color: #6c757d;
+}
+
+.especialidade-item input[type="checkbox"]:checked + label {
+    color: #083f2e;
+}
+
+.especialidade-item input[type="checkbox"]:checked + label i {
+    color: #2b8c6a;
+}
+
+/* Upload Documentos */
+.upload-documentos {
+    margin-top: 20px;
+}
+
+.upload-documentos .upload-area {
+    border-color: #6c757d;
+    background-color: #f8f9fa;
+}
+
+.upload-documentos .upload-area:hover {
+    border-color: #495057;
+    background-color: #e9ecef;
+}
+
+.upload-documentos .upload-area i {
+    color: #6c757d;
+}
+
+/* Termos */
+.termos-area {
+    background-color: #f8f9fa;
+    border-radius: 10px;
+    padding: 20px;
+    border: 1px solid #e9ecef;
+}
+
+.form-check {
+    margin-bottom: 15px;
+}
+
+.form-check:last-child {
+    margin-bottom: 0;
+}
+
+.form-check-input {
+    margin-top: 0.2em;
+}
+
+.form-check-label {
+    font-size: 14px;
+    color: #495057;
+    line-height: 1.5;
+}
+
+.link-termos {
+    color: #2b8c6a;
+    text-decoration: none;
+    font-weight: 500;
+}
+
+.link-termos:hover {
+    color: #245f4a;
+    text-decoration: underline;
+}
+
+/* Botões */
+.form-actions {
+    text-align: center;
+    margin-top: 40px;
+    padding-top: 30px;
+    border-top: 1px solid #e9ecef;
+}
+
+.btn-criar-conta {
+    background-color: #2b8c6a;
+    border: none;
+    color: white;
+    font-weight: 600;
+    font-size: 16px;
+    padding: 15px 40px;
+    border-radius: 10px;
+    transition: all 0.3s ease;
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.btn-criar-conta:hover {
+    background-color: #245f4a;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 15px rgba(43, 140, 106, 0.3);
+}
+
+.login-link {
+    margin-top: 20px;
+    color: #6c757d;
+    font-size: 14px;
+}
+
+.login-link a {
+    color: #2b8c6a;
+    text-decoration: none;
+    font-weight: 500;
+}
+
+.login-link a:hover {
+    color: #245f4a;
+    text-decoration: underline;
+}
+
+/* Responsividade */
+@media (max-width: 768px) {
+    .cadastro-container {
+        margin: 20px;
+        border-radius: 10px;
+    }
+    
+    .header-cadastro, .cadastro-form {
+        padding: 20px;
+    }
+    
+    .header-cadastro h1 {
+        font-size: 24px;
+    }
+    
+    .disponibilidade-grid, .especialidades-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .voltar {
+        top: 15px;
+        left: 15px;
+        width: 40px;
+        height: 40px;
+        font-size: 24px;
+    }
+    
+    .section-title {
+        font-size: 18px;
+    }
+    
+    .section-title i {
+        font-size: 20px;
+    }
+}
+
+@media (max-width: 480px) {
+    .cadastro-container {
+        margin: 10px;
+        margin-top: 60px;
+    }
+    
+    .header-cadastro, .cadastro-form {
+        padding: 15px;
+    }
+    
+    .header-cadastro h1 {
+        font-size: 22px;
+    }
+    
+    .btn-criar-conta {
+        width: 100%;
+        padding: 12px 20px;
+    }
+}
+
+/* Estados dos checkboxes */
+.periodo-item input[type="checkbox"]:checked,
+.especialidade-item input[type="checkbox"]:checked {
+    background-color: #2b8c6a;
+    border-color: #2b8c6a;
+}
+
+.periodo-item:has(input[type="checkbox"]:checked),
+.especialidade-item:has(input[type="checkbox"]:checked) {
+    background-color: #f1f7f5;
+    border-color: #2b8c6a;
+    box-shadow: 0 2px 8px rgba(43, 140, 106, 0.15);
+}
+
+/* Animações suaves */
+.form-section, .periodo-item, .especialidade-item, .upload-area {
+    transition: all 0.3s ease;
+}
+
+/* Melhorias de acessibilidade */
+.form-control:focus-visible,
+.form-select:focus-visible,
+.form-check-input:focus-visible {
+    outline: 2px solid #2b8c6a;
+    outline-offset: 2px;
+}
+
+/* Contador de caracteres */
+.char-counter {
+    float: right;
+    font-size: 11px;
+    color: #6c757d;
+}
+
+/* Validação de campos */
+.form-control.is-invalid,
+.form-select.is-invalid {
+    border-color: #dc3545;
+}
+
+.form-control.is-valid,
+.form-select.is-valid {
+    border-color: #28a745;
+}
+
+.invalid-feedback {
+    color: #dc3545;
+    font-size: 12px;
+    margin-top: 4px;
+}
+
+.valid-feedback {
+    color: #28a745;
+    font-size: 12px;
+    margin-top: 4px;
+}

@@ -1,0 +1,83 @@
+/* Redefinir Senha */
+
+/* Fundo da página */
+body.login-page {
+  background-color: #97b9ac; /* verde de fundo do print */
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0;
+  font-family: Georgia, "Times New Roman", serif;
+}
+
+/* Caixa central */
+.login-container {
+  background-color: #b9d0c5; /* caixa mais clara do print */
+  padding: 36px 40px;
+  border-radius: 12px;
+  width: 420px;
+  max-width: calc(100% - 40px);
+  text-align: center;
+}
+
+/* Título */
+.login-container h1 {
+  font-size: 20px;
+  margin: 0 0 12px;
+  font-weight: 700;
+  color: #000;
+}
+
+/* Texto abaixo do título */
+.login-container p {
+  font-size: 14px;
+  margin-bottom: 20px;
+  color: #000;
+}
+
+/* Label */
+body.login-page .login-container label {
+  display: block;
+  text-align: left;
+  color: #000;
+  margin: 6px 0 6px;
+  font-size: 0.95rem;
+}
+
+/* Campo de texto */
+body.login-page .login-container input[type="email"] {
+  width: 100%;
+  padding: 10px 12px;
+  border-radius: 4px;
+  border: none;
+  margin-bottom: 14px;
+  box-sizing: border-box;
+}
+
+/* Botão */
+.btn-green {
+  background-color: #267055; /* verde do botão */
+  color: #fff;
+  padding: 10px 12px;
+  border-radius: 4px;
+  border: none;
+  font-size: 1rem;
+  cursor: pointer;
+  width: 100%;
+}
+
+.btn-green:hover {
+  background-color: #1f5d45;
+}
+
+/* Botão voltar */
+.voltar {
+  position: absolute;
+  top: 20px;
+  left: 20px;
+  text-decoration: none;
+  font-size: 24px;
+  color: black;
+  font-weight: bold;
+}
