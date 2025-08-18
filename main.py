@@ -12,29 +12,29 @@ from data.cuidador import cuidador_repo
 from data.especialidade import especialidade_repo
 from data.especialidade_cuidador import especialidade_cuidador_repo
 from data.usuario import usuario_repo
-from routes.public_routes import router as public_routes
+from routes import public_routes
 from routes.admin import (
-    admin_administradores_routes as admin_administradores_router,
-    admin_avaliacoes_routes as admin_avaliacoes_router,
-    admin_chamados_routes as admin_chamados_router,
-    admin_relatorios_routes as admin_relatorios_router,
-    admin_solicitacoes_verificacoes_routes as admin_solicitacoes_verificacoes_router
+    admin_administradores_routes,
+    admin_avaliacoes_routes,
+    admin_chamados_routes,
+    admin_relatorios_routes,
+    admin_solicitacoes_verificacoes_routes
 )
 from routes.contratante import (
-    contratante_avaliacao_realizada_routes as contratante_avaliacao_realizada_router,
-    contratante_avaliacao_recebida_routes as contratante_avaliacao_recebida_router,
-    contratante_chat_routes as contratante_chat_router,
-    contratante_contratacao_routes as contratante_contratacao_router,
-    contratante_cuidadores_routes as contratante_cuidadores_router
+    contratante_avaliacao_realizada_routes,
+    contratante_avaliacao_recebida_routes,
+    contratante_chat_routes,
+    contratante_contratacao_routes,
+    contratante_cuidadores_routes
 )
 from routes.cuidador import (
-    cuidador_agenda_routes as cuidador_agenda_router,
-    cuidador_avaliacoes_realizadas_routes as cuidador_avaliacoes_realizadas_router,
-    cuidador_avaliacoes_recebidas_routes as cuidador_avaliacoes_recebidas_router,
-    cuidador_chats_routes as cuidador_chats_router,
-    cuidador_contratacoes_recebidas_routes as cuidador_contratacoes_recebidas_router,
-    cuidador_especializacoes_routes as cuidador_especializacoes_router,
-    cuidador_solicitacoes_routes as cuidador_solicitacoes_router
+    cuidador_agenda_routes,
+    cuidador_avaliacoes_realizadas_routes,
+    cuidador_avaliacoes_recebidas_routes,
+    cuidador_chats_routes,
+    cuidador_contratacoes_recebidas_routes,
+    cuidador_especializacoes_routes,
+    cuidador_solicitacoes_routes
 )
 
 app = FastAPI()
@@ -52,24 +52,24 @@ especialidade_repo.criar_tabela()
 especialidade_cuidador_repo.criar_tabela()
 usuario_repo.criar_tabela()
 
-app.include_router(public_routes)
-app.include_router(admin_administradores_router)
-app.include_router(admin_avaliacoes_router)
-app.include_router(admin_chamados_router)
-app.include_router(admin_relatorios_router)
-app.include_router(admin_solicitacoes_verificacoes_router)
-app.include_router(contratante_avaliacao_realizada_router)
-app.include_router(contratante_avaliacao_recebida_router)
-app.include_router(contratante_chat_router)
-app.include_router(contratante_contratacao_router)
-app.include_router(contratante_cuidadores_router)
-app.include_router(cuidador_agenda_router)
-app.include_router(cuidador_avaliacoes_realizadas_router)
-app.include_router(cuidador_avaliacoes_recebidas_router)
-app.include_router(cuidador_chats_router)
-app.include_router(cuidador_contratacoes_recebidas_router)
-app.include_router(cuidador_especializacoes_router)
-app.include_router(cuidador_solicitacoes_router)
+app.include_router(public_routes.router)
+app.include_router(admin_administradores_routes.router)
+app.include_router(admin_avaliacoes_routes.router)
+app.include_router(admin_chamados_routes.router)
+app.include_router(admin_relatorios_routes.router)
+app.include_router(admin_solicitacoes_verificacoes_routes.router)
+app.include_router(contratante_avaliacao_realizada_routes.router)
+app.include_router(contratante_avaliacao_recebida_routes.router)
+app.include_router(contratante_chat_routes.router)
+app.include_router(contratante_contratacao_routes.router)
+app.include_router(contratante_cuidadores_routes.router)
+app.include_router(cuidador_agenda_routes.router)
+app.include_router(cuidador_avaliacoes_realizadas_routes.router)
+app.include_router(cuidador_avaliacoes_recebidas_routes.router)
+app.include_router(cuidador_chats_routes.router)
+# app.include_router(cuidador_contratacoes_recebidas_routes.router)
+app.include_router(cuidador_especializacoes_routes.router)
+# app.include_router(cuidador_solicitacoes_routes.router)
 
 
 if __name__ == "__main__":
