@@ -1,9 +1,16 @@
 {% extends "base.html" %}
-
 {% block conteudo %}
-<section class="py-5 bg-light" id="solicitação-verificação">
+<section class="py-5 bg-light" id="solicitacao-verificacao">
     <div class="container">
-        <h2 class="text-center mb-4">Solicitação de verificação</h2>
+        <h2 class="text-center mb-4">Solicitações de Verificação</h2>
+
+        <ul class="list-group">
+            {% for v in verificacoes %}
+                <li class="list-group-item">
+                    {{ v.descricao }}
+                </li>
+            {% endfor %}
+        </ul>
     </div>
 </section>
 {% endblock %}

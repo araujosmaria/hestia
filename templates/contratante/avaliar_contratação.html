@@ -1,0 +1,39 @@
+{% extends "base.html" %}
+
+{% block conteudo %}
+<section class="py-5 bg-light" id="avaliar-contratacao">
+    <div class="container">
+        <h2 class="text-center mb-4">Avaliar Contratação</h2>
+
+        <!-- Mensagem de sucesso (se houver) -->
+        {% if mensagem %}
+            <div class="alert alert-success text-center">
+                {{ mensagem }}
+            </div>
+        {% endif %}
+
+        <!-- Formulário de avaliação -->
+        <form method="post" action="/contratante/avaliar_contratacao">
+            <!-- ID da contratação oculto -->
+            <input type="hidden" name="id" value="{{ contratacao_id }}">
+
+            <div class="mb-3">
+                <label for="nota" class="form-label">Nota (1 a 5):</label>
+                <select class="form-select" name="nota" id="nota" required>
+                    <option value="" disabled selected>Selecione</option>
+                    {% for i in range(1, 6) %}
+                        <option value="{{ i }}">{{ i }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+
+            <div class="mb-3">
+                <label for="comentario" class="form-label">Comentário:</label>
+                <textarea class="form-control" name="comentario" id="comentario" rows="4" required></textarea>
+            </div>
+
+            <button type="submit" class="btn btn-primary">Enviar Avaliação</button>
+        </form>
+    </div>
+</section>
+{% endblock %}

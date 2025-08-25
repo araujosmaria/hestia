@@ -1,0 +1,31 @@
+{% extends "base.html" %}
+{% block conteudo %}
+<section class="py-5 bg-light" id="avaliação-contratação">
+    <div class="container">
+        <h2 class="text-center mb-4">Avaliar Contratação</h2>
+
+        <div class="card p-4">
+            <h4>Contratação #{{ contratacao.id }}</h4>
+            <p><strong>Cliente:</strong> {{ contratacao.cliente }}</p>
+            <p><strong>Serviço:</strong> {{ contratacao.servico }}</p>
+
+            <form method="post" action="/cuidador/contratacoes/avaliar">
+                <input type="hidden" name="id" value="{{ contratacao.id }}">
+
+                <div class="mb-3">
+                    <label for="nota" class="form-label">Nota (0 a 5)</label>
+                    <input type="number" class="form-control" name="nota" min="0" max="5" required>
+                </div>
+
+                <div class="mb-3">
+                    <label for="comentario" class="form-label">Comentário</label>
+                    <textarea class="form-control" name="comentario" rows="3" required></textarea>
+                </div>
+
+                <button type="submit" class="btn btn-success">Salvar Avaliação</button>
+                <a href="/cuidador/contratacoes" class="btn btn-secondary">Voltar</a>
+            </form>
+        </div>
+    </div>
+</section>
+{% endblock %}

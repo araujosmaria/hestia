@@ -1,9 +1,42 @@
 {% extends "base.html" %}
-
 {% block conteudo %}
 <section class="py-5 bg-light" id="contratações-recebidas">
     <div class="container">
-        <h2 class="text-center mb-4">Contratações recebidas</h2>
+        <h2 class="text-center mb-4">Contratações Recebidas</h2>
+
+        {% if mensagem %}
+            <div class="alert alert-success text-center">
+                {{ mensagem }}
+            </div>
+        {% endif %}
+
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Cliente</th>
+                    <th>Serviço</th>
+                    <th>Status</th>
+                    <th>Ação</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for c in contratacoes %}
+                <tr>
+                    <td>{{ c.id }}</td>
+                    <td>{{ c.cliente }}</td>
+                    <td>{{ c.servico }}</td>
+                    <td>{{ c.status }}</td>
+                    <td>
+                        <a href="/cuidador/contratacoes/avaliar/{{ c.id }}" 
+                           class="btn btn-primary btn-sm">
+                           Avaliar
+                        </a>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
     </div>
 </section>
 {% endblock %}

@@ -1,0 +1,18 @@
+{% extends "base.html" %}
+
+{% block conteudo %}
+<section class="py-5 bg-light" id="exclusao-avaliacao">
+    <div class="container">
+        <h2 class="text-center mb-4">Excluir Avaliação</h2>
+
+        <!-- Formulário para excluir avaliação -->
+        <form action="/cuidador/avaliacoes_realizadas/excluir" method="post" class="text-center">
+            <div class="mb-3">
+                <label for="id" class="form-label">ID da Avaliação</label>
+                <input type="number" class="form-control" id="id" name="id" required>
+            </div>
+            <button type="submit" class="btn btn-danger">Excluir</button>
+        </form>
+    </div>
+</section>
+{% endblock %}

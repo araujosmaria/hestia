@@ -5,6 +5,16 @@ router = APIRouter()
 templates = Jinja2Templates(directory="templates")
 
 # ======================
+# TELA INICIAL
+# ======================
+@router.get("/admin/tela_inicial")
+async def get_tela_inicial_admin(request: Request):
+    return templates.TemplateResponse(
+        "administrador/tela_inicial.html",
+        {"request": request}
+    )
+
+# ======================
 # CADASTRAR ADMINISTRADOR
 # ======================
 @router.get("/admin/administradores/cadastrar")

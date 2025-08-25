@@ -1,0 +1,27 @@
+{% extends "base.html" %}
+
+{% block conteudo %}
+<section class="py-5 bg-light" id="tela-inicial">
+    <div class="container">
+        <div class="text-center">
+            <h1 class="mb-4">Painel do Cuidador</h1>
+
+            {% if mensagem %}
+                <div class="alert alert-success">
+                    {{ mensagem }}
+                </div>
+            {% endif %}
+
+            <p class="lead">Utilize o menu acima para acessar suas funcionalidades como cuidador.</p>
+
+            <!-- Exemplo de botões de atalho (opcional) -->
+            <div class="d-flex justify-content-center gap-3 mt-4 flex-wrap">
+                <a href="/cuidador/agenda" class="btn btn-outline-primary">Ver Agenda</a>
+                <a href="/cuidador/solicitacoes" class="btn btn-outline-secondary">Solicitações</a>
+                <a href="/cuidador/avaliacoes_recebidas" class="btn btn-outline-success">Avaliações</a>
+                <a href="/cuidador/alterar_senha" class="btn btn-outline-danger">Alterar Senha</a>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}

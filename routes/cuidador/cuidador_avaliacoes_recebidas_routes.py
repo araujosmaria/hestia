@@ -1,11 +1,21 @@
-from fastapi import APIRouter
+from fastapi import APIRouter, Request
 from fastapi.templating import Jinja2Templates
-from data.avaliacao import avaliacao_repo
 
 router = APIRouter()
 templates = Jinja2Templates(directory="templates")
 
-@router.get("/cuidador/avaliacoes-recebidas")
-async def listar_avaliacoes_recebidas():
-    avaliacoes = avaliacao_repo.obter_recebidas_por_cuidador()
-    return templates.TemplateResponse("cuidador/listar_avaliacoes_recebidas.html", {"request": {}, "avaliacoes": avaliacoes})
+# ======================
+# LISTAR AVALIAÇÕES RECEBIDAS
+# ======================
+@router.get("/cuidador/avaliacoes_recebidas")
+async def get_avaliacoes_recebidas(request: Request):
+    # Aqui você buscaria no banco as avaliações recebidas pelo cuidador
+    avaliacoes_fake = [
+        {"id": 1, "contratante": "Carlos", "nota": 5, "comentario": "Excelente cuidador, muito atencioso!"},
+        {"id": 2, "contratante": "Ana", "nota": 4, "comentario": "Bom trabalho, recomendo."},
+        {"id": 3, "contratante": "Marcos", "nota": 3, "comentario": "Poderia melhorar a pontualidade."}
+    ]
+    return templates.TemplateResponse(
+        "avaliacoes_recebidas.html",
+        {"request": request, "avaliacoes": avaliacoes_fake}
+    )

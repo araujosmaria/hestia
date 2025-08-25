@@ -1,0 +1,30 @@
+{% extends "base.html" %}
+
+{% block conteudo %}
+<section class="py-5 bg-light" id="alterar-avaliacao">
+    <div class="container">
+        <h2 class="text-center mb-4">Alterar Avaliação</h2>
+
+        <form method="post" action="/cuidador/avaliacoes_realizadas/alterar">
+            <input type="hidden" name="id" value="{{ avaliacao.id }}">
+
+            <div class="mb-3">
+                <label class="form-label">Contratante:</label>
+                <input type="text" class="form-control" value="{{ avaliacao.contratante }}" disabled>
+            </div>
+
+            <div class="mb-3">
+                <label for="nota" class="form-label">Nota</label>
+                <input type="number" class="form-control" id="nota" name="nota" min="1" max="5" value="{{ avaliacao.nota }}" required>
+            </div>
+
+            <div class="mb-3">
+                <label for="comentario" class="form-label">Comentário</label>
+                <textarea class="form-control" id="comentario" name="comentario" rows="4" required>{{ avaliacao.comentario }}</textarea>
+            </div>
+
+            <button type="submit" class="btn btn-primary">Salvar Alterações</button>
+        </form>
+    </div>
+</section>
+{% endblock %}

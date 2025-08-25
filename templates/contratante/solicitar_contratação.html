@@ -3,7 +3,27 @@
 {% block conteudo %}
 <section class="py-5 bg-light" id="solicitar-contratação">
     <div class="container">
-        <h2 class="text-center mb-4">Solicitar contratação</h2>
+        <h2 class="text-center mb-4">Solicitar Contratação</h2>
+
+        {% if mensagem %}
+            <div class="alert alert-success text-center" role="alert">
+                {{ mensagem }}
+            </div>
+        {% endif %}
+
+        <form method="post" action="/contratante/solicitar-contratacao">
+            <div class="mb-3">
+                <label for="nome_projeto" class="form-label">Nome do Projeto</label>
+                <input type="text" class="form-control" id="nome_projeto" name="nome_projeto" required>
+            </div>
+
+            <div class="mb-3">
+                <label for="descricao" class="form-label">Descrição</label>
+                <textarea class="form-control" id="descricao" name="descricao" rows="4" required></textarea>
+            </div>
+
+            <button type="submit" class="btn btn-primary">Enviar Solicitação</button>
+        </form>
     </div>
 </section>
 {% endblock %}

@@ -3,7 +3,31 @@
 {% block conteudo %}
 <section class="py-5 bg-light" id="chat-com-cuidador">
     <div class="container">
-        <h2 class="text-center mb-4">Chat com cuidador</h2>
+        <h2 class="text-center mb-4">Chat com Cuidador {{ id_cuidador }}</h2>
+
+        <!-- Lista de mensagens -->
+        <div class="mb-4">
+            {% if mensagens %}
+                <ul class="list-group">
+                    {% for msg in mensagens %}
+                        <li class="list-group-item">
+                            <strong>{{ msg.remetente }}:</strong> {{ msg.texto }}
+                        </li>
+                    {% endfor %}
+                </ul>
+            {% else %}
+                <p class="text-center">Nenhuma mensagem até o momento.</p>
+            {% endif %}
+        </div>
+
+        <!-- Formulário de envio de mensagem -->
+        <form method="post" action="/contratante/chat/com_cuidador/{{ id_cuidador }}">
+            <div class="mb-3">
+                <label for="mensagem" class="form-label">Sua mensagem:</label>
+                <textarea class="form-control" id="mensagem" name="mensagem" rows="3" required></textarea>
+            </div>
+            <button type="submit" class="btn btn-primary">Enviar</button>
+        </form>
     </div>
 </section>
 {% endblock %}

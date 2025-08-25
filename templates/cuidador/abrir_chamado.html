@@ -1,0 +1,29 @@
+{% extends "base.html" %}
+
+{% block conteudo %}
+<section class="py-5 bg-light" id="abertura-chamados">
+    <div class="container">
+        <h2 class="text-center mb-4">Abertura de Chamado</h2>
+
+        {% if mensagem %}
+            <div class="alert alert-success text-center">
+                {{ mensagem }}
+            </div>
+        {% endif %}
+
+        <form method="post" action="/cuidador/chamados/abrir">
+            <div class="mb-3">
+                <label for="titulo" class="form-label">Título do Chamado</label>
+                <input type="text" class="form-control" id="titulo" name="titulo" required>
+            </div>
+
+            <div class="mb-3">
+                <label for="descricao" class="form-label">Descrição</label>
+                <textarea class="form-control" id="descricao" name="descricao" rows="4" required></textarea>
+            </div>
+
+            <button type="submit" class="btn btn-primary">Abrir Chamado</button>
+        </form>
+    </div>
+</section>
+{% endblock %}

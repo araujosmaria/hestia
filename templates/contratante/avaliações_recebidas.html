@@ -1,9 +1,36 @@
 {% extends "base.html" %}
 
 {% block conteudo %}
-<section class="py-5 bg-light" id="avaliações-recebidas">
+<section class="py-5 bg-light" id="avaliacoes-recebidas">
     <div class="container">
-        <h2 class="text-center mb-4">Avaliações recebidas</h2>
+        <h2 class="text-center mb-4">Avaliações Recebidas</h2>
+
+        {% if avaliacoes %}
+            <div class="list-group">
+                {% for avaliacao in avaliacoes %}
+                    <a href="/contratante/avaliacoes_recebidas/{{ avaliacao.id }}" class="list-group-item list-group-item-action">
+                        <strong>Cuidador:</strong> {{ avaliacao.cuidador }}<br>
+                        <strong>Nota:</strong> {{ avaliacao.nota }}<br>
+                        <strong>Comentário:</strong> {{ avaliacao.comentario }}
+                    </a>
+                {% endfor %}
+            </div>
+
+        {% elif avaliacao %}
+            <div class="card mt-4">
+                <div class="card-body">
+                    <h5 class="card-title">Avaliação #{{ avaliacao.id }}</h5>
+                    <p><strong>Cuidador:</strong> {{ avaliacao.cuidador }}</p>
+                    <p><strong>Nota:</strong> {{ avaliacao.nota }}</p>
+                    <p><strong>Comentário:</strong> {{ avaliacao.comentario }}</p>
+                    <p><strong>Data:</strong> {{ avaliacao.data }}</p>
+                    <a href="/contratante/avaliacoes_recebidas" class="btn btn-secondary mt-3">Voltar</a>
+                </div>
+            </div>
+
+        {% else %}
+            <p class="text-center">Nenhuma avaliação encontrada.</p>
+        {% endif %}
     </div>
 </section>
 {% endblock %}

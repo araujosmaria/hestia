@@ -1,103 +1,73 @@
-from fastapi import APIRouter, Request
+from fastapi import APIRouter, Request, Form
 from fastapi.templating import Jinja2Templates
-from datetime import datetime
-from data.agenda.agenda_model import Agenda
-from data.agenda import agenda_repo
 
 router = APIRouter()
 templates = Jinja2Templates(directory="templates")
 
-
+# ======================
+# VISUALIZAR AGENDA
+# ======================
 @router.get("/cuidador/agenda")
-async def listar_agenda(request: Request):
-    agendas = agenda_repo.obter_por_cuidador()
+async def get_agenda(request: Request):
+    # Aqui você buscaria a agenda no banco
+    agenda_fake = [
+        {"id": 1, "data": "2025-08-25", "hora": "09:00", "status": "Disponível"},
+        {"id": 2, "data": "2025-08-26", "hora": "14:00", "status": "Ocupado"},
+        {"id": 3, "data": "2025-08-27", "hora": "10:00", "status": "Disponível"}
+    ]
     return templates.TemplateResponse(
-        "cuidador/listar_agenda.html",
-        {"request": request, "agendas": agendas}
+        "agenda.html",
+        {"request": request, "agenda": agenda_fake}
     )
 
-
+# ======================
+# CADASTRO DE DISPONIBILIDADE (GET)
+# ======================
 @router.get("/cuidador/agenda/cadastrar")
-async def get_cadastrar_agenda(request: Request):
+async def get_cadastro_disponibilidade(request: Request):
     return templates.TemplateResponse(
-        "cuidador/cadastrar_agenda.html",
+        "cadastro_disponibilidade.html",
         {"request": request}
     )
 
-
+# ======================
+# CADASTRO DE DISPONIBILIDADE (POST)
+# ======================
 @router.post("/cuidador/agenda/cadastrar")
-async def post_cadastrar_agenda(
+async def post_cadastro_disponibilidade(
     request: Request,
-    dataHora: str,
-    disponibilidade: bool
+    data: str = Form(...),
+    hora: str = Form(...)
 ):
-    try:
-        nova_agenda = Agenda(
-            id_agenda=0,
-            dataHora=datetime.fromisoformat(dataHora),
-            disponibilidade=disponibilidade,
-            id_cuidador=1  # depois pega do login do cuidador
-        )
-        if agenda_repo.inserir(nova_agenda):
-            mensagem = "Horário cadastrado com sucesso!"
-        else:
-            mensagem = "Erro ao cadastrar horário."
-    except Exception as e:
-        mensagem = f"Erro: {e}"
-
-    agendas = agenda_repo.obter_por_cuidador()
+    # Aqui entraria a lógica de salvar no banco
+    mensagem = f"Disponibilidade cadastrada: {data} às {hora}"
     return templates.TemplateResponse(
-        "cuidador/listar_agenda.html",
-        {"request": request, "agendas": agendas, "mensagem": mensagem}
+        "cadastro_disponibilidade.html",
+        {"request": request, "mensagem": mensagem}
     )
 
-
-@router.get("/cuidador/agenda/alterar/{id_agenda}")
-async def get_alterar_agenda(request: Request, id_agenda: int):
-    agenda = agenda_repo.obter_por_id(id_agenda)
+# ======================
+# REMOÇÃO DE DISPONIBILIDADE (GET)
+# ======================
+@router.get("/cuidador/agenda/remover/{id}")
+async def get_remocao_disponibilidade(request: Request, id: int):
+    disponibilidade_fake = {"id": id, "data": "2025-08-25", "hora": "09:00"}
     return templates.TemplateResponse(
-        "cuidador/alterar_agenda.html",
-        {"request": request, "agenda": agenda}
+        "remoção_disponibilidade.html",
+        {"request": request, "disponibilidade": disponibilidade_fake}
     )
 
-
-@router.post("/cuidador/agenda/alterar")
-async def post_alterar_agenda(
+# ======================
+# REMOÇÃO DE DISPONIBILIDADE (POST)
+# ======================
+@router.post("/cuidador/agenda/remover")
+async def post_remocao_disponibilidade(
     request: Request,
-    id_agenda: int,
-    dataHora: str,
-    disponibilidade: bool
+    id: int = Form(...)
 ):
-    try:
-        agenda_atualizada = Agenda(
-            id_agenda=id_agenda,
-            dataHora=datetime.fromisoformat(dataHora),
-            disponibilidade=disponibilidade,
-            id_cuidador=1
-        )
-        if agenda_repo.atualizar(agenda_atualizada):
-            mensagem = "Horário alterado com sucesso!"
-        else:
-            mensagem = "Erro ao alterar horário."
-    except Exception as e:
-        mensagem = f"Erro: {e}"
-
-    agendas = agenda_repo.obter_por_cuidador()
+    # Aqui entraria a lógica de remover do banco
+    mensagem = f"Disponibilidade {id} removida com sucesso!"
     return templates.TemplateResponse(
-        "cuidador/listar_agenda.html",
-        {"request": request, "agendas": agendas, "mensagem": mensagem}
-    )
-
-
-@router.get("/cuidador/agenda/excluir/{id_agenda}")
-async def excluir_agenda(request: Request, id_agenda: int):
-    if agenda_repo.excluir(id_agenda):
-        mensagem = "Horário removido com sucesso!"
-    else:
-        mensagem = "Erro ao remover horário."
-
-    agendas = agenda_repo.obter_por_cuidador()
-    return templates.TemplateResponse(
-        "cuidador/listar_agenda.html",
-        {"request": request, "agendas": agendas, "mensagem": mensagem}
+        "remoção_disponibilidade.html",
+        {"request": request, "mensagem": mensagem}
     )

@@ -3,7 +3,14 @@
 {% block conteudo %}
 <section class="py-5 bg-light" id="confirmar-exclusão-administrador">
     <div class="container">
-        <h2 class="text-center mb-4">Confirmar exclusão do administrador</h2>
+        <h2 class="text-center mb-4">Confirmar Exclusão do Administrador</h2>
+
+        <p class="text-center">Tem certeza que deseja excluir o administrador com ID {{ id }}?</p>
+
+        <div class="text-center">
+            <a href="/admin/administradores/excluir/{{ id }}" class="btn btn-danger me-2">Excluir</a>
+            <a href="/admin/administradores" class="btn btn-secondary">Cancelar</a>
+        </div>
     </div>
 </section>
 {% endblock %}

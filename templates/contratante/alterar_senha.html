@@ -3,7 +3,28 @@
 {% block conteudo %}
 <section class="py-5 bg-light" id="alterar-senha">
     <div class="container">
-        <h2 class="text-center mb-4">Alterar senha</h2>
+        <h2 class="text-center mb-4">Alterar Senha</h2>
+
+        <!-- Formulário de alteração de senha -->
+        <form method="post" action="/contratante/alterar_senha">
+            <!-- ID oculto (vem do backend) -->
+            <input type="hidden" name="id" value="{{ id }}">
+
+            <!-- Senha atual -->
+            <div class="mb-3">
+                <label for="senha_atual" class="form-label">Senha atual</label>
+                <input type="password" class="form-control" id="senha_atual" name="senha_atual" required>
+            </div>
+
+            <!-- Nova senha -->
+            <div class="mb-3">
+                <label for="nova_senha" class="form-label">Nova senha</label>
+                <input type="password" class="form-control" id="nova_senha" name="nova_senha" required>
+            </div>
+
+            <!-- Botão -->
+            <button type="submit" class="btn btn-primary">Alterar Senha</button>
+        </form>
     </div>
 </section>
 {% endblock %}

@@ -1,21 +1,39 @@
-from fastapi import APIRouter
+from fastapi import APIRouter, Request
 from fastapi.templating import Jinja2Templates
 
 router = APIRouter()
 templates = Jinja2Templates(directory="templates")
 
+# ======================
+# LISTAR CUIDADORES
+# ======================
 @router.get("/contratante/cuidadores")
-async def get_listar_cuidadores():
-    return templates.TemplateResponse("contratante/listar_cuidadores.html", {"request": {}})
+async def get_listar_cuidadores(request: Request):
+    # Aqui você buscaria os cuidadores no banco
+    cuidadores_fake = [
+        {"id": 1, "nome": "Ana", "especialidade": "Cuidados com idosos", "nota": 5},
+        {"id": 2, "nome": "Carlos", "especialidade": "Enfermagem domiciliar", "nota": 4},
+        {"id": 3, "nome": "Fernanda", "especialidade": "Acompanhamento hospitalar", "nota": 5},
+    ]
+    return templates.TemplateResponse(
+        "perfil_cuidadores.html",
+        {"request": request, "cuidadores": cuidadores_fake}
+    )
 
-@router.get("/contratante/cuidadores/detalhes/{id}")
-async def get_detalhes_cuidador(id: int):
-    return templates.TemplateResponse("contratante/detalhes_cuidador.html", {"request": {}, "cuidador_id": id})
-
-@router.get("/contratante/cuidadores/chat/{id}")
-async def get_chat_cuidador(id: int):
-    return templates.TemplateResponse("contratante/chat_cuidador.html", {"request": {}, "cuidador_id": id})
-
-@router.post("/contratante/cuidadores/solicitar-contratacao")
-async def post_solicitar_contratacao(cuidador_id: int, detalhes: str):
-    return templates.TemplateResponse("contratante/listar_cuidadores.html", {"request": {}, "mensagem": "Solicitação de contratação enviada com sucesso!"})
+# ======================
+# PERFIL DO CUIDADOR
+# ======================
+@router.get("/contratante/cuidadores/{id}")
+async def get_perfil_cuidador(request: Request, id: int):
+    # Aqui você buscaria os detalhes do cuidador no banco
+    cuidador_fake = {
+        "id": id,
+        "nome": "Ana",
+        "especialidade": "Cuidados com idosos",
+        "nota": 5,
+        "descricao": "Mais de 10 anos de experiência cuidando de idosos com carinho e paciência."
+    }
+    return templates.TemplateResponse(
+        "perfil_cuidadores.html",
+        {"request": request, "cuidador": cuidador_fake}
+    )

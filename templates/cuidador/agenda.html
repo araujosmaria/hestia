@@ -4,6 +4,33 @@
 <section class="py-5 bg-light" id="agenda">
     <div class="container">
         <h2 class="text-center mb-4">Agenda</h2>
+
+        {% if agenda %}
+            <div class="table-responsive">
+                <table class="table table-bordered table-striped">
+                    <thead class="thead-dark">
+                        <tr>
+                            <th>ID</th>
+                            <th>Data</th>
+                            <th>Hora</th>
+                            <th>Status</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for item in agenda %}
+                            <tr>
+                                <td>{{ item.id }}</td>
+                                <td>{{ item.data }}</td>
+                                <td>{{ item.hora }}</td>
+                                <td>{{ item.status }}</td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        {% else %}
+            <p class="text-center">Nenhuma disponibilidade cadastrada.</p>
+        {% endif %}
     </div>
 </section>
 {% endblock %}

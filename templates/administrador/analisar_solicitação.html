@@ -1,9 +1,24 @@
 {% extends "base.html" %}
 
 {% block conteudo %}
-<section class="py-5 bg-light" id="analisar-solicitação">
+<section class="py-5 bg-light" id="analisar-solicitacao">
     <div class="container">
-        <h2 class="text-center mb-4">Analisar solicitação</h2>
+        <h2 class="text-center mb-4">Analisar Solicitação</h2>
+        
+        <form method="post" action="{{ url_for('post_analisar_solicitacao') }}">
+            <input type="hidden" name="id" value="{{ solicitacao_id }}">
+            
+            <div class="mb-3">
+                <label for="aprovado" class="form-label">Aprovar solicitação?</label>
+                <select name="aprovado" id="aprovado" class="form-select" required>
+                    <option value="true">Sim</option>
+                    <option value="false">Não</option>
+                </select>
+            </div>
+            
+            <button type="submit" class="btn btn-success">Enviar</button>
+            <a href="{{ url_for('get_listar_solicitacoes') }}" class="btn btn-secondary ms-2">Voltar</a>
+        </form>
     </div>
 </section>
 {% endblock %}

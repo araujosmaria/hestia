@@ -3,7 +3,20 @@
 {% block conteudo %}
 <section class="py-5 bg-light" id="chamados-abertos">
     <div class="container">
-        <h2 class="text-center mb-4">Chamados abertos</h2>
+        <h2 class="text-center mb-4">Chamados Abertos</h2>
+
+        {% if chamados %}
+            <div class="list-group">
+                {% for chamado in chamados %}
+                    <div class="list-group-item">
+                        <h5 class="mb-1">{{ chamado.titulo }}</h5>
+                        <p class="mb-1"><strong>Status:</strong> {{ chamado.status }}</p>
+                    </div>
+                {% endfor %}
+            </div>
+        {% else %}
+            <p class="text-center">Nenhum chamado aberto no momento.</p>
+        {% endif %}
     </div>
 </section>
 {% endblock %}

@@ -1,39 +1,97 @@
-from fastapi import APIRouter
+from fastapi import APIRouter, Request, Form
 from fastapi.templating import Jinja2Templates
-from data.especialidade.especialidade_model import Especialidade
-from data.especialidade import especialidade_repo
 
 router = APIRouter()
 templates = Jinja2Templates(directory="templates")
 
+# ======================
+# LISTAR ESPECIALIZAÇÕES
+# ======================
 @router.get("/cuidador/especializacoes")
-async def listar_especializacoes():
-    especializacoes = especialidade_repo.obter_por_cuidador()
-    return templates.TemplateResponse("cuidador/listar_especializacoes.html", {"request": {}, "especializacoes": especializacoes})
+async def get_listar_especializacoes(request: Request):
+    # Aqui você buscaria as especializações do banco
+    especializacoes_fake = [
+        {"id": 1, "nome": "Cuidados com idosos", "descricao": "Experiência com cuidados diários"},
+        {"id": 2, "nome": "Enfermagem básica", "descricao": "Aplicação de medicamentos e curativos"}
+    ]
+    return templates.TemplateResponse(
+        "especializações.html",
+        {"request": request, "especializacoes": especializacoes_fake}
+    )
 
-@router.get("/cuidador/especializacoes/cadastrar")
-async def get_cadastrar_especializacao():
-    return templates.TemplateResponse("cuidador/cadastrar_especializacao.html", {"request": {}})
+# ======================
+# CADASTRAR ESPECIALIZAÇÃO (GET)
+# ======================
+@router.get("/cuidador/especializacoes/cadastro")
+async def get_cadastro_especializacao(request: Request):
+    return templates.TemplateResponse(
+        "cadastro_especialização.html",
+        {"request": request}
+    )
 
-@router.post("/cuidador/especializacoes/cadastrar")
-async def post_cadastrar_especializacao(nome: str):
-    if especialidade_repo.inserir(Especialidade(id=0, nome=nome)):
-        return templates.TemplateResponse("cuidador/listar_especializacoes.html", {"request": {}, "mensagem": "Especialização cadastrada com sucesso!"})
-    return templates.TemplateResponse("cuidador/cadastrar_especializacao.html", {"request": {}, "mensagem": "Erro ao cadastrar especialização."})
+# ======================
+# CADASTRAR ESPECIALIZAÇÃO (POST)
+# ======================
+@router.post("/cuidador/especializacoes/cadastro")
+async def post_cadastro_especializacao(
+    request: Request,
+    nome: str = Form(...),
+    descricao: str = Form(...)
+):
+    # Aqui salvaria no banco
+    return templates.TemplateResponse(
+        "especializações.html",
+        {"request": request, "mensagem": f"Especialização '{nome}' cadastrada com sucesso!"}
+    )
 
-@router.get("/cuidador/especializacoes/alterar/{id}")
-async def get_alterar_especializacao(id: int):
-    especializacao = especialidade_repo.obter_por_id(id)
-    return templates.TemplateResponse("cuidador/alterar_especializacao.html", {"request": {}, "especializacao": especializacao})
+# ======================
+# ALTERAR ESPECIALIZAÇÃO (GET)
+# ======================
+@router.get("/cuidador/especializacoes/alteracao/{id}")
+async def get_alteracao_especializacao(request: Request, id: int):
+    especializacao_fake = {"id": id, "nome": "Enfermagem básica", "descricao": "Aplicação de medicamentos"}
+    return templates.TemplateResponse(
+        "alteração_especialização.html",
+        {"request": request, "especializacao": especializacao_fake}
+    )
 
-@router.post("/cuidador/especializacoes/alterar")
-async def post_alterar_especializacao(id: int, nome: str):
-    if especialidade_repo.atualizar(Especialidade(id=id, nome=nome)):
-        return templates.TemplateResponse("cuidador/listar_especializacoes.html", {"request": {}, "mensagem": "Especialização alterada com sucesso!"})
-    return templates.TemplateResponse("cuidador/alterar_especializacao.html", {"request": {}, "mensagem": "Erro ao alterar especialização."})
+# ======================
+# ALTERAR ESPECIALIZAÇÃO (POST)
+# ======================
+@router.post("/cuidador/especializacoes/alteracao")
+async def post_alteracao_especializacao(
+    request: Request,
+    id: int = Form(...),
+    nome: str = Form(...),
+    descricao: str = Form(...)
+):
+    # Aqui atualizaria no banco
+    return templates.TemplateResponse(
+        "especializações.html",
+        {"request": request, "mensagem": f"Especialização {id} atualizada com sucesso!"}
+    )
 
-@router.get("/cuidador/especializacoes/excluir/{id}")
-async def excluir_especializacao(id: int):
-    if especialidade_repo.excluir(id):
-        return templates.TemplateResponse("cuidador/listar_especializacoes.html", {"request": {}, "mensagem": "Especialização excluída com sucesso!"})
-    return templates.TemplateResponse("cuidador/listar_especializacoes.html", {"request": {}, "mensagem": "Erro ao excluir especialização."})
+# ======================
+# EXCLUIR ESPECIALIZAÇÃO (GET)
+# ======================
+@router.get("/cuidador/especializacoes/exclusao/{id}")
+async def get_exclusao_especializacao(request: Request, id: int):
+    especializacao_fake = {"id": id, "nome": "Cuidados com idosos"}
+    return templates.TemplateResponse(
+        "exclusão_especialização.html",
+        {"request": request, "especializacao": especializacao_fake}
+    )
+
+# ======================
+# EXCLUIR ESPECIALIZAÇÃO (POST)
+# ======================
+@router.post("/cuidador/especializacoes/exclusao")
+async def post_exclusao_especializacao(
+    request: Request,
+    id: int = Form(...)
+):
+    # Aqui excluiria do banco
+    return templates.TemplateResponse(
+        "especializações.html",
+        {"request": request, "mensagem": f"Especialização {id} excluída com sucesso!"}
+    )
