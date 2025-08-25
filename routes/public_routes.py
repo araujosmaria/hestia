@@ -24,7 +24,6 @@ async def get_cadastro_cuidador(request: Request):
 async def get_cadastro_contratante(request: Request):
     return templates.TemplateResponse("cadastro_contratante.html", {"request": request})
 
-
 @router.get("/redefinicao_senha")
 async def get_redefinicao_senha(request: Request):
     return templates.TemplateResponse("redefinicao_senha.html", {"request": request})

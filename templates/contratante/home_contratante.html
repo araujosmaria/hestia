@@ -170,16 +170,17 @@
 </body>
 </html> -->
 
+<!-- 
 {% extends "base.html" %}
 
 {% block head %}
     <style>
-        /* Fundo com cor #2B8C6A e 26% de opacidade */
+        
         body {
             background-color: rgba(43, 140, 106, 0.26);
         }
 
-        /* Navbar branca aumentada */
+      
         .navbar {
             background-color: white;
             display: flex;
@@ -190,7 +191,7 @@
             height: 80px;
         }
 
-        /* Barra de busca verde com 46% de opacidade */
+        
         .search-bar {
             display: flex;
             flex: 1;
@@ -227,20 +228,20 @@
             filter: brightness(0) invert(1);
         }
 
-        /* Ícone usuário */
+        
         .user-icon img {
             width: 32px;
             height: 32px;
             cursor: pointer;
         }
 
-        /* Margem lateral da navbar */
+        
         .navbar > * {
             margin-left: 10px;
             margin-right: 10px;
         }
 
-        /* Conteúdo e cards - alinhado mais à esquerda */
+        
         .content {
             padding: 60px 20px 40px 40px;
             max-width: 960px;
@@ -335,4 +336,36 @@
         </div>
     </div>
 </div>
-{% endblock %}
+{% endblock %} -->
+
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Área do Contratante</title>
+    <link rel="stylesheet" href="/static/css/home.css">
+</head>
+<body class="home-page">
+    <header>
+        <h1>Bem-vindo, Contratante!</h1>
+        <nav>
+            <a href="/">Início</a>
+            <a href="/cadastro_cuidador">Cadastrar Cuidador</a>
+            <a href="/cadastro_contratante">Editar Perfil</a>
+            <a href="/login">Sair</a>
+        </nav>
+    </header>
+
+    <main>
+        <section>
+            <h2>O que você deseja fazer?</h2>
+            <ul>
+                <li><a href="#">🔎 Procurar Cuidadores</a></li>
+                <li><a href="#">📄 Minhas Solicitações</a></li>
+                <li><a href="#">⚙️ Configurações</a></li>
+            </ul>
+        </section>
+    </main>
+</body>
+</html>

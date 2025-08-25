@@ -4,13 +4,10 @@ from fastapi.templating import Jinja2Templates
 router = APIRouter()
 templates = Jinja2Templates(directory="templates")
 
-# ======================
-# TELA INICIAL
-# ======================
-@router.get("/contratante/tela_inicial")
-async def get_tela_inicial(request: Request):
+@router.get("/home_contratante")
+async def get_home_contratante(request: Request):
     return templates.TemplateResponse(
-        "contratante/tela_inicial.html",
+        "contratante/home_contratante.html",
         {"request": request}
     )
 
