@@ -3,7 +3,20 @@
 {% block conteudo %}
 <section class="py-5 bg-light" id="chat-geral">
     <div class="container">
-        <h2 class="text-center mb-4">Chat geral</h2>
+        <h2 class="text-center mb-4">Chat Geral</h2>
+
+        <!-- Exibição das mensagens -->
+        {% if mensagens %}
+            <ul class="list-group mb-4">
+                {% for m in mensagens %}
+                    <li class="list-group-item">
+                        <strong>{{ m.autor }}:</strong> {{ m.mensagem }}
+                    </li>
+                {% endfor %}
+            </ul>
+        {% else %}
+            <p class="text-center">Nenhuma mensagem no momento.</p>
+        {% endif %}
     </div>
 </section>
 {% endblock %}

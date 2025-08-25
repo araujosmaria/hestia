@@ -1,9 +1,23 @@
 {% extends "base.html" %}
 
 {% block conteudo %}
-<section class="py-5 bg-light" id="avaliações-recebidas">
+<section class="py-5 bg-light" id="avaliacoes-recebidas">
     <div class="container">
-        <h2 class="text-center mb-4">Avaliações recebidas</h2>
+        <h2 class="text-center mb-4">Avaliações Recebidas</h2>
+
+        {% if avaliacoes %}
+            <div class="list-group">
+                {% for a in avaliacoes %}
+                    <div class="list-group-item">
+                        <h5 class="mb-1">{{ a.contratante }}</h5>
+                        <p class="mb-1">{{ a.comentario }}</p>
+                        <small>Nota: {{ a.nota }}/5</small>
+                    </div>
+                {% endfor %}
+            </div>
+        {% else %}
+            <p class="text-center">Nenhuma avaliação recebida até o momento.</p>
+        {% endif %}
     </div>
 </section>
 {% endblock %}

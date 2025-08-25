@@ -3,7 +3,7 @@
 {% block conteudo %}
 <section class="py-5 bg-light" id="responder-chamado">
     <div class="container">
-        <h2 class="text-center mb-4">Responder chamado #{{ chamado_id }}</h2>
+        <h2 class="text-center mb-4">Responder Chamado #{{ chamado_id }}</h2>
         <form method="post" action="/admin/chamados/responder">
             <input type="hidden" name="id" value="{{ chamado_id }}">
             <div class="mb-3">

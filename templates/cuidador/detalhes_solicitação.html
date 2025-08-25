@@ -1,9 +1,14 @@
 {% extends "base.html" %}
-
 {% block conteudo %}
-<section class="py-5 bg-light" id="detalhes-solicitação">
+<section class="py-5 bg-light" id="detalhes-solicitacao">
     <div class="container">
-        <h2 class="text-center mb-4">Detalhes de solicitação</h2>
+        <h2 class="text-center mb-4">Detalhes da Solicitação</h2>
+
+        <p><strong>ID:</strong> {{ solicitacao.id }}</p>
+        <p><strong>Nome:</strong> {{ solicitacao.nome }}</p>
+        <p><strong>Descrição:</strong> {{ solicitacao.descricao }}</p>
+
+        <a href="/cuidador/solicitacoes/contratacao" class="btn btn-secondary">Voltar</a>
     </div>
 </section>
 {% endblock %}

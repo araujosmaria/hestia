@@ -1,0 +1,24 @@
+{% extends "base.html" %}
+
+{% block conteudo %}
+<section class="py-5 bg-light" id="exclusao-especializacao">
+    <div class="container">
+        <h2 class="text-center mb-4">Excluir Especialização</h2>
+
+        <p class="text-center">Você tem certeza que deseja excluir a especialização:</p>
+        <div class="card mx-auto mb-4" style="max-width: 500px;">
+            <div class="card-body text-center">
+                <h5 class="card-title">{{ especializacao.nome }}</h5>
+                <p class="card-text">ID: {{ especializacao.id }}</p>
+            </div>
+        </div>
+
+        <form method="post" action="/cuidador/especializacoes/exclusao" class="text-center">
+            <input type="hidden" name="id" value="{{ especializacao.id }}">
+
+            <button type="submit" class="btn btn-danger">Confirmar Exclusão</button>
+            <a href="/cuidador/especializacoes" class="btn btn-secondary ms-2">Cancelar</a>
+        </form>
+    </div>
+</section>
+{% endblock %}

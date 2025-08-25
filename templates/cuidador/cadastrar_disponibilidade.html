@@ -1,0 +1,28 @@
+{% extends "base.html" %}
+{% block conteudo %}
+<section class="py-5 bg-light" id="cadastro-disponibilidade">
+    <div class="container">
+        <h2 class="text-center mb-4">Cadastrar Disponibilidade</h2>
+
+        {% if mensagem %}
+            <div class="alert alert-success text-center">
+                {{ mensagem }}
+            </div>
+        {% endif %}
+
+        <form method="post" action="/cuidador/agenda/cadastrar" class="card p-4 shadow-sm">
+            <div class="mb-3">
+                <label for="data" class="form-label">Data</label>
+                <input type="date" class="form-control" id="data" name="data" required>
+            </div>
+
+            <div class="mb-3">
+                <label for="hora" class="form-label">Hora</label>
+                <input type="time" class="form-control" id="hora" name="hora" required>
+            </div>
+
+            <button type="submit" class="btn btn-success">Cadastrar</button>
+        </form>
+    </div>
+</section>
+{% endblock %}

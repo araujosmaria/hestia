@@ -3,7 +3,37 @@
 {% block conteudo %}
 <section class="py-5 bg-light" id="chat-contratante">
     <div class="container">
-        <h2 class="text-center mb-4">Chat do contratante</h2>
+        <h2 class="text-center mb-4">Chat com o Contratante</h2>
+
+        <!-- Mensagem de sucesso -->
+        {% if mensagem_sucesso %}
+            <div class="alert alert-success text-center">
+                {{ mensagem_sucesso }}
+            </div>
+        {% endif %}
+
+        <!-- Exibição das mensagens -->
+        {% if mensagens %}
+            <ul class="list-group mb-4">
+                {% for m in mensagens %}
+                    <li class="list-group-item">
+                        <strong>{{ m.autor }}:</strong> {{ m.mensagem }}
+                    </li>
+                {% endfor %}
+            </ul>
+        {% else %}
+            <p class="text-center">Nenhuma mensagem no momento.</p>
+        {% endif %}
+
+        <!-- Formulário para enviar nova mensagem -->
+        <form method="post" action="/cuidador/chat/contratante/enviar">
+            <input type="hidden" name="contratante_id" value="{{ contratante_id }}">
+            <div class="mb-3">
+                <label for="mensagem" class="form-label">Nova mensagem</label>
+                <textarea class="form-control" id="mensagem" name="mensagem" rows="3" required></textarea>
+            </div>
+            <button type="submit" class="btn btn-primary">Enviar</button>
+        </form>
     </div>
 </section>
 {% endblock %}
