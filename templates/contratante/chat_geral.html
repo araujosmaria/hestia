@@ -4,6 +4,27 @@
 <section class="py-5 bg-light" id="chat-geral">
     <div class="container">
         <h2 class="text-center mb-4">Chat geral</h2>
+
+        <!-- Área de mensagens -->
+        <div class="card shadow-sm mb-4">
+            <div class="card-body" style="height: 300px; overflow-y: auto;">
+                {% if mensagens %}
+                    {% for msg in mensagens %}
+                        <p><strong>{{ msg.remetente }}:</strong> {{ msg.texto }}</p>
+                    {% endfor %}
+                {% else %}
+                    <p class="text-muted">Nenhuma mensagem no chat ainda...</p>
+                {% endif %}
+            </div>
+        </div>
+
+        <!-- Formulário para enviar mensagem -->
+        <form method="post" action="/contratante/chat/geral">
+            <div class="input-group">
+                <input type="text" name="mensagem" class="form-control" placeholder="Digite sua mensagem..." required>
+                <button class="btn btn-primary" type="submit">Enviar</button>
+            </div>
+        </form>
     </div>
 </section>
 {% endblock %}

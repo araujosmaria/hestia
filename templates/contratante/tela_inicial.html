@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<!-- <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
     <meta charset="UTF-8" />
@@ -168,4 +168,171 @@
         </div>
     </div>
 </body>
-</html>
+</html> -->
+
+{% extends "base.html" %}
+
+{% block head %}
+    <style>
+        /* Fundo com cor #2B8C6A e 26% de opacidade */
+        body {
+            background-color: rgba(43, 140, 106, 0.26);
+        }
+
+        /* Navbar branca aumentada */
+        .navbar {
+            background-color: white;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px 30px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            height: 80px;
+        }
+
+        /* Barra de busca verde com 46% de opacidade */
+        .search-bar {
+            display: flex;
+            flex: 1;
+            max-width: 600px;
+            background-color: rgba(142, 202, 186, 0.46);
+            border-radius: 4px 0 0 4px;
+            overflow: hidden;
+        }
+
+        .search-bar input {
+            flex: 1;
+            padding: 10px;
+            border: none;
+            background: transparent;
+            color: #fff;
+            font-size: 16px;
+            outline: none;
+        }
+
+        .search-bar button {
+            background-color: #2B8C6A;
+            border: none;
+            padding: 0 15px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 0 4px 4px 0;
+        }
+
+        .search-bar button img {
+            width: 16px;
+            height: 16px;
+            filter: brightness(0) invert(1);
+        }
+
+        /* Ícone usuário */
+        .user-icon img {
+            width: 32px;
+            height: 32px;
+            cursor: pointer;
+        }
+
+        /* Margem lateral da navbar */
+        .navbar > * {
+            margin-left: 10px;
+            margin-right: 10px;
+        }
+
+        /* Conteúdo e cards - alinhado mais à esquerda */
+        .content {
+            padding: 60px 20px 40px 40px;
+            max-width: 960px;
+            margin: 0;
+        }
+
+        .content h2 {
+            margin-bottom: 30px;
+            color: #000;
+        }
+
+        .cards {
+            display: flex;
+            justify-content: flex-start;
+            gap: 40px;
+            flex-wrap: wrap;
+        }
+
+        .card {
+            background-color: white;
+            border-radius: 8px;
+            width: 250px;
+            padding: 0;
+            text-align: center;
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+        }
+
+        .card img {
+            width: 100%;
+            height: 180px;
+            object-fit: cover;
+            border-radius: 8px 8px 0 0;
+            margin: 0;
+            display: block;
+        }
+
+        .card h3 {
+            margin: 15px 0 5px;
+            font-weight: bold;
+            color: #000;
+        }
+
+        .card p {
+            margin: 2px 0 15px;
+            color: #555;
+        }
+
+        .card p.location::before {
+            content: "📍";
+            margin-right: 5px;
+        }
+    </style>
+{% endblock %}
+
+{% block conteudo %}
+<nav class="navbar">
+    <div class="search-bar">
+        <input type="text" placeholder="Buscar por filtros" />
+        <button>
+            <img src="/static/icons/search.svg" alt="Buscar" />
+        </button>
+    </div>
+    <div class="user-icon">
+        <img src="/static/icons/user-icon.svg" alt="Perfil" />
+    </div>
+</nav>
+
+<div class="content">
+    <h2>Sugestões de profissionais perto de você:</h2>
+
+    <div class="cards">
+        <div class="card">
+            <img src="/static/img/Fisioterapeuta.png" alt="Taís Teixeira" />
+            <h3>Taís Teixeira</h3>
+            <p class="location">Conduro, ES</p>
+            <p>Fisioterapeuta</p>
+        </div>
+
+        <div class="card">
+            <img src="/static/img/Enfermeiro.png" alt="Ricardo Guimarães" />
+            <h3>Ricardo Guimarães</h3>
+            <p class="location">Cachoeiro de Itapemirim, ES</p>
+            <p>Enfermeiro</p>
+        </div>
+
+        <div class="card">
+            <img src="/static/img/Psicologa.png" alt="Emanuela Petronni" />
+            <h3>Emanuela Petronni</h3>
+            <p class="location">Castelo, ES</p>
+            <p>Psicóloga</p>
+        </div>
+    </div>
+</div>
+{% endblock %}

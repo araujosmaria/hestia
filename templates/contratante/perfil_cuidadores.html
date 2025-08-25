@@ -3,7 +3,38 @@
 {% block conteudo %}
 <section class="py-5 bg-light" id="perfil-cuidadores">
     <div class="container">
-        <h2 class="text-center mb-4">Perfil de cuidadores</h2>
+        <h2 class="text-center mb-4">Perfil de Cuidadores</h2>
+
+        {% if cuidadores %}
+            <div class="row">
+                {% for cuidador in cuidadores %}
+                    <div class="col-md-4 mb-4">
+                        <div class="card h-100">
+                            <div class="card-body">
+                                <h5 class="card-title">{{ cuidador.nome }}</h5>
+                                <p><strong>Especialidade:</strong> {{ cuidador.especialidade }}</p>
+                                <p><strong>Nota:</strong> {{ cuidador.nota }}</p>
+                                <a href="/contratante/cuidadores/{{ cuidador.id }}" class="btn btn-primary">Ver perfil</a>
+                            </div>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+
+        {% elif cuidador %}
+            <div class="card">
+                <div class="card-body">
+                    <h4 class="card-title">{{ cuidador.nome }}</h4>
+                    <p><strong>Especialidade:</strong> {{ cuidador.especialidade }}</p>
+                    <p><strong>Nota:</strong> {{ cuidador.nota }}</p>
+                    <p><strong>Descrição:</strong> {{ cuidador.descricao }}</p>
+                    <a href="/contratante/cuidadores" class="btn btn-secondary mt-3">Voltar</a>
+                </div>
+            </div>
+
+        {% else %}
+            <p class="text-center">Nenhum cuidador encontrado.</p>
+        {% endif %}
     </div>
 </section>
 {% endblock %}

@@ -1,9 +1,31 @@
 {% extends "base.html" %}
 
 {% block conteudo %}
-<section class="py-5 bg-light" id="relatórios">
+<section class="py-5 bg-light" id="relatorios">
     <div class="container">
-        <h2 class="text-center mb-4">Relatórios</h2>
+        <h2 class="text-center mb-4">Relatórios de Cuidadores</h2>
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Nome</th>
+                    <th>Especialidade</th>
+                    <th>Avaliação</th>
+                    <th>Disponibilidade</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for relatorio in relatorios %}
+                <tr>
+                    <td>{{ relatorio.id }}</td>
+                    <td>{{ relatorio.nome }}</td>
+                    <td>{{ relatorio.especialidade }}</td>
+                    <td>{{ relatorio.avaliacao }}</td>
+                    <td>{{ relatorio.disponibilidade }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
     </div>
 </section>
 {% endblock %}

@@ -3,7 +3,15 @@
 {% block conteudo %}
 <section class="py-5 bg-light" id="responder-chamado">
     <div class="container">
-        <h2 class="text-center mb-4">Responder chamado</h2>
+        <h2 class="text-center mb-4">Responder chamado #{{ chamado_id }}</h2>
+        <form method="post" action="/admin/chamados/responder">
+            <input type="hidden" name="id" value="{{ chamado_id }}">
+            <div class="mb-3">
+                <label for="resposta" class="form-label">Resposta</label>
+                <textarea class="form-control" id="resposta" name="resposta" rows="4" required></textarea>
+            </div>
+            <button type="submit" class="btn btn-primary">Enviar resposta</button>
+        </form>
     </div>
 </section>
 {% endblock %}

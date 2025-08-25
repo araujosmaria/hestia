@@ -1,0 +1,22 @@
+{% block conteudo %}
+<section class="py-5 bg-light" id="abertura-chamado">
+    <div class="container">
+        <h2 class="text-center mb-4">Abrir de Chamado</h2>
+        
+        <!-- Formulário para abertura de chamado -->
+        <form method="post" action="/contratante/chamados/abrir">
+            <div class="mb-3">
+                <label for="titulo" class="form-label">Título</label>
+                <input type="text" class="form-control" id="titulo" name="titulo" required>
+            </div>
+
+            <div class="mb-3">
+                <label for="descricao" class="form-label">Descrição</label>
+                <textarea class="form-control" id="descricao" name="descricao" rows="4" required></textarea>
+            </div>
+
+            <button type="submit" class="btn btn-primary">Abrir Chamado</button>
+        </form>
+    </div>
+</section>
+{% endblock %}
