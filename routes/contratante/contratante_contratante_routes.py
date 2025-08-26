@@ -4,7 +4,7 @@ from fastapi.templating import Jinja2Templates
 router = APIRouter()
 templates = Jinja2Templates(directory="templates")
 
-@router.get("/home_contratante")
+@router.get("/contratante/home_contratante")
 async def get_home_contratante(request: Request):
     return templates.TemplateResponse(
         "contratante/home_contratante.html",
@@ -12,21 +12,11 @@ async def get_home_contratante(request: Request):
     )
 
 # ======================
-# PÁGINA CONTRATANTE
-# ======================
-@router.get("/contratante")
-async def get_contratante(request: Request):
-    return templates.TemplateResponse(
-        "contratante/contratante.html",
-        {"request": request}
-    )
-
-# ======================
 # PERFIL
 # ======================
-@router.get("/contratante/dados_perfil/{id}")
-async def get_dados_perfil(request: Request, id: int):
-    perfil_fake = {"id": id, "nome": "Usuário Teste", "email": "teste@teste.com"}
+@router.get("/contratante/dados_perfil")
+async def get_dados_perfil(request: Request):
+    perfil_fake = {"id": 1, "nome": "Usuário Teste", "email": "teste@teste.com"}
     return templates.TemplateResponse(
         "contratante/dados_perfil.html",
         {"request": request, "perfil": perfil_fake}
@@ -95,12 +85,6 @@ async def post_abertura_chamado(
         "contratante/chamados_abertos.html",
         {"request": request, "mensagem": "Chamado aberto com sucesso!"}
     )
-
-from fastapi import APIRouter, Request, Form
-from fastapi.templating import Jinja2Templates
-
-router = APIRouter()
-templates = Jinja2Templates(directory="templates")
 
 # ======================
 # CHAMADOS ABERTOS

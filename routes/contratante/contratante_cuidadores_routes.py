@@ -16,7 +16,7 @@ async def get_listar_cuidadores(request: Request):
         {"id": 3, "nome": "Fernanda", "especialidade": "Acompanhamento hospitalar", "nota": 5},
     ]
     return templates.TemplateResponse(
-        "perfil_cuidadores.html",
+        "contratante/perfil_cuidadores.html",
         {"request": request, "cuidadores": cuidadores_fake}
     )
 
@@ -34,6 +34,6 @@ async def get_perfil_cuidador(request: Request, id: int):
         "descricao": "Mais de 10 anos de experiência cuidando de idosos com carinho e paciência."
     }
     return templates.TemplateResponse(
-        "perfil_cuidadores.html",
+        "contratante/perfil_cuidadores.html",
         {"request": request, "cuidador": cuidador_fake}
     )

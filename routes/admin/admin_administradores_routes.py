@@ -7,7 +7,7 @@ templates = Jinja2Templates(directory="templates")
 # ======================
 # TELA INICIAL
 # ======================
-@router.get("/admin/tela_inicial")
+@router.get("/admin/administradores/tela_inicial")
 async def get_tela_inicial_admin(request: Request):
     return templates.TemplateResponse(
         "administrador/tela_inicial.html",
@@ -67,11 +67,11 @@ async def get_dados_perfil(request: Request, id: int):
 # ======================
 # ALTERAR SENHA
 # ======================
-@router.get("/admin/administradores/alterar_senha/{id}")
-async def get_alterar_senha(request: Request, id: int):
+@router.get("/admin/administradores/alterar_senha")
+async def get_alterar_senha(request: Request):
     return templates.TemplateResponse(
         "administrador/alterar_senha.html",
-        {"request": request, "id": id}
+        {"request": request}
     )
 
 @router.post("/admin/administradores/alterar_senha")

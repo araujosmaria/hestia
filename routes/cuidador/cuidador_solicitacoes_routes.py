@@ -7,7 +7,7 @@ templates = Jinja2Templates(directory="templates")
 # ======================
 # LISTAR SOLICITAÇÕES DE CONTRATAÇÃO
 # ======================
-@router.get("/cuidador/solicitacoes/contratacao")
+@router.get("/cuidador/solicitacoes_contratacao")
 async def listar_solicitacoes_contratacao(request: Request):
     # Aqui você pode chamar o repo para obter dados reais
     solicitacoes = [
@@ -22,10 +22,11 @@ async def listar_solicitacoes_contratacao(request: Request):
 # ======================
 # VISUALIZAR DETALHES DE UMA SOLICITAÇÃO
 # ======================
-@router.get("/cuidador/solicitacoes/detalhes/{id}")
-async def detalhes_solicitacao(request: Request, id: int):
-    # Obter solicitação pelo ID (simulação)
-    solicitacao = {"id": id, "nome": f"Solicitação {id}", "descricao": "Detalhes da solicitação"}
+@router.get("/cuidador/cuidador_solicitacoes/detalhes")
+async def detalhes_solicitacao(request: Request):
+    # Exemplo: busca a solicitação "mais recente" ou do cuidador logado
+    solicitacao = {"id": 1, "nome": "Solicitação 1", "descricao": "Detalhes da solicitação"}
+    
     return templates.TemplateResponse(
         "cuidador/detalhes_solicitacao.html",
         {"request": request, "solicitacao": solicitacao}

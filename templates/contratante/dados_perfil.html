@@ -6,11 +6,13 @@
         <h2 class="text-center mb-4">Dados do Perfil</h2>
         <div class="card mx-auto" style="max-width: 600px;">
             <div class="card-body">
-                <p><strong>ID:</strong> {{ perfil.id }}</p>
                 <p><strong>Nome:</strong> {{ perfil.nome }}</p>
                 <p><strong>Email:</strong> {{ perfil.email }}</p>
             </div>
         </div>
     </div>
+     <div class="text-center mt-4">
+            <a href="/contratante/home_contratante" class="btn btn-success">Voltar para Home</a>
+        </div>
 </section>
 {% endblock %}

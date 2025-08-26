@@ -16,7 +16,7 @@ async def get_agenda(request: Request):
         {"id": 3, "data": "2025-08-27", "hora": "10:00", "status": "Disponível"}
     ]
     return templates.TemplateResponse(
-        "agenda.html",
+        "cuidador/agenda.html",
         {"request": request, "agenda": agenda_fake}
     )
 

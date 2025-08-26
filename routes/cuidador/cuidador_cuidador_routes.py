@@ -1,5 +1,6 @@
 from fastapi import APIRouter, Request, Form
 from fastapi.templating import Jinja2Templates
+from fastapi.responses import RedirectResponse
 
 router = APIRouter()
 templates = Jinja2Templates(directory="templates")
@@ -7,10 +8,10 @@ templates = Jinja2Templates(directory="templates")
 # ======================
 # TELA INICIAL
 # ======================
-@router.get("/cuidador")
-async def get_tela_inicial(request: Request):
+@router.get("/home_cuidador")
+async def get_home_cuidador(request: Request):
     return templates.TemplateResponse(
-        "tela_inicial.html",
+        "cuidador/home_cuidador.html",
         {"request": request, "mensagem": "Bem-vindo ao painel do cuidador!"}
     )
 
@@ -20,7 +21,7 @@ async def get_tela_inicial(request: Request):
 @router.get("/cuidador/alterar_senha")
 async def get_alterar_senha(request: Request):
     return templates.TemplateResponse(
-        "alterar_senha.html",
+        "cuidador/alterar_senha.html",
         {"request": request}
     )
 
@@ -37,13 +38,14 @@ async def post_alterar_senha(
     # Aqui entraria a lógica para validar e atualizar a senha no banco
     if nova_senha != confirmar_senha:
         mensagem = "As senhas não coincidem!"
-    else:
-        mensagem = "Senha alterada com sucesso!"
+        return templates.TemplateResponse(
+            "cuidador/alterar_senha.html",
+            {"request": request, "mensagem": mensagem}
+        )
     
-    return templates.TemplateResponse(
-        "alterar_senha.html",
-        {"request": request, "mensagem": mensagem}
-    )
+    # Se deu tudo certo → redireciona para o home do cuidador
+    response = RedirectResponse(url="/home_cuidador", status_code=303)
+    return response
 
 # ======================
 # ABERTURA DE CHAMADOS (GET)
