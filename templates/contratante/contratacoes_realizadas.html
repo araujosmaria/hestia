@@ -1,0 +1,38 @@
+{% extends "base.html" %}
+
+{% block conteudo %}
+<section class="py-5 bg-light" id="contratacoes_realizadas">
+    <div class="container">
+        <h2 class="text-center mb-4">Contratações Realizadas</h2>
+
+        {% if contratacoes %}
+            <div class="list-group">
+                {% for contratacao in contratacoes %}
+                    <div class="list-group-item d-flex justify-content-between align-items-center">
+                        <div>
+                            <strong>ID:</strong> {{ contratacao.id }}<br>
+                            <strong>Cuidador:</strong> {{ contratacao.contratado }}<br>
+                            <strong>Período:</strong> {{ contratacao.periodo if contratacao.periodo else "Não informado" }}<br>
+                            <strong>Status:</strong> {{ contratacao.status }}
+                        </div>
+                        <div class="d-flex gap-2">
+                            {% if contratacao.status == "Concluído" or contratacao.status == "Finalizada" %}
+                                <a href="/contratante/avaliar_contratacao/{{ contratacao.id }}" class="btn btn-primary btn-sm">Avaliar</a>
+                                <a href="#" class="btn btn-secondary btn-sm">Ocultar</a>
+                            {% else %}
+                                <button class="btn btn-secondary btn-sm" disabled>Aguardando finalização</button>
+                            {% endif %}
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+        {% else %}
+            <p class="text-center">Nenhuma contratação realizada encontrada.</p>
+        {% endif %}
+
+        <div class="text-center mt-4">
+            <a href="/contratante/home_contratante" class="btn btn-success">Voltar para Home</a>
+        </div>
+    </div>
+</section>
+{% endblock %}

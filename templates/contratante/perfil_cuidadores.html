@@ -28,6 +28,12 @@
                     <p><strong>Especialidade:</strong> {{ cuidador.especialidade }}</p>
                     <p><strong>Nota:</strong> {{ cuidador.nota }}</p>
                     <p><strong>Descrição:</strong> {{ cuidador.descricao }}</p>
+                    
+                    <!-- Botão de Solicitar Contratação -->
+                    <a href="/contratante/solicitar-contratacao?cuidador_id={{ cuidador.id }}" class="btn btn-success mt-3">
+                        Solicitar Contratação
+                    </a>
+
                     <a href="/contratante/cuidadores" class="btn btn-secondary mt-3">Voltar</a>
                 </div>
             </div>
@@ -37,8 +43,8 @@
         {% endif %}
     </div>
 </section>
+
 <div class="text-center mt-4">
-            <a href="/contratante/home_contratante" class="btn btn-success">Voltar para Home</a>
-        </div>
-    </div><br>
+    <a href="/contratante/home_contratante" class="btn btn-success">Voltar para Home</a>
+</div>
 {% endblock %}

@@ -5,14 +5,17 @@
     <div class="container">
         <h2 class="text-center mb-4">Excluir Avaliação</h2>
 
-        <!-- Formulário para excluir avaliação -->
-        <form action="/cuidador/avaliacoes_realizadas/excluir" method="post" class="text-center">
+        <form action="/contratante/avaliacoes_realizadas/excluir" method="post" class="text-center">
             <div class="mb-3">
                 <label for="id" class="form-label">ID da Avaliação</label>
-                <input type="number" class="form-control" id="id" name="id" required>
+                <input type="number" class="form-control" id="id" name="id" value="{{ id }}" required>
             </div>
             <button type="submit" class="btn btn-danger">Excluir</button>
         </form>
+
+        <div class="text-center mt-4">
+            <a href="/contratante/avaliacoes_realizadas" class="btn btn-success">Voltar</a>
+        </div>
     </div>
 </section>
 {% endblock %}

@@ -1,4 +1,4 @@
-{% extends "base.html" %}
+{% extends "base_privada.html" %}
 
 {% block conteudo %}
 <section class="py-5 bg-light" id="avaliacoes">
@@ -30,5 +30,9 @@
             <p class="text-center">Nenhuma avaliação encontrada.</p>
         {% endif %}
     </div>
+    <div class="text-center mt-4">
+            <a href="/admin/administradores/tela_inicial" class="btn btn-success">Voltar para Home</a>
+        </div>
+    </div><br>
 </section>
 {% endblock %}

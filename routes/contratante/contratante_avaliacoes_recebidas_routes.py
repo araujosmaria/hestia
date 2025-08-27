@@ -16,7 +16,7 @@ async def get_avaliacoes_recebidas(request: Request):
         {"id": 3, "cuidador": "Fernanda", "nota": 3, "comentario": "Poderia ter comunicado melhor alguns detalhes."}
     ]
     return templates.TemplateResponse(
-        "contratante/avaliações_recebidas.html",
+        "contratante/avaliacoes_recebidas.html",
         {"request": request, "avaliacoes": avaliacoes_fake}
     )
 
@@ -33,6 +33,6 @@ async def get_detalhe_avaliacao_recebida(request: Request, id: int):
         "data": "20/08/2025"
     }
     return templates.TemplateResponse(
-        "avaliações_recebidas.html",
+        "contratante/avaliacoes_recebidas.html",
         {"request": request, "avaliacao": avaliacao_fake}
     )

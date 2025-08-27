@@ -42,7 +42,7 @@ async def post_cadastrar_administrador(
 @router.get("/admin/administradores/confirmar_exclusao/{id}")
 async def get_confirmar_exclusao_administrador(request: Request, id: int):
     return templates.TemplateResponse(
-        "administrador/confirmar_exclusão_administrador.html",
+        "administrador/confirmar_exclusao_administrador.html",
         {"request": request, "id": id}
     )
 
@@ -82,6 +82,6 @@ async def post_alterar_senha(
     nova_senha: str = Form(...)
 ):
     return templates.TemplateResponse(
-        "administrador/administradores.html",
+        "administrador/tela_inicial.html",
         {"request": request, "mensagem": "Senha alterada com sucesso!"}
     )

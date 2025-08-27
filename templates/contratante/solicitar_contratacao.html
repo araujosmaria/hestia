@@ -1,7 +1,7 @@
 {% extends "base.html" %}
 
 {% block conteudo %}
-<section class="py-5 bg-light" id="solicitar-contratação">
+<section class="py-5 bg-light" id="solicitar-contratacao">
     <div class="container">
         <h2 class="text-center mb-4">Solicitar Contratação</h2>
 
@@ -11,7 +11,10 @@
             </div>
         {% endif %}
 
-        <form method="post" action="/contratante/avaliar_contratacao/{id}">
+        <form method="post" action="/contratante/solicitar-contratacao">
+            <!-- Passa o ID do cuidador -->
+            <input type="hidden" name="cuidador_id" value="{{ cuidador_id }}">
+
             <div class="mb-3">
                 <label for="nome_projeto" class="form-label">Nome do Projeto</label>
                 <input type="text" class="form-control" id="nome_projeto" name="nome_projeto" required>
@@ -24,6 +27,10 @@
 
             <button type="submit" class="btn btn-primary">Enviar Solicitação</button>
         </form>
+
+        <div class="text-center mt-4">
+            <a href="/contratante/cuidadores/{{ cuidador_id }}" class="btn btn-secondary">Voltar</a>
+        </div>
     </div>
 </section>
 {% endblock %}

@@ -1,9 +1,10 @@
-{% extends "base.html" %}
+{% extends "base_privada.html" %}
 
 {% block conteudo %}
 <section class="py-5 bg-light" id="relatorios">
     <div class="container">
         <h2 class="text-center mb-4">Relatórios de Cuidadores</h2>
+
         <table class="table table-striped">
             <thead>
                 <tr>
@@ -23,9 +24,17 @@
                     <td>{{ relatorio.avaliacao }}</td>
                     <td>{{ relatorio.disponibilidade }}</td>
                 </tr>
+                {% else %}
+                <tr>
+                    <td colspan="5" class="text-center">Nenhum relatório encontrado.</td>
+                </tr>
                 {% endfor %}
             </tbody>
         </table>
     </div>
+    <div class="text-center mt-4">
+            <a href="/admin/administradores/tela_inicial" class="btn btn-success">Voltar para Home</a>
+        </div>
+    </div><br>
 </section>
 {% endblock %}

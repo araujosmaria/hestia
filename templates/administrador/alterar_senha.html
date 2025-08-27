@@ -1,4 +1,4 @@
-{% extends "base.html" %}
+{% extends "base_privada.html" %}
 
 {% block conteudo %}
 <section class="py-5 bg-light" id="alterar-senha">
@@ -17,8 +17,9 @@
                 <label for="nova_senha" class="form-label">Nova senha</label>
                 <input type="password" class="form-control" id="nova_senha" name="nova_senha" required>
             </div>
-
-            <button type="submit" class="btn btn-primary">Alterar senha</button>
+            <div class="text-center mt-4">
+            <a href="/admin/administradores/tela_inicial" class="btn btn-success">Alterar Senha</a>
+            </div>
         </form>
     </div>
 </section>

@@ -1,20 +1,43 @@
-from fastapi import APIRouter
+from fastapi import APIRouter, Request
 from fastapi.templating import Jinja2Templates
+from fastapi import Form
 
 router = APIRouter()
 templates = Jinja2Templates(directory="templates")
 
 # Listar todas as solicitações de verificação
-@router.get("/admin/solicitacoes")
-async def get_listar_solicitacoes():
-    return templates.TemplateResponse("admin/solicitacao_verificacao.html", {"request": {}})
+@router.get("/admin/solicitacao")
+async def get_listar_solicitacoes(request: Request):
+    # Dados fake para exibir no template
+    solicitacoes_fake = [
+        {"id": 1, "nome_contratante": "Carlos", "descricao": "Verificação de antecedentes", "status": "Pendente"},
+        {"id": 2, "nome_contratante": "Ana", "descricao": "Confirmação de documentos", "status": "Em análise"},
+    ]
+    return templates.TemplateResponse(
+        "administrador/solicitacao_verificacao.html",
+        {"request": request, "solicitacoes": solicitacoes_fake}
+    )
 
-# Página para analisar uma solicitação específica
-@router.get("/admin/solicitacoes/analisar/{id}")
-async def get_analisar_solicitacao(id: int):
-    return templates.TemplateResponse("admin/analisar_solicitacao.html", {"request": {}, "solicitacao_id": id})
+@router.get("/admin/solicitacao/analisar/{id}")
+async def get_analisar_solicitacao(request: Request, id: int):
+    return templates.TemplateResponse(
+        "administrador/analisar_solicitacao.html",
+        {"request": request, "solicitacao_id": id}
+    )
 
-# Submeter o resultado da análise (aprovar ou rejeitar)
-@router.post("/admin/solicitacoes/analisar")
-async def post_analisar_solicitacao(id: int, aprovado: bool):
-    return templates.TemplateResponse("admin/solicitação_verificação.html", {"request": {}, "mensagem": "Solicitação analisada com sucesso!"})
+@router.post("/admin/solicitacao/analisar")
+async def post_analisar_solicitacao(
+    request: Request,
+    id: int = Form(...),
+    aprovado: bool = Form(...)
+):
+    # Aqui faria o processamento do resultado
+    mensagem = "Solicitação analisada com sucesso!"
+    solicitacoes_fake = [
+        {"id": 1, "nome_contratante": "Carlos", "descricao": "Verificação de antecedentes", "status": "Pendente"},
+        {"id": 2, "nome_contratante": "Ana", "descricao": "Confirmação de documentos", "status": "Em análise"},
+    ]
+    return templates.TemplateResponse(
+        "administrador/solicitacao_verificacao.html",
+        {"request": request, "mensagem": mensagem, "solicitacoes": solicitacoes_fake}
+    )

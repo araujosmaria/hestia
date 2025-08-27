@@ -21,7 +21,7 @@
         </div>
 
         <!-- Formulário de envio de mensagem -->
-        <form method="post" action="/contratante/chat/com_cuidador/{{ id_cuidador }}">
+        <form method="post" action="/contratante/chat_com_cuidador/{{ id_cuidador }}">
             <div class="mb-3">
                 <label for="mensagem" class="form-label">Sua mensagem:</label>
                 <textarea class="form-control" id="mensagem" name="mensagem" rows="3" required></textarea>
@@ -29,5 +29,9 @@
             <button type="submit" class="btn btn-primary">Enviar</button>
         </form>
     </div>
+    <div class="text-center mt-4">
+            <a href="/contratante/chat_geral" class="btn btn-success">Voltar para Chat Geral</a>
+        </div>
+    </div><br>
 </section>
 {% endblock %}

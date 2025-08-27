@@ -1,0 +1,34 @@
+{% extends "base.html" %}
+
+{% block conteudo %}
+<section class="py-5 bg-light" id="avaliacoes-realizadas">
+    <div class="container">
+        <h2 class="text-center mb-4">Avaliações Realizadas</h2>
+
+        {% if avaliacoes and avaliacoes|length > 0 %}
+            <div class="list-group">
+                {% for avaliacao in avaliacoes %}
+                    <div class="list-group-item d-flex justify-content-between align-items-center">
+                        <div>
+                            <strong>ID:</strong> {{ avaliacao.id }}<br>
+                            <strong>Cuidador:</strong> {{ avaliacao.cuidador }}<br>
+                            <strong>Nota:</strong> {{ avaliacao.nota }}<br>
+                            <strong>Comentário:</strong> {{ avaliacao.comentario }}
+                        </div>
+                        <div class="d-flex gap-2">
+                            <a href="/contratante/alterar_avaliacao/{{ avaliacao.id }}" class="btn btn-warning btn-sm">Alterar</a>
+                            <a href="/contratante/avaliacoes_realizadas/excluir?id={{ avaliacao.id }}" class="btn btn-danger btn-sm">Excluir</a>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+        {% else %}
+            <p class="text-center">Nenhuma avaliação encontrada.</p>
+        {% endif %}
+
+        <div class="text-center mt-4">
+            <a href="/contratante/home_contratante" class="btn btn-success">Voltar para Home</a>
+        </div>
+    </div>
+</section>
+{% endblock %}

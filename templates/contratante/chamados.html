@@ -1,0 +1,48 @@
+{% extends "base.html" %}
+
+{% block conteudo %}
+<section class="py-5 bg-light" id="abertura-chamado">
+    <div class="container">
+        <h2 class="text-center mb-4">Abrir Chamado</h2>
+        
+        <form method="post" action="/contratante/chamados/abrir">
+            <div class="mb-3">
+                <label for="titulo" class="form-label">Título</label>
+                <input type="text" class="form-control" id="titulo" name="titulo" required>
+            </div>
+
+            <div class="mb-3">
+                <label for="descricao" class="form-label">Descrição</label>
+                <textarea class="form-control" id="descricao" name="descricao" rows="4" required></textarea>
+            </div>
+
+            <button type="submit" class="btn btn-primary">Abrir Chamado</button>
+        </form>
+    </div>
+</section>
+
+<hr class="my-5">
+
+<section class="py-5 bg-light" id="chamados-abertos">
+    <div class="container">
+        <h2 class="text-center mb-4">Chamados Abertos</h2>
+
+        {% if chamados %}
+            <div class="list-group">
+                {% for chamado in chamados %}
+                    <div class="list-group-item">
+                        <h5 class="mb-1">{{ chamado.titulo }}</h5>
+                        <p class="mb-1"><strong>Status:</strong> {{ chamado.status }}</p>
+                    </div>
+                {% endfor %}
+            </div>
+        {% else %}
+            <p class="text-center">Nenhum chamado aberto no momento.</p>
+        {% endif %}
+    </div>
+    <div class="text-center mt-4">
+            <a href="/contratante/home_contratante" class="btn btn-success">Voltar para Home</a>
+        </div>
+    </div><br>
+</section>
+{% endblock %}

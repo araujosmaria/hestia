@@ -1,14 +1,16 @@
 from fastapi import APIRouter, Request, Form
 from fastapi.templating import Jinja2Templates
+from fastapi.responses import RedirectResponse
 
 router = APIRouter()
 templates = Jinja2Templates(directory="templates")
 
 @router.get("/contratante/home_contratante")
 async def get_home_contratante(request: Request):
+    id_usuario = 1
     return templates.TemplateResponse(
         "contratante/home_contratante.html",
-        {"request": request}
+        {"request": request, "id_usuario": id_usuario}
     )
 
 # ======================
@@ -16,14 +18,21 @@ async def get_home_contratante(request: Request):
 # ======================
 @router.get("/contratante/dados_perfil")
 async def get_dados_perfil(request: Request):
-    perfil_fake = {"id": 1, "nome": "Contratante", "email": "xcontratante@teste.com", "telefone": "28 99912-3456", "cpf": "XXX.XXX.XXX.-XX", "senha": "********"}
+    perfil_fake = {
+        "id": 1,
+        "nome": "Contratante",
+        "email": "xcontratante@teste.com",
+        "telefone": "28 99912-3456",
+        "cpf": "XXX.XXX.XXX.-XX",
+        "senha": "********"
+    }
     return templates.TemplateResponse(
         "contratante/dados_perfil.html",
         {"request": request, "perfil": perfil_fake}
     )
 
 # ======================
-# ALTERAR SENHA
+# ALTERAR SENHA CONTRATANTE
 # ======================
 @router.get("/contratante/alterar_senha/{id}")
 async def get_alterar_senha(request: Request, id: int):
@@ -32,70 +41,81 @@ async def get_alterar_senha(request: Request, id: int):
         {"request": request, "id": id}
     )
 
+# POST: processa alteração de senha
 @router.post("/contratante/alterar_senha")
 async def post_alterar_senha(
     request: Request,
     id: int = Form(...),
     senha_atual: str = Form(...),
-    nova_senha: str = Form(...)
+    nova_senha: str = Form(...),
+    confirmar_senha: str = Form(...)
 ):
-    return templates.TemplateResponse(
-        "contratante/contratante.html",
-        {"request": request, "mensagem": "Senha alterada com sucesso!"}
-    )
+    # Validação: senhas iguais
+    if nova_senha != confirmar_senha:
+        return templates.TemplateResponse(
+            "contratante/alterar_senha.html",
+            {"request": request, "id": id, "erro": "As senhas não coincidem."}
+        )
 
+    # Aqui você faria a atualização da senha no banco de dados
+
+    # Redireciona para a tela inicial do contratante
+    return RedirectResponse(url=f"/contratante/tela_inicial/{id}?mensagem=Senha+alterada+com+sucesso", status_code=303)
 # ======================
-# SOLICITAR VERIFICAÇÃO
+# SOLICITAR VERIFICAÇÃO (GET)
 # ======================
 @router.get("/contratante/solicitar_verificacao/{id}")
 async def get_solicitar_verificacao(request: Request, id: int):
     return templates.TemplateResponse(
-        "contratante/solicitar_verificação.html",
+        "contratante/solicitar_verificacao.html",
         {"request": request, "id": id}
     )
 
-@router.post("/contratante/solicitar_verificacao")
+# ======================
+# SOLICITAR VERIFICAÇÃO (POST)
+# ======================
+@router.post("/contratante/solicitar_verificacao/{id}")
 async def post_solicitar_verificacao(
     request: Request,
-    id: int = Form(...),
+    id: int,
     documento: str = Form(...)
 ):
+    mensagem = "Verificação solicitada com sucesso!"
     return templates.TemplateResponse(
-        "contratante/contratante.html",
-        {"request": request, "mensagem": "Verificação solicitada com sucesso!"}
+        "contratante/solicitar_verificacao.html",
+        {"request": request, "id": id, "mensagem": mensagem}
     )
 
+
 # ======================
-# ABERTURA DE CHAMADO
+# CHAMADOS (Abrir + Listar)
 # ======================
-@router.get("/contratante/chamados/abrir")
-async def get_abertura_chamado(request: Request):
+
+# lista fake só para simular o banco de dados
+chamados_fake = [
+    {"id": 1, "titulo": "Erro no sistema", "status": "Aberto"},
+    {"id": 2, "titulo": "Problema no pagamento", "status": "Resolvido"}
+]
+
+@router.get("/contratante/chamados")
+async def get_chamados(request: Request):
     return templates.TemplateResponse(
-        "contratante/abertura_chamado.html",
-        {"request": request}
+        "contratante/chamados.html",
+        {"request": request, "chamados": chamados_fake}
     )
 
 @router.post("/contratante/chamados/abrir")
-async def post_abertura_chamado(
+async def post_chamado(
     request: Request,
     titulo: str = Form(...),
     descricao: str = Form(...)
 ):
-    return templates.TemplateResponse(
-        "contratante/chamados_abertos.html",
-        {"request": request, "mensagem": "Chamado aberto com sucesso!"}
-    )
+    novo_id = len(chamados_fake) + 1
+    chamados_fake.append({
+        "id": novo_id,
+        "titulo": titulo,
+        "status": "Aberto"
+    })
 
-# ======================
-# CHAMADOS ABERTOS
-# ======================
-@router.get("/contratante/chamados_abertos")
-async def get_chamados_abertos(request: Request):
-    chamados_fake = [
-        {"id": 1, "titulo": "Erro no sistema", "status": "Aberto"},
-        {"id": 2, "titulo": "Problema no pagamento", "status": "Resolvido"}
-    ]
-    return templates.TemplateResponse(
-        "contratante/chamados_abertos.html",
-        {"request": request, "chamados": chamados_fake}
-    )
+    # redireciona para a lista atualizada
+    return RedirectResponse(url="/contratante/chamados", status_code=303)

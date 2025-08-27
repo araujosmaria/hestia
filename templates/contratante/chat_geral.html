@@ -3,9 +3,9 @@
 {% block conteudo %}
 <section class="py-5 bg-light" id="chat-geral">
     <div class="container">
-        <h2 class="text-center mb-4">Chat geral</h2>
+        <h2 class="text-center mb-4">Chat Geral</h2>
 
-        <!-- Área de mensagens -->
+        <!-- Área de mensagens gerais -->
         <div class="card shadow-sm mb-4">
             <div class="card-body" style="height: 300px; overflow-y: auto;">
                 {% if mensagens %}
@@ -19,12 +19,32 @@
         </div>
 
         <!-- Formulário para enviar mensagem -->
-        <form method="post" action="/contratante/chat/geral">
-            <div class="input-group">
+        <form method="post" action="/contratante/chat_geral">
+            <div class="input-group mb-4">
                 <input type="text" name="mensagem" class="form-control" placeholder="Digite sua mensagem..." required>
                 <button class="btn btn-primary" type="submit">Enviar</button>
             </div>
         </form>
+
+        <!-- Lista de chats privados com cuidadores -->
+        <h4>Chats privados com cuidadores:</h4>
+        <ul class="list-group">
+            {% if cuidadores %}
+                {% for cuidador in cuidadores %}
+                    <li class="list-group-item">
+                        <a href="/contratante/chat_com_cuidador/{{ cuidador.id }}">
+                            {{ cuidador.nome }} ({{ cuidador.especialidade }})
+                        </a>
+                    </li>
+                {% endfor %}
+            {% else %}
+                <li class="list-group-item text-muted">Nenhum cuidador disponível para chat privado.</li>
+            {% endif %}
+        </ul>
     </div>
+    <div class="text-center mt-4">
+            <a href="/contratante/home_contratante" class="btn btn-success">Voltar para Home</a>
+        </div>
+    </div><br>
 </section>
 {% endblock %}

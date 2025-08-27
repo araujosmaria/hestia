@@ -1,34 +1,28 @@
-{% extends "base.html" %}
+{% extends "base_privada.html" %}
 
 {% block conteudo %}
 <section class="py-5 bg-light" id="tela-inicial-admin">
-    <div class="container">
-        <h1 class="text-center mb-4">Bem-vindo, Administrador!</h1>
-
-        <div class="row">
-            <div class="col-md-4 mb-3">
-                <a href="/admin/administradores" class="btn btn-primary btn-block">Gerenciar Administradores</a>
-            </div>
-            <div class="col-md-4 mb-3">
-                <a href="/admin/avaliacoes" class="btn btn-primary btn-block">Avaliações</a>
-            </div>
-            <div class="col-md-4 mb-3">
-                <a href="/admin/chamados" class="btn btn-primary btn-block">Chamados</a>
-            </div>
-        </div>
-
-        <div class="row">
-            <div class="col-md-4 mb-3">
-                <a href="/admin/relatorios" class="btn btn-primary btn-block">Relatórios</a>
-            </div>
-            <div class="col-md-4 mb-3">
-                <a href="/admin/solicitacoes" class="btn btn-primary btn-block">Solicitações de Verificação</a>
-            </div>
-            <div class="col-md-4 mb-3">
-                <a href="/admin/administradores/alterar_senha" class="btn btn-warning btn-block">Alterar Senha</a>
-
-            </div>
-        </div>
+  <div class="container">
+    <h1 class="text-center mb-4">Bem-vindo, Administrador!</h1>
+    {% if mensagem %}
+    <div class="alert alert-success alert-dismissible fade show" role="alert">
+        {{ mensagem }}
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Fechar"></button>
     </div>
+    {% endif %}
+
+    <div class="row">
+      <div class="col-md-4 mb-3">
+        <a href="/admin/administradores" class="btn btn-primary btn-block">Gerenciar Administradores</a>
+        <a href="/admin/avaliacoes" class="btn btn-primary btn-block">Avaliações</a>
+        <a href="/admin/chamados" class="btn btn-primary btn-block">Chamados</a>
+        <a href="/admin/relatorios" class="btn btn-primary btn-block">Relatórios</a>
+        <a href="/admin/solicitacao" class="btn btn-primary btn-block">Verificações</a>
+        <a href="/admin/administradores/perfil/1" class="btn btn-primary btn-block">Meu Perfil</a>
+        <a href="/login" class="btn btn-outline-danger"> Sair</a>
+
+      </div>
+    </div>
+  </div>
 </section>
 {% endblock %}
