@@ -9,39 +9,60 @@ templates = Jinja2Templates(directory="templates")
 # ======================
 @router.get("/cuidador/solicitacoes_contratacao")
 async def listar_solicitacoes_contratacao(request: Request):
-    # Aqui você pode chamar o repo para obter dados reais
     solicitacoes = [
         {"id": 1, "nome": "Solicitação 1", "status": "Pendente"},
         {"id": 2, "nome": "Solicitação 2", "status": "Confirmada"}
     ]
     return templates.TemplateResponse(
-        "cuidador/solicitacoes_contratacao.html",
+        "cuidador/solicitacoes_contratacao.html",   # tela de contratação
         {"request": request, "solicitacoes": solicitacoes}
     )
 
+
 # ======================
-# VISUALIZAR DETALHES DE UMA SOLICITAÇÃO
+# DETALHES DE SOLICITAÇÃO
 # ======================
-@router.get("/cuidador/cuidador_solicitacoes/detalhes")
-async def detalhes_solicitacao(request: Request):
-    # Exemplo: busca a solicitação "mais recente" ou do cuidador logado
-    solicitacao = {"id": 1, "nome": "Solicitação 1", "descricao": "Detalhes da solicitação"}
-    
+@router.get("/cuidador/solicitacoes/{solicitacao_id}")
+async def get_detalhes_solicitacao(request: Request, solicitacao_id: int):
+    # Aqui você buscaria os detalhes no banco pelo ID
+    solicitacao_fake = {
+        "id": solicitacao_id,
+        "nome": f"Solicitação {solicitacao_id}",
+        "status": "Pendente" if solicitacao_id % 2 != 0 else "Confirmada",
+        "data": "2025-08-27",
+        "hora": "14:00",
+        "servico": "Cuidado com idoso",
+        "observacoes": "Paciente prefere horário da tarde."
+    }
     return templates.TemplateResponse(
         "cuidador/detalhes_solicitacao.html",
-        {"request": request, "solicitacao": solicitacao}
+        {"request": request, "solicitacao": solicitacao_fake}
     )
 
 # ======================
-# VISUALIZAR SOLICITAÇÕES DE VERIFICAÇÃO
+# LISTAR SOLICITAÇÕES DE VERIFICAÇÃO
 # ======================
-@router.get("/cuidador/solicitacoes/verificacao")
-async def solicitacao_verificacao(request: Request):
+@router.get("/cuidador/solicitacao_verificacao")
+async def listar_solicitacao_verificacao(request: Request):
     verificacoes = [
         {"id": 1, "descricao": "Verificação pendente"},
         {"id": 2, "descricao": "Verificação concluída"}
     ]
     return templates.TemplateResponse(
-        "cuidador/solicitacao_verificacao.html",
+        "cuidador/solicitacao_verificacao.html",   # tela de verificações
         {"request": request, "verificacoes": verificacoes}
+    )
+
+# ======================
+# DETALHE DE UMA SOLICITAÇÃO DE VERIFICAÇÃO
+# ======================
+@router.get("/cuidador/solicitacoes_verificacao/{id}")
+async def detalhes_solicitacao_verificacao(request: Request, id: int):
+    verificacao = {
+        "id": id,
+        "descricao": f"Detalhes da verificação {id}"
+    }
+    return templates.TemplateResponse(
+        "cuidador/detalhes_verificacao.html",   # tela de detalhes da verificação
+        {"request": request, "verificacao": verificacao}
     )

@@ -2,39 +2,138 @@
 
 {% block conteudo %}
 <section class="py-5 bg-light" id="agenda">
+<section class="py-5 bg-light" id="agenda">
     <div class="container">
-        <h2 class="text-center mb-4">Agenda</h2>
+        <!-- Cabeçalho da página -->
+        <div class="text-center mb-4">
+            <h2 class="mb-3">Minha Agenda</h2>
+
+        </div>
 
         {% if agenda %}
-            <div class="table-responsive">
-                <table class="table table-bordered table-striped">
-                    <thead class="thead-dark">
-                        <tr>
-                            <th>ID</th>
-                            <th>Data</th>
-                            <th>Hora</th>
-                            <th>Status</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {% for item in agenda %}
-                            <tr>
-                                <td>{{ item.id }}</td>
-                                <td>{{ item.data }}</td>
-                                <td>{{ item.hora }}</td>
-                                <td>{{ item.status }}</td>
-                            </tr>
-                        {% endfor %}
-                    </tbody>
-                </table>
+            <!-- Estatísticas rápidas -->
+            <div class="row mb-4">
+                <div class="col-md-6">
+                    <div class="alert alert-info d-flex align-items-center">
+                        <i class="bi bi-calendar-check me-2"></i>
+                        <strong>Total de horários:</strong> {{ agenda|length }}
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="alert alert-success d-flex align-items-center">
+                        <i class="bi bi-clock me-2"></i>
+                        <strong>Próximo atendimento:</strong> {{ agenda[0].data }} às {{ agenda[0].hora }}
+                    </div>
+                </div>
             </div>
-        {% else %}
-            <p class="text-center">Nenhuma disponibilidade cadastrada.</p>
-        {% endif %}
-    </div>
-     <div class="text-center mt-4">
-            <a href="/home_cuidador" class="btn btn-success">Voltar para Home</a>
+
+            <!-- Tabela da agenda -->
+            <div class="card shadow-sm">
+                <div class="card-header bg-primary text-white">
+                    <h5 class="mb-0">
+                        <i class="bi bi-calendar3 me-2"></i>
+                        Seus Horários
+                    </h5>
+                </div>
+                <div class="card-body p-0">
+                    <div class="table-responsive">
+                        <table class="table table-hover mb-0">
+                            <thead class="table-dark">
+                                <tr>
+                                    <th width="10%">ID</th>
+                                    <th width="25%">Data</th>
+                                    <th width="20%">Hora</th>
+                                    <th width="25%">Status</th>
+                                    <th width="20%" class="text-center">Detalhes</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for item in agenda %}
+                                    <tr>
+                                        <td class="fw-bold text-primary">#{{ item.id }}</td>
+                                        <td>
+                                            <i class="bi bi-calendar-date me-1"></i>
+                                            {{ item.data }}
+                                        </td>
+                                        <td>
+                                            <i class="bi bi-clock me-1"></i>
+                                            {{ item.hora }}
+                                        </td>
+                                        <td>
+                                            {% if item.status.lower() == 'disponível' or item.status.lower() == 'disponivel' %}
+                                                <span class="badge bg-success">
+                                                    <i class="bi bi-check-circle me-1"></i>
+                                                    {{ item.status }}
+                                                </span>
+                                            {% elif item.status.lower() == 'ocupado' %}
+                                                <span class="badge bg-danger">
+                                                    <i class="bi bi-x-circle me-1"></i>
+                                                    {{ item.status }}
+                                                </span>
+                                            {% else %}
+                                                <span class="badge bg-secondary">
+                                                    <i class="bi bi-dash-circle me-1"></i>
+                                                    {{ item.status }}
+                                                </span>
+                                            {% endif %}
+                                        </td>
+                                        <td class="text-center">
+                                            <button class="btn btn-outline-primary btn-sm" 
+                                                    data-bs-toggle="tooltip" 
+                                                    title="Ver informações detalhadas">
+                                                <i class="bi bi-info-circle"></i>
+                                            </button>
+                                        </td>
+                                    </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div><br>
+
+            <!-- Ações rápidas -->
+<div class="row mt-4 justify-content-center">
+    <div class="col-md-6 text-center">
+        <div class="card-body">
+            <a href="/cuidador/editar_agenda" class="btn btn-primary">
+                <i class="bi bi-pencil-square"></i>
+                Editar Agenda
+            </a>
         </div>
-    </div><br>
+    </div>
+</div>
+<br>
+<br>
+
+        {% else %}
+            <!-- Estado vazio da agenda -->
+            <div class="text-center py-5">
+                <div class="card border-0 shadow-sm">
+                    <div class="card-body p-5">
+                        <i class="bi bi-calendar-x text-muted mb-4" style="font-size: 5rem;"></i>
+                        <h4 class="text-muted mb-3">Sua agenda está vazia</h4>
+                        <p class="text-muted mb-4">
+                            Configure seus horários de disponibilidade para começar a receber solicitações de atendimento.
+                        </p>
+                        <a href="/cuidador/editar_agenda" class="btn btn-primary btn-lg">
+                            <i class="bi bi-calendar-plus me-2"></i>
+                            Configurar Minha Agenda
+                        </a>
+                    </div>
+                </div>
+            </div>
+        {% endif %}
+
+        <div class="text-center mt-0">
+            <a href="/cuidador/home_cuidador" class="btn btn-success">Voltar para Home</a>
+        </div>
+    </div>
 </section>
+
+<script>
+// Botão de editar agenda - leva para página de edição do perfil
+console.log('Página de agenda carregada');
+</script>
 {% endblock %}
+

@@ -9,13 +9,12 @@ templates = Jinja2Templates(directory="templates")
 # ======================
 @router.get("/cuidador/avaliacoes_realizadas")
 async def get_avaliacoes_realizadas(request: Request):
-    # Aqui você buscaria no banco as avaliações feitas pelo cuidador
     avaliacoes_fake = [
         {"id": 1, "contratante": "João", "nota": 5, "comentario": "Muito bom trabalhar com ele."},
         {"id": 2, "contratante": "Maria", "nota": 4, "comentario": "Experiência positiva."}
     ]
     return templates.TemplateResponse(
-        "avaliacoes_realizadas.html",
+        "/cuidador/avaliacoes_realizadas.html",
         {"request": request, "avaliacoes": avaliacoes_fake}
     )
 
@@ -26,7 +25,7 @@ async def get_avaliacoes_realizadas(request: Request):
 async def get_alterar_avaliacao(request: Request, id: int):
     avaliacao_fake = {"id": id, "contratante": "João", "nota": 5, "comentario": "Muito bom trabalhar com ele."}
     return templates.TemplateResponse(
-        "alteração_avaliação.html",
+        "/cuidador/alteração_avaliação.html",
         {"request": request, "avaliacao": avaliacao_fake}
     )
 
@@ -42,9 +41,13 @@ async def post_alterar_avaliacao(
 ):
     # Aqui entraria a lógica para atualizar no banco
     mensagem = f"Avaliação {id} alterada com sucesso!"
+    avaliacoes_fake = [
+        {"id": 1, "contratante": "João", "nota": 5, "comentario": "Muito bom trabalhar com ele."},
+        {"id": 2, "contratante": "Maria", "nota": 4, "comentario": "Experiência positiva."}
+    ]
     return templates.TemplateResponse(
         "avaliacoes_realizadas.html",
-        {"request": request, "mensagem": mensagem}
+        {"request": request, "mensagem": mensagem, "avaliacoes": avaliacoes_fake}
     )
 
 # ======================
@@ -68,7 +71,11 @@ async def post_excluir_avaliacao(
 ):
     # Aqui entraria a lógica para excluir no banco
     mensagem = f"Avaliação {id} excluída com sucesso!"
+    avaliacoes_fake = [
+        {"id": 1, "contratante": "João", "nota": 5, "comentario": "Muito bom trabalhar com ele."},
+        {"id": 2, "contratante": "Maria", "nota": 4, "comentario": "Experiência positiva."}
+    ]
     return templates.TemplateResponse(
         "avaliacoes_realizadas.html",
-        {"request": request, "mensagem": mensagem}
+        {"request": request, "mensagem": mensagem, "avaliacoes": avaliacoes_fake}
     )

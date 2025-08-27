@@ -1,15 +1,25 @@
 {% extends "base_privada.html" %}
+
 {% block conteudo %}
-<section class="py-5 bg-light" id="detalhes_solicitacao">
+<section class="py-5 bg-light" id="detalhes-solicitacao">
     <div class="container">
         <h2 class="text-center mb-4">Detalhes da Solicitação</h2>
 
-        <p><strong>ID:</strong> {{ solicitacao.id }}</p>
-        <p><strong>Nome:</strong> {{ solicitacao.nome }}</p>
-        <p><strong>Descrição:</strong> {{ solicitacao.descricao }}</p>
+        <div class="card shadow-sm mb-4">
+            <div class="card-body">
+                <p><strong>ID:</strong> {{ solicitacao.id }}</p>
+                <p><strong>Nome:</strong> {{ solicitacao.nome }}</p>
+                <p><strong>Status:</strong> {{ solicitacao.status }}</p>
+                <p><strong>Data:</strong> {{ solicitacao.data }}</p>
+                <p><strong>Hora:</strong> {{ solicitacao.hora }}</p>
+                <p><strong>Serviço:</strong> {{ solicitacao.servico }}</p>
+                <p><strong>Observações:</strong> {{ solicitacao.observacoes }}</p>
+            </div>
+        </div>
 
-        <a href="/cuidador/solicitacoes_contratacao" class="btn btn-secondary">Voltar</a>
-
+        <div class="text-center">
+            <a href="/cuidador/solicitacoes_contratacao" class="btn btn-success">Voltar</a>
+        </div>
     </div>
 </section>
 {% endblock %}

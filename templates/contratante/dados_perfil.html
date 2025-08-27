@@ -11,11 +11,16 @@
                 <p><strong>Telefone:</strong> {{ perfil.telefone }}</p>
                 <p><strong>CPF:</strong> {{ perfil.cpf}}</p>
                 <p><strong>Senha:</strong> {{ perfil.senha}}</p>
+                
+                <!-- Botão de alterar dados -->
+                <div class="text-center mt-3">
+                    <a href="/perfil/editar/{{ perfil.id }}" class="btn btn-green">Alterar Dados</a>
+                </div>
             </div>
         </div>
     </div>
-     <div class="text-center mt-4">
-            <a href="/contratante/home_contratante" class="btn btn-success">Voltar para Home</a>
-        </div>
+    <div class="text-center mt-4">
+        <a href="/contratante/home_contratante" class="btn btn-success">Voltar para Home</a>
+    </div>
 </section>
 {% endblock %}
