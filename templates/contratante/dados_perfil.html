@@ -1,4 +1,4 @@
-{% extends "base.html" %}
+{% extends "base.privada.html" %}
 
 {% block conteudo %}
 <section class="py-5 bg-light" id="dados-perfil">
@@ -8,6 +8,9 @@
             <div class="card-body">
                 <p><strong>Nome:</strong> {{ perfil.nome }}</p>
                 <p><strong>Email:</strong> {{ perfil.email }}</p>
+                <p><strong>Telefone:</strong> {{ perfil.telefone }}</p>
+                <p><strong>CPF:</strong> {{ perfil.cpf}}</p>
+                <p><strong>Senha:</strong> {{ perfil.senha}}</p>
             </div>
         </div>
     </div>

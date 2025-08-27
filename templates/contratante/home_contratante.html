@@ -1,4 +1,4 @@
-{% extends "base.html" %}
+{% extends "base.privada.html" %}
 
 {% block conteudo %}
 <section class="py-5 bg-light" id="home_contratante">
@@ -12,15 +12,16 @@
                 </div>
             {% endif %}
 
-            <p class="lead">Utilize o menu acima para acessar suas funcionalidades como contratante.</p>
+            <p class="lead">Utilize o menu abaixo para acessar suas funcionalidades como contratante:</p>
 
             <!-- Botões de atalho -->
             <div class="d-flex justify-content-center gap-3 mt-4 flex-wrap">
-                <a href="/contratante/cuidadores" class="btn btn-outline-primary">🔎 Procurar Cuidadores</a>
-                <a href="/contratante/solicitar_verificacao/{id}" class="btn btn-outline-secondary">📄 Minhas Verificações</a>
-                <a href="/contratante/contratacoes-realizadas" class="btn btn-outline-secondary">📄 Minhas Contratações</a>
-                <a href="/contratante/dados_perfil" class="btn btn-outline-warning">✏️ Editar Perfil</a>
-                <a href="/login" class="btn btn-outline-danger">🚪 Sair</a>
+                <a href="/contratante/cuidadores" class="btn btn-outline-primary"> Procurar Cuidadores</a>
+                <a href="/contratante/solicitar_verificacao/{id}" class="btn btn-outline-secondary"> Minhas Verificações</a>
+                <a href="/contratante/contratacoes-realizadas" class="btn btn-outline-secondary"> Minhas Contratações</a>
+                <a href="/contratante/dados_perfil" class="btn btn-outline-warning"> Editar Perfil</a>
+                <a href="/contratante/avaliar_contratacao/{id}" class="btn btn-outline-warning"> Avaliações Realizadas</a>
+                <a href="/login" class="btn btn-outline-danger"> Sair</a>
             </div>
         </div>
     </div>

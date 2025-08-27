@@ -11,7 +11,7 @@
             </div>
         {% endif %}
 
-        <form method="post" action="/contratante/solicitar_verificacao">
+        <form method="post" action="/contratante/solicitar_verificacao/{id}">
             <input type="hidden" name="id" value="{{ id }}">
 
             <div class="mb-3">

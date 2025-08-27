@@ -16,7 +16,7 @@ async def get_home_contratante(request: Request):
 # ======================
 @router.get("/contratante/dados_perfil")
 async def get_dados_perfil(request: Request):
-    perfil_fake = {"id": 1, "nome": "Usuário Teste", "email": "teste@teste.com"}
+    perfil_fake = {"id": 1, "nome": "Contratante", "email": "xcontratante@teste.com", "telefone": "28 99912-3456", "cpf": "XXX.XXX.XXX.-XX", "senha": "********"}
     return templates.TemplateResponse(
         "contratante/dados_perfil.html",
         {"request": request, "perfil": perfil_fake}

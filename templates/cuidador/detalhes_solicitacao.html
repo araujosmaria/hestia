@@ -1,4 +1,4 @@
-{% extends "base.html" %}
+{% extends "base.privada.html" %}
 {% block conteudo %}
 <section class="py-5 bg-light" id="detalhes_solicitacao">
     <div class="container">
@@ -8,7 +8,7 @@
         <p><strong>Nome:</strong> {{ solicitacao.nome }}</p>
         <p><strong>Descrição:</strong> {{ solicitacao.descricao }}</p>
 
-        <a href="/home_cuidador" class="btn btn-secondary">Voltar</a>
+        <a href="/cuidador/solicitacoes_contratacao" class="btn btn-secondary">Voltar</a>
 
     </div>
 </section>

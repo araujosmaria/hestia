@@ -1,4 +1,4 @@
-{% extends "base.html" %}
+{% extends "base.privada.html" %}
 
 {% block conteudo %}
 <section class="py-5 bg-light" id="home_cuidador">
@@ -12,7 +12,7 @@
                 </div>
             {% endif %}
 
-            <p class="lead">Utilize o menu acima para acessar suas funcionalidades como cuidador.</p>
+            <p class="lead">Utilize o menu abaixo para acessar suas funcionalidades como cuidador:</p>
 
             <!-- Exemplo de botões de atalho (opcional) -->
             <div class="d-flex justify-content-center gap-3 mt-4 flex-wrap">
@@ -20,6 +20,7 @@
                 <a href="/cuidador/solicitacoes_contratacao" class="btn btn-outline-secondary">Solicitações</a>
                 <a href="/cuidador/avaliacoes_recebidas" class="btn btn-outline-success">Avaliações</a>
                 <a href="/cuidador/alterar_senha" class="btn btn-outline-danger">Alterar Senha</a>
+                <a href="/login" class="btn btn-outline-danger"> Sair</a>
             </div>
         </div>
     </div>

@@ -16,7 +16,7 @@ async def get_avaliacoes_recebidas(request: Request):
         {"id": 3, "cuidador": "Fernanda", "nota": 3, "comentario": "Poderia ter comunicado melhor alguns detalhes."}
     ]
     return templates.TemplateResponse(
-        "avaliações_recebidas.html",
+        "contratante/avaliações_recebidas.html",
         {"request": request, "avaliacoes": avaliacoes_fake}
     )
 
