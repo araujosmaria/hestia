@@ -1,0 +1,32 @@
+{% extends "base_privada.html" %}
+
+{% block conteudo %}
+<section class="py-5 bg-light" id="avaliacoes-realizadas">
+    <div class="container">
+        <h2 class="text-center mb-4">Avaliações Realizadas</h2>
+
+        {% if contratacoes %}
+            <div class="list-group">
+                {% for contratacao in contratacoes %}
+                    <div class="list-group-item d-flex justify-content-between align-items-center">
+                        <div>
+                            <strong>Cuidador:</strong> {{ contratacao.cuidador }}<br>
+                            <strong>Período:</strong> {{ contratacao.periodo }}<br>
+                            <strong>Status:</strong> {{ contratacao.status }}
+                        </div>
+                        {% if contratacao.status == "Finalizada" %}
+                            <a href="/contratante/avaliar_contratacao/{{ contratacao.id }}" class="btn btn-primary btn-sm">
+                                Avaliar
+                            </a>
+                        {% else %}
+                            <button class="btn btn-secondary btn-sm" disabled>Aguardando finalização</button>
+                        {% endif %}
+                    </div>
+                {% endfor %}
+            </div>
+        {% else %}
+            <p class="text-center">Nenhuma contratação realizada encontrada.</p>
+        {% endif %}
+    </div>
+</section>
+{% endblock %}

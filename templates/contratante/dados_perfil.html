@@ -10,15 +10,14 @@
                 <p><strong>ID:</strong> {{ perfil.id }}</p>
                 <p><strong>Nome:</strong> {{ perfil.nome }}</p>
                 <p><strong>Email:</strong> {{ perfil.email }}</p>
-
-                <div class="mt-3 text-center">
-                <a href="/contratante/alterar_senha/{{ perfil.id }}" class="btn btn-warning">
-                    Alterar Senha
-                </a>
-            </div>
-
+                <p><strong>Telefone:</strong> {{ perfil.telefone }}</p>
+                <p><strong>CPF:</strong> {{ perfil.cpf}}</p>
+                <p><strong>Senha:</strong> {{ perfil.senha}}</p>
             </div>
         </div>
     </div>
+     <div class="text-center mt-4">
+            <a href="/contratante/home_contratante" class="btn btn-success">Voltar para Home</a>
+        </div>
 </section>
 {% endblock %}

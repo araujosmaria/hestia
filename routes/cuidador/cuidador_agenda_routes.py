@@ -71,3 +71,43 @@ async def post_remocao_disponibilidade(
         "remoção_disponibilidade.html",
         {"request": request, "mensagem": mensagem}
     )
+
+# ======================
+# EDIÇÃO DE AGENDA (GET)
+# ======================
+@router.get("/cuidador/editar_agenda")
+async def get_editar_agenda(request: Request):
+    # Aqui você buscaria os horários do banco de dados
+    agenda_fake = [
+        {"id": 1, "data": "2025-08-25", "hora": "09:00", "status": "Disponível"},
+        {"id": 2, "data": "2025-08-26", "hora": "14:00", "status": "Ocupado"},
+        {"id": 3, "data": "2025-08-27", "hora": "10:00", "status": "Disponível"}
+    ]
+    return templates.TemplateResponse(
+        "cuidador/editar_agenda.html",
+        {"request": request, "agenda": agenda_fake}
+    )
+
+# ======================
+# EDIÇÃO DE AGENDA (POST)
+# ======================
+@router.post("/cuidador/editar_agenda")
+async def post_editar_agenda(
+    request: Request,
+    data: str = Form(...),
+    hora: str = Form(...),
+    status: str = Form(...)
+):
+    # Aqui entraria a lógica para salvar o horário no banco
+    mensagem = f"Horário cadastrado: {data} às {hora} - {status}"
+    # Atualizando a lista de horários para exibir na tela novamente
+    agenda_fake = [
+        {"id": 1, "data": "2025-08-25", "hora": "09:00", "status": "Disponível"},
+        {"id": 2, "data": "2025-08-26", "hora": "14:00", "status": "Ocupado"},
+        {"id": 3, "data": "2025-08-27", "hora": "10:00", "status": "Disponível"},
+        {"id": 4, "data": data, "hora": hora, "status": status}
+    ]
+    return templates.TemplateResponse(
+        "cuidador/editar_agenda.html",
+        {"request": request, "agenda": agenda_fake, "mensagem": mensagem}
+    )
