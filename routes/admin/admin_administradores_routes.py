@@ -4,6 +4,12 @@ from fastapi.templating import Jinja2Templates
 router = APIRouter()
 templates = Jinja2Templates(directory="templates")
 
+# Variável global para simular banco de dados
+administradores = [
+    {"id": 1, "nome": "João", "email": "joao@email.com"},
+    {"id": 2, "nome": "Maria", "email": "maria@email.com"}
+]
+
 # ======================
 # TELA INICIAL
 # ======================
@@ -12,6 +18,16 @@ async def get_tela_inicial_admin(request: Request):
     return templates.TemplateResponse(
         "administrador/tela_inicial.html",
         {"request": request}
+    )
+
+# ======================
+# LISTAR ADMINISTRADORES
+# ======================
+@router.get("/admin/administradores")
+async def get_listar_administradores(request: Request):
+    return templates.TemplateResponse(
+        "administrador/administradores.html",
+        {"request": request, "administradores": administradores}
     )
 
 # ======================
@@ -31,9 +47,11 @@ async def post_cadastrar_administrador(
     email: str = Form(...),
     senha: str = Form(...)
 ):
+    novo_id = max([a["id"] for a in administradores], default=0) + 1
+    administradores.append({"id": novo_id, "nome": nome, "email": email})
     return templates.TemplateResponse(
         "administrador/administradores.html",
-        {"request": request, "mensagem": "Administrador cadastrado com sucesso!"}
+        {"request": request, "administradores": administradores, "mensagem": "Administrador cadastrado com sucesso!"}
     )
 
 # ======================
@@ -48,9 +66,11 @@ async def get_confirmar_exclusao_administrador(request: Request, id: int):
 
 @router.get("/admin/administradores/excluir/{id}")
 async def get_excluir_administrador(request: Request, id: int):
+    global administradores
+    administradores = [a for a in administradores if a["id"] != id]
     return templates.TemplateResponse(
         "administrador/administradores.html",
-        {"request": request, "mensagem": f"Administrador {id} excluído com sucesso!"}
+        {"request": request, "administradores": administradores, "mensagem": f"Administrador {id} excluído com sucesso!"}
     )
 
 # ======================

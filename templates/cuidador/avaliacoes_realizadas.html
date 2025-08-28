@@ -1,4 +1,4 @@
-{% extends "base_privada.html" %}
+{% extends "base_simples.html" %}
 
 {% block conteudo %}
 <section class="py-5 bg-light" id="avaliacoes-realizadas">
@@ -12,6 +12,12 @@
                         <h5 class="mb-1">Avaliado: {{ a.contratante }}</h5>
                         <p class="mb-1">{{ a.comentario }}</p>
                         <small>Nota dada: {{ a.nota }}/5</small>
+
+                        <!-- Botões de ação -->
+                        <div class="mt-2">
+                            <a href="/cuidador/avaliacoes_realizadas/alterar/{{ a.id }}" class="btn btn-sm btn-warning">Alterar</a>
+                            <a href="/cuidador/avaliacoes_realizadas/confirmar_exclusao/{{ a.id }}" class="btn btn-sm btn-danger">Excluir</a>
+                        </div>
                     </div>
                 {% endfor %}
             </div>
@@ -19,7 +25,8 @@
             <p class="text-center">Você ainda não realizou nenhuma avaliação.</p>
         {% endif %}
     </div>
-     <div class="text-center mt-4">
+
+    <div class="text-center mt-4">
         <a href="/cuidador/home_cuidador" class="btn btn-success">Voltar para Home</a>
     </div>
 </section>

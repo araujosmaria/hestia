@@ -1,4 +1,4 @@
-{% extends "base_privada.html" %}
+{% extends "base_simples.html" %}
 
 {% block conteudo %}
 <section class="py-5 bg-light" id="cadastrar-administrador">
@@ -22,7 +22,11 @@
             </div>
 
             <button type="submit" class="btn btn-primary">Cadastrar</button>
+            <a href="/admin/administradores" class="btn btn-secondary">Cancelar</a>
         </form>
     </div>
 </section>
+    <div class="text-center mt-4">
+        <a href="/admin/administradores/tela_inicial" class="btn btn-success">Voltar para Home</a>
+    </div>
 {% endblock %}

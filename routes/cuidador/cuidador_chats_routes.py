@@ -1,55 +1,64 @@
 from fastapi import APIRouter, Request, Form
 from fastapi.templating import Jinja2Templates
+from fastapi.responses import RedirectResponse
 
 router = APIRouter()
 templates = Jinja2Templates(directory="templates")
 
-# ======================
-# CHAT GERAL
-# ======================
+# Simula lista de chats disponíveis no chat geral
+chats_geral = [
+    {"id": 1, "nome": "João"},
+    {"id": 2, "nome": "Maria"},
+]
+
+# Simula mensagens do chat geral (você pode expandir e adaptar)
+mensagens_chat_geral = [
+    {"autor": "João", "mensagem": "Olá, pessoal!"},
+    {"autor": "Maria", "mensagem": "Oi, João! Tudo bem?"},
+]
+
+# Simulando dados para chat contratante (por contratante_id)
+mensagens_chat_contratante = {
+    1: [  # contratante_id = 1
+        {"autor": "Cuidador", "mensagem": "Olá, tudo certo com o serviço?"},
+        {"autor": "Contratante", "mensagem": "Sim, muito bom! Obrigado."}
+    ],
+    # Pode adicionar mais contratantes
+}
+
+# Rota para a home do cuidador
+@router.get("/cuidador/home_cuidador")
+async def home_cuidador(request: Request, mensagem: str = None):
+    return templates.TemplateResponse("cuidador/home_cuidador.html", {"request": request, "mensagem": mensagem})
+
+# Rota para listar chats disponíveis no chat geral (lista de contatos)
+@router.get("/cuidador/chat_geral")
+async def lista_chats_geral(request: Request):
+    return templates.TemplateResponse("cuidador/chat_geral.html", {"request": request, "chats": chats_geral})
+
+# Rota para exibir mensagens do chat geral
 @router.get("/cuidador/chat/geral")
-async def get_chat_geral(request: Request):
-    mensagens_fake = [
-        {"id": 1, "autor": "Sistema", "mensagem": "Bem-vindo ao chat geral!"},
-        {"id": 2, "autor": "Carlos", "mensagem": "Olá, tudo bem?"},
-        {"id": 3, "autor": "Cuidador João", "mensagem": "Oi Carlos, tudo sim e você?"}
-    ]
+async def exibir_chat_geral(request: Request):
+    return templates.TemplateResponse("cuidador/chat_geral.html", {"request": request, "mensagens": mensagens_chat_geral})
+
+# Rota para exibir chat contratante específico
+@router.get("/cuidador/chat/contratante/{contratante_id}")
+async def chat_contratante(request: Request, contratante_id: int):
+    mensagens = mensagens_chat_contratante.get(contratante_id, [])
     return templates.TemplateResponse(
-        "chat_geral.html",
-        {"request": request, "mensagens": mensagens_fake}
+        "cuidador/chat_contratante.html",
+        {"request": request, "mensagens": mensagens, "contratante_id": contratante_id, "mensagem_sucesso": None}
     )
 
-
-# ======================
-# CHAT COM CONTRATANTE (GET)
-# ======================
-@router.get("/cuidador/chat/contratante/{id}")
-async def get_chat_contratante(request: Request, id: int):
-    mensagens_fake = [
-        {"id": 1, "autor": "Contratante Ana", "mensagem": "Oi, gostaria de conversar sobre horários."},
-        {"id": 2, "autor": "Cuidador João", "mensagem": "Claro, quais dias você precisa?"}
-    ]
-    return templates.TemplateResponse(
-        "chat_contratante.html",
-        {"request": request, "mensagens": mensagens_fake, "contratante_id": id}
-    )
-
-
-# ======================
-# CHAT COM CONTRATANTE (POST)
-# ======================
+# Rota para enviar mensagem no chat contratante (POST)
 @router.post("/cuidador/chat/contratante/enviar")
-async def post_chat_contratante(
-    request: Request,
+async def enviar_mensagem_chat_contratante(
     contratante_id: int = Form(...),
-    mensagem: str = Form(...)
+    mensagem: str = Form(...),
 ):
-    # Aqui entraria a lógica para salvar a mensagem no banco
-    return templates.TemplateResponse(
-        "chat_contratante.html",
-        {
-            "request": request,
-            "mensagem_sucesso": f"Mensagem enviada para o contratante {contratante_id}!",
-            "contratante_id": contratante_id
-        }
-    )
+    if contratante_id not in mensagens_chat_contratante:
+        mensagens_chat_contratante[contratante_id] = []
+    mensagens_chat_contratante[contratante_id].append({"autor": "Cuidador", "mensagem": mensagem})
+    
+    # Redireciona para o chat contratante (GET)
+    return RedirectResponse(url=f"/cuidador/chat/contratante/{contratante_id}", status_code=303)

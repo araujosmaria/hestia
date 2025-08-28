@@ -1,39 +1,42 @@
 {% extends "base_simples.html" %}
 
 {% block conteudo %}
-<section class="py-5 bg-light" id="chamados">
+<section class="py-5 bg-light">
     <div class="container">
-        <h2 class="text-center mb-4">Chamados</h2>
+        <h2 class="text-center mb-4">Administradores</h2>
+
         {% if mensagem %}
         <div class="alert alert-success text-center" role="alert">
             {{ mensagem }}
         </div>
         {% endif %}
 
-        <table class="table table-striped">
+        <div class="text-end mb-3">
+            <a href="/admin/administradores/cadastrar" class="btn btn-success">Novo Administrador</a>
+        </div>
+
+        <table class="table table-bordered table-striped">
             <thead>
                 <tr>
                     <th>ID</th>
-                    <th>Título</th>
-                    <th>Status</th>
-                    <th>Descrição</th>
+                    <th>Nome</th>
+                    <th>E-mail</th>
                     <th>Ações</th>
                 </tr>
             </thead>
             <tbody>
-                {% for chamado in chamados %}
+                {% for admin in administradores %}
                 <tr>
-                    <td>{{ chamado.id }}</td>
-                    <td>{{ chamado.titulo }}</td>
-                    <td>{{ chamado.status }}</td>
-                    <td>{{ chamado.descricao }}</td>
+                    <td>{{ admin.id }}</td>
+                    <td>{{ admin.nome }}</td>
+                    <td>{{ admin.email }}</td>
                     <td>
-                        <a href="/admin/chamados/responder/{{ chamado.id }}" class="btn btn-primary btn-sm">Responder</a>
+                        <a href="/admin/administradores/confirmar_exclusao/{{ admin.id }}" class="btn btn-danger btn-sm">Excluir</a>
                     </td>
                 </tr>
                 {% else %}
                 <tr>
-                    <td colspan="5" class="text-center">Nenhum chamado encontrado.</td>
+                    <td colspan="4" class="text-center">Nenhum administrador encontrado.</td>
                 </tr>
                 {% endfor %}
             </tbody>

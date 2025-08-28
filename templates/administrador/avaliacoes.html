@@ -1,4 +1,4 @@
-{% extends "base_privada.html" %}
+{% extends "base_simples.html" %}
 
 {% block conteudo %}
 <section class="py-5 bg-light" id="avaliacoes">
@@ -13,6 +13,7 @@
                     <th>Usuário</th>
                     <th>Nota</th>
                     <th>Comentário</th>
+                    <th>Ações</th>
                 </tr>
             </thead>
             <tbody>
@@ -22,17 +23,21 @@
                     <td>{{ avaliacao.usuario }}</td>
                     <td>{{ avaliacao.nota }}</td>
                     <td>{{ avaliacao.comentario }}</td>
+                    <td>
+                        <a href="/admin/avaliacoes/moderar/{{ avaliacao.id }}" class="btn btn-primary btn-sm">Moderar</a>
+                    </td>
                 </tr>
                 {% endfor %}
             </tbody>
         </table>
+
         {% else %}
             <p class="text-center">Nenhuma avaliação encontrada.</p>
         {% endif %}
-    </div>
-    <div class="text-center mt-4">
+
+        <div class="text-center mt-4">
             <a href="/admin/administradores/tela_inicial" class="btn btn-success">Voltar para Home</a>
         </div>
-    </div><br>
+    </div>
 </section>
 {% endblock %}

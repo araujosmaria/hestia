@@ -1,4 +1,4 @@
-{% extends "base_privada.html" %}
+{% extends "base_simples.html" %}
 
 {% block conteudo %}
 <section class="py-5 bg-light" id="alterar-senha">
@@ -22,7 +22,8 @@
         </div>
         {% endif %}
 
-        <form method="post" action="/contratante/alterar_senha/1" class="mt-5">
+        <!-- FORM CORRIGIDO -->
+        <form method="post" action="/contratante/alterar_senha" class="mt-5">
             <input type="hidden" name="id" value="{{ id }}">
 
             <div class="mb-3">
@@ -39,10 +40,9 @@
                 <label for="confirmar_senha" class="form-label">Confirmar Nova Senha</label>
                 <input type="password" class="form-control" id="confirmar_senha" name="confirmar_senha" required>
             </div>
-            <button type="submit" class="btn btn-primary">Alterar Senha</button>
 
+            <button type="submit" class="btn btn-primary">Alterar Senha</button>
         </form>
     </div>
 </section>
-
 {% endblock %}

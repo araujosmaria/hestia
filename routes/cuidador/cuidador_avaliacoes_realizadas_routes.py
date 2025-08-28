@@ -1,37 +1,37 @@
 from fastapi import APIRouter, Request, Form
 from fastapi.templating import Jinja2Templates
+from fastapi.responses import RedirectResponse
 
 router = APIRouter()
 templates = Jinja2Templates(directory="templates")
 
-# ======================
-# LISTAR AVALIAÇÕES REALIZADAS
-# ======================
-@router.get("/cuidador/avaliacoes_realizadas")
-async def get_avaliacoes_realizadas(request: Request):
-    avaliacoes_fake = [
-        {"id": 1, "contratante": "João", "nota": 5, "comentario": "Muito bom trabalhar com ele."},
-        {"id": 2, "contratante": "Maria", "nota": 4, "comentario": "Experiência positiva."}
-    ]
-    return templates.TemplateResponse(
-        "/cuidador/avaliacoes_realizadas.html",
-        {"request": request, "avaliacoes": avaliacoes_fake}
-    )
+# Simulando banco de dados
+avaliacoes = [
+    {"id": 1, "contratante": "João", "nota": 4, "comentario": "Muito bom!"},
+    {"id": 2, "contratante": "Maria", "nota": 5, "comentario": "Excelente trabalho!"},
+]
 
-# ======================
-# ALTERAR AVALIAÇÃO (GET)
-# ======================
+@router.get("/cuidador/avaliacoes_realizadas")
+async def listar_avaliacoes(request: Request):
+    return templates.TemplateResponse("cuidador/avaliacoes_realizadas.html", {"request": request, "avaliacoes": avaliacoes})
+
+# Alteração aqui: rota para confirmação de exclusão
+@router.get("/cuidador/avaliacoes_realizadas/confirmar_exclusao/{id}")
+async def confirmar_exclusao(request: Request, id: int):
+    avaliacao = next((a for a in avaliacoes if a["id"] == id), None)
+    return templates.TemplateResponse("cuidador/excluir_avaliacao.html", {"request": request, "avaliacao": avaliacao})
+
+@router.post("/cuidador/avaliacoes_realizadas/excluir")
+async def excluir_avaliacao(request: Request, id: int = Form(...)):
+    global avaliacoes
+    avaliacoes = [a for a in avaliacoes if a["id"] != id]
+    return RedirectResponse("/cuidador/avaliacoes_realizadas", status_code=303)
+
 @router.get("/cuidador/avaliacoes_realizadas/alterar/{id}")
 async def get_alterar_avaliacao(request: Request, id: int):
-    avaliacao_fake = {"id": id, "contratante": "João", "nota": 5, "comentario": "Muito bom trabalhar com ele."}
-    return templates.TemplateResponse(
-        "/cuidador/alteração_avaliação.html",
-        {"request": request, "avaliacao": avaliacao_fake}
-    )
+    avaliacao = next((a for a in avaliacoes if a["id"] == id), None)
+    return templates.TemplateResponse("cuidador/alterar_avaliacao.html", {"request": request, "avaliacao": avaliacao})
 
-# ======================
-# ALTERAR AVALIAÇÃO (POST)
-# ======================
 @router.post("/cuidador/avaliacoes_realizadas/alterar")
 async def post_alterar_avaliacao(
     request: Request,
@@ -39,43 +39,8 @@ async def post_alterar_avaliacao(
     nota: int = Form(...),
     comentario: str = Form(...)
 ):
-    # Aqui entraria a lógica para atualizar no banco
-    mensagem = f"Avaliação {id} alterada com sucesso!"
-    avaliacoes_fake = [
-        {"id": 1, "contratante": "João", "nota": 5, "comentario": "Muito bom trabalhar com ele."},
-        {"id": 2, "contratante": "Maria", "nota": 4, "comentario": "Experiência positiva."}
-    ]
-    return templates.TemplateResponse(
-        "avaliacoes_realizadas.html",
-        {"request": request, "mensagem": mensagem, "avaliacoes": avaliacoes_fake}
-    )
-
-# ======================
-# EXCLUIR AVALIAÇÃO (GET)
-# ======================
-@router.get("/cuidador/avaliacoes_realizadas/excluir/{id}")
-async def get_excluir_avaliacao(request: Request, id: int):
-    avaliacao_fake = {"id": id, "contratante": "João", "nota": 5, "comentario": "Muito bom trabalhar com ele."}
-    return templates.TemplateResponse(
-        "exclusão_avaliação.html",
-        {"request": request, "avaliacao": avaliacao_fake}
-    )
-
-# ======================
-# EXCLUIR AVALIAÇÃO (POST)
-# ======================
-@router.post("/cuidador/avaliacoes_realizadas/excluir")
-async def post_excluir_avaliacao(
-    request: Request,
-    id: int = Form(...)
-):
-    # Aqui entraria a lógica para excluir no banco
-    mensagem = f"Avaliação {id} excluída com sucesso!"
-    avaliacoes_fake = [
-        {"id": 1, "contratante": "João", "nota": 5, "comentario": "Muito bom trabalhar com ele."},
-        {"id": 2, "contratante": "Maria", "nota": 4, "comentario": "Experiência positiva."}
-    ]
-    return templates.TemplateResponse(
-        "avaliacoes_realizadas.html",
-        {"request": request, "mensagem": mensagem, "avaliacoes": avaliacoes_fake}
-    )
+    for a in avaliacoes:
+        if a["id"] == id:
+            a["nota"] = nota
+            a["comentario"] = comentario
+    return RedirectResponse("/cuidador/avaliacoes_realizadas", status_code=303)

@@ -8,10 +8,11 @@ templates = Jinja2Templates(directory="templates")
 @router.get("/contratante/home_contratante")
 async def get_home_contratante(request: Request):
     id_usuario = 1
-    return templates.TemplateResponse(
-        "contratante/home_contratante.html",
-        {"request": request, "id_usuario": id_usuario}
-    )
+    return RedirectResponse(
+        url=f"/contratante/home_contratante?mensagem=Senha+alterada+com+sucesso",
+        status_code=303
+)
+
 
 # ======================
 # PERFIL
@@ -41,7 +42,9 @@ async def get_alterar_senha(request: Request, id: int):
         {"request": request, "id": id}
     )
 
-# POST: processa alteração de senha
+# ======================
+# POST: processar alteração de senha
+# ======================
 @router.post("/contratante/alterar_senha")
 async def post_alterar_senha(
     request: Request,
@@ -50,17 +53,22 @@ async def post_alterar_senha(
     nova_senha: str = Form(...),
     confirmar_senha: str = Form(...)
 ):
-    # Validação: senhas iguais
     if nova_senha != confirmar_senha:
         return templates.TemplateResponse(
             "contratante/alterar_senha.html",
-            {"request": request, "id": id, "erro": "As senhas não coincidem."}
+            {
+                "request": request,
+                "id": id,
+                "erro": "As senhas não coincidem."
+            }
         )
 
-    # Aqui você faria a atualização da senha no banco de dados
+    # Aqui faria a atualização da senha no banco de dados...
 
-    # Redireciona para a tela inicial do contratante
-    return RedirectResponse(url=f"/contratante/tela_inicial/{id}?mensagem=Senha+alterada+com+sucesso", status_code=303)
+    return RedirectResponse(
+        url="/contratante/home_contratante?mensagem=Senha+alterada+com+sucesso",
+        status_code=303
+    )
 # ======================
 # SOLICITAR VERIFICAÇÃO (GET)
 # ======================
