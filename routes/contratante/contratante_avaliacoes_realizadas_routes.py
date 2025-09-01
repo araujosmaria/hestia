@@ -10,7 +10,6 @@ templates = Jinja2Templates(directory="templates")
 # ======================
 @router.get("/contratante/home_contratante")
 async def get_home_contratante(request: Request):
-    # Você pode passar uma mensagem opcional se quiser
     mensagem = None
     return templates.TemplateResponse(
         "contratante/home_contratante.html",
@@ -55,7 +54,7 @@ async def post_alterar_avaliacao(
     nota: int = Form(...),
     comentario: str = Form(...)
 ):
-    # Aqui você atualizaria no banco
+
     mensagem = f"Avaliação {id} atualizada com sucesso!"
     avaliacao_fake = {
         "id": id,
@@ -73,5 +72,4 @@ async def post_alterar_avaliacao(
 # ==========================
 @router.get("/contratante/avaliacoes_realizadas/excluir")
 async def get_excluir_avaliacao(request: Request, id: int):
-    # Aqui você removeria do banco
     return RedirectResponse(url="/contratante/avaliacoes_realizadas", status_code=303)

@@ -24,7 +24,6 @@ async def get_responder_chamado(request: Request, chamado_id: int):
         "chamado_id": chamado_id
     })
 
-# Página para responder um chamado específico
 @router.post("/admin/chamados/responder")
 async def post_responder_chamado(
     request: Request,

@@ -35,15 +35,12 @@ async def post_alterar_senha(
     nova_senha: str = Form(...),
     confirmar_senha: str = Form(...)
 ):
-    # Aqui entraria a lógica para validar e atualizar a senha no banco
     if nova_senha != confirmar_senha:
         mensagem = "As senhas não coincidem!"
         return templates.TemplateResponse(
             "cuidador/alterar_senha.html",
             {"request": request, "mensagem": mensagem}
         )
-
-    # Se deu tudo certo → redireciona para o home do cuidador
     response = RedirectResponse(url="/home_cuidador", status_code=303)
     return response
 
@@ -66,7 +63,6 @@ async def post_abertura_chamados(
     titulo: str = Form(...),
     descricao: str = Form(...)
 ):
-    # Aqui entraria a lógica de salvar no banco
     mensagem = f"Chamado '{titulo}' aberto com sucesso!"
     return templates.TemplateResponse(
         "abertura_chamados.html",
@@ -108,7 +104,6 @@ async def get_dados_perfil(request: Request):
 # ======================
 @router.get("/cuidador/editar_perfil")
 async def get_editar_perfil(request: Request):
-    # Dados fake do perfil do cuidador (normalmente viria do banco)
     perfil_cuidador = {
         "nome": "João Silva Santos",
         "email": "joao.silva@email.com", 
@@ -150,6 +145,7 @@ async def get_editar_perfil(request: Request):
 @router.post("/cuidador/editar_perfil")
 async def post_editar_perfil(
     request: Request,
+    
     # Dados pessoais
     nome: str = Form(...),
     email: str = Form(...),

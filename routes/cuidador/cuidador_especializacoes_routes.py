@@ -9,7 +9,6 @@ templates = Jinja2Templates(directory="templates")
 # ======================
 @router.get("/cuidador/especializacoes")
 async def get_listar_especializacoes(request: Request):
-    # Aqui você buscaria as especializações do banco
     especializacoes_fake = [
         {"id": 1, "nome": "Cuidados com idosos", "descricao": "Experiência com cuidados diários"},
         {"id": 2, "nome": "Enfermagem básica", "descricao": "Aplicação de medicamentos e curativos"}
@@ -38,7 +37,6 @@ async def post_cadastro_especializacao(
     nome: str = Form(...),
     descricao: str = Form(...)
 ):
-    # Aqui salvaria no banco
     return templates.TemplateResponse(
         "especializações.html",
         {"request": request, "mensagem": f"Especialização '{nome}' cadastrada com sucesso!"}
@@ -65,7 +63,6 @@ async def post_alteracao_especializacao(
     nome: str = Form(...),
     descricao: str = Form(...)
 ):
-    # Aqui atualizaria no banco
     return templates.TemplateResponse(
         "especializações.html",
         {"request": request, "mensagem": f"Especialização {id} atualizada com sucesso!"}
@@ -90,7 +87,6 @@ async def post_exclusao_especializacao(
     request: Request,
     id: int = Form(...)
 ):
-    # Aqui excluiria do banco
     return templates.TemplateResponse(
         "especializações.html",
         {"request": request, "mensagem": f"Especialização {id} excluída com sucesso!"}

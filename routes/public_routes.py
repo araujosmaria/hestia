@@ -13,6 +13,7 @@ async def get_login(request: Request):
     return templates.TemplateResponse("login.html", {"request": request})
 
 @router.get("/cadastro")
+
 async def get_cadastro(request: Request):
     return templates.TemplateResponse("cadastro.html", {"request": request})
 

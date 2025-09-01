@@ -15,4 +15,4 @@ async def get_listar_relatorios(request: Request):
     return templates.TemplateResponse(
         "administrador/relatorios.html",
         {"request": request, "relatorios": relatorios}
-    )  # <-- SEM vírgula aqui
+    ) 
