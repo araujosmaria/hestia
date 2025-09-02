@@ -1,0 +1,111 @@
+
+/* Profile hover effects */
+.profile-avatar:hover {
+    transform: scale(1.05);
+    box-shadow: 0 8px 20px rgba(43, 140, 106, 0.3);
+}
+
+.profile-dropdown.show {
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0);
+}
+
+.profile-menu-item:hover {
+    background-color: #f8f9fa;
+    transform: translateX(5px);
+}
+
+/* Card hover effects */
+.solicitation-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 30px rgba(0,0,0,0.12);
+}
+
+.stat-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 12px 35px rgba(0,0,0,0.15);
+}
+
+.quick-action-btn:hover {
+    background: linear-gradient(135deg, #2b8c6a, #245f4a);
+    color: white;
+    transform: translateY(-3px);
+    box-shadow: 0 8px 20px rgba(43, 140, 106, 0.3);
+}
+
+/* Button hover effects */
+.btn-accept:hover {
+    background: #218838 !important;
+    transform: translateY(-2px);
+    box-shadow: 0 6px 15px rgba(40, 167, 69, 0.3);
+}
+
+.btn-decline:hover {
+    background: #dc3545 !important;
+    color: white !important;
+    transform: translateY(-2px);
+    box-shadow: 0 6px 15px rgba(220, 53, 69, 0.3);
+}
+
+.btn-details:hover {
+    background: #5a6268 !important;
+    transform: translateY(-2px);
+    box-shadow: 0 6px 15px rgba(108, 117, 125, 0.3);
+}
+
+.btn-load-more:hover {
+    background: linear-gradient(135deg, #245f4a, #2b8c6a);
+    color: #fff;
+    transform: translateY(-2px);
+    box-shadow: 0 6px 15px rgba(36, 95, 74, 0.3);
+}
+
+.toast-info .toast-content i {
+    color: #17a2b8;
+}
+
+.toast-close {
+    background: none;
+    border: none;
+    color: #999;
+    cursor: pointer;
+    padding: 0;
+    margin-left: 15px;
+    font-size: 1.2rem;
+}
+
+.toast-close:hover {
+    color: #666;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .hero-section {
+        padding: 60px 0;
+    }
+    
+    .welcome-content {
+        flex-direction: column;
+        text-align: center;
+        gap: 30px;
+    }
+    
+    .stats-section {
+        margin-top: -30px;
+    }
+    
+    .quick-actions-grid {
+        grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+    }
+    
+    .action-buttons {
+        flex-direction: column;
+    }
+    
+    .solicitation-header {
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+    }
+}
