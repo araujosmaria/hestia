@@ -4,7 +4,6 @@ from fastapi.templating import Jinja2Templates
 router = APIRouter()
 templates = Jinja2Templates(directory="templates")
 
-# Variável global para simular banco de dados
 administradores = [
     {"id": 1, "nome": "João", "email": "joao@email.com"},
     {"id": 2, "nome": "Maria", "email": "maria@email.com"}

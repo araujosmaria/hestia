@@ -5,7 +5,6 @@ from fastapi import Form
 router = APIRouter()
 templates = Jinja2Templates(directory="templates")
 
-# Listar todas as solicitações de verificação
 @router.get("/admin/solicitacao")
 async def get_listar_solicitacoes(request: Request):
     # Dados fake para exibir no template
@@ -31,7 +30,7 @@ async def post_analisar_solicitacao(
     id: int = Form(...),
     aprovado: bool = Form(...)
 ):
-    # Aqui faria o processamento do resultado
+
     mensagem = "Solicitação analisada com sucesso!"
     solicitacoes_fake = [
         {"id": 1, "nome_contratante": "Carlos", "descricao": "Verificação de antecedentes", "status": "Pendente"},

@@ -9,7 +9,6 @@ templates = Jinja2Templates(directory="templates")
 # ======================
 @router.get("/contratante/avaliacoes_recebidas")
 async def get_avaliacoes_recebidas(request: Request):
-    # Aqui você buscaria as avaliações recebidas do banco
     avaliacoes_fake = [
         {"id": 1, "cuidador": "Ana", "nota": 5, "comentario": "Contratante muito atencioso e organizado."},
         {"id": 2, "cuidador": "Carlos", "nota": 4, "comentario": "Boa experiência, tudo ocorreu bem."},

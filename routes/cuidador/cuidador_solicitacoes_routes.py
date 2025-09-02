@@ -11,7 +11,8 @@ templates = Jinja2Templates(directory="templates")
 async def listar_solicitacoes_contratacao(request: Request):
     solicitacoes = [
         {"id": 1, "nome": "Solicitação 1", "status": "Pendente"},
-        {"id": 2, "nome": "Solicitação 2", "status": "Confirmada"}
+        {"id": 2, "nome": "Solicitação 2", "status": "Confirmada"},
+        {"id": 3, "nome": "Solicitação 3", "status": "Pendente"}
     ]
     return templates.TemplateResponse(
         "cuidador/solicitacoes_contratacao.html",   # tela de contratação
@@ -24,20 +25,50 @@ async def listar_solicitacoes_contratacao(request: Request):
 # ======================
 @router.get("/cuidador/solicitacoes/{solicitacao_id}")
 async def get_detalhes_solicitacao(request: Request, solicitacao_id: int):
-    # Aqui você buscaria os detalhes no banco pelo ID
-    solicitacao_fake = {
-        "id": solicitacao_id,
-        "nome": f"Solicitação {solicitacao_id}",
-        "status": "Pendente" if solicitacao_id % 2 != 0 else "Confirmada",
-        "data": "2025-08-27",
-        "hora": "14:00",
-        "servico": "Cuidado com idoso",
-        "observacoes": "Paciente prefere horário da tarde."
+    # Dados diferentes por ID
+    solicitacoes_db = {
+        1: {
+            "id": 1,
+            "nome": "Solicitação 1",
+            "status": "Pendente",
+            "data": "2025-08-27",
+            "hora": "14:00h",
+            "servico": "Cuidado com idoso",
+            "observacoes": "Paciente prefere horário da tarde."
+        },
+        2: {
+            "id": 2,
+            "nome": "Solicitação 2",
+            "status": "Confirmada",
+            "data": "2025-09-01",
+            "hora": "09:30h",
+            "servico": "Acompanhamento em consulta",
+            "observacoes": "Paciente com dificuldade de locomoção. Confirmar transporte."
+        },
+        3: {
+            "id": 3,
+            "nome": "Solicitação 3",
+            "status": "Pendente",
+            "data": "2025-09-05",
+            "hora": "15:45h",
+            "servico": "Administração de medicamentos",
+            "observacoes": "Atenção aos horários de antibióticos."
+        }
     }
+
+    solicitacao = solicitacoes_db.get(solicitacao_id)
+
+    if not solicitacao:
+        return templates.TemplateResponse(
+            "cuidador/erro.html",
+            {"request": request, "mensagem": f"Solicitação {solicitacao_id} não encontrada."}
+        )
+
     return templates.TemplateResponse(
         "cuidador/detalhes_solicitacao.html",
-        {"request": request, "solicitacao": solicitacao_fake}
+        {"request": request, "solicitacao": solicitacao}
     )
+
 
 # ======================
 # LISTAR SOLICITAÇÕES DE VERIFICAÇÃO

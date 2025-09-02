@@ -24,7 +24,6 @@ async def post_solicitar_contratacao(
     nome_projeto: str = Form(...),
     descricao: str = Form(...)
 ):
-    # Aqui você salvaria a solicitação no banco com o cuidador_id
     mensagem = f"Solicitação do projeto '{nome_projeto}' enviada com sucesso para o cuidador {cuidador_id}!"
     return templates.TemplateResponse(
         "contratante/solicitar_contratacao.html",
@@ -66,7 +65,6 @@ async def post_avaliar_contratacao(
     nota: int = Form(...),
     comentario: str = Form(...)
 ):
-    # Aqui você salvaria a avaliação no banco
     mensagem = f"Avaliação da contratação {id} enviada com sucesso!"
     return templates.TemplateResponse(
         "contratante/avaliar_contratacao.html",

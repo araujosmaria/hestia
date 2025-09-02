@@ -19,7 +19,6 @@ async def get_listar_avaliacoes(request: Request):
     )
 
 
-
 # ======================
 # MODERAR AVALIAÇÃO (GET)
 # ======================
@@ -40,7 +39,7 @@ async def post_moderar_avaliacao(
     id: int = Form(...),
     aprovado: bool = Form(...)
 ):
-    # Aqui entraria a lógica de atualizar no banco
+
     return templates.TemplateResponse(
         "administrador/avaliacoes.html",
         {"request": request, "mensagem": f"Avaliação {id} moderada com sucesso!"}

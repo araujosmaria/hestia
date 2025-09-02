@@ -9,7 +9,6 @@ templates = Jinja2Templates(directory="templates")
 # ======================
 @router.get("/contratante/chat_com_cuidador/{id_cuidador}")
 async def get_chat_com_cuidador(request: Request, id_cuidador: int):
-    # Exemplo de conversa fake (simulação de busca no banco)
     mensagens_fake = [
         {"remetente": "Você", "texto": "Olá, gostaria de mais informações."},
         {"remetente": f"Cuidador {id_cuidador}", "texto": "Claro, posso ajudar sim!"}
@@ -18,7 +17,6 @@ async def get_chat_com_cuidador(request: Request, id_cuidador: int):
         "contratante/chat_com_cuidador.html",
         {"request": request, "mensagens": mensagens_fake, "id_cuidador": id_cuidador}
     )
-
 
 # ======================
 # ENVIAR MENSAGEM PARA CUIDADOR
@@ -29,7 +27,6 @@ async def post_chat_com_cuidador(
     id_cuidador: int,
     mensagem: str = Form(...)
 ):
-    # Aqui entraria lógica de salvar no banco
     mensagens_fake = [
         {"remetente": "Você", "texto": mensagem},
         {"remetente": f"Cuidador {id_cuidador}", "texto": "Mensagem recebida!"}
