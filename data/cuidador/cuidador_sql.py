@@ -8,7 +8,7 @@ CREATE TABLE IF NOT EXISTS cuidador (
 """
 
 INSERIR_CUIDADOR = """
-INSERT INTO cuidador (nome, email, senha, telefone, endereco, experiencia_anos)
+INSERT INTO cuidador (nome, email, senha, telefone, endereco, cpf, perfil, foto, token_redefinicao, data_token, data_cadastro, experiencia_anos)
 VALUES (?, ?, ?, ?, ?, ?)
 """
 
@@ -20,6 +20,12 @@ SELECT
     u.senha, 
     u.telefone, 
     u.endereco,
+    u.cpf,
+    u.perfil,
+    u.foto,
+    u.token_redefinicao,
+    u.data_token,
+    u.data_cadastro,
     cu.experiencia_anos
 FROM cuidador cu
 JOIN usuario u ON cu.id_cuidador = u.id_usuario
@@ -34,6 +40,12 @@ SELECT
     u.senha,
     u.telefone,
     u.endereco,
+    u.cpf,
+    u.perfil,
+    u.foto,
+    u.token_redefinicao,
+    u.data_token,
+    u.data_cadastro,
     cu.experiencia_anos
 FROM cuidador cu
 JOIN usuario u ON cu.id_cuidador = u.id_usuario
@@ -42,7 +54,7 @@ WHERE cu.id_cuidador = ?;
 
 ATUALIZAR_CUIDADOR = """
 UPDATE cuidador
-SET nome = ?, email = ?, senha = ?, telefone = ?, endereco = ?, experiencia_anos = ?
+SET nome = ?, email = ?, senha = ?, telefone = ?, endereco = ?, cpf = ?, perfil = ?, foto = ?, token_redefinicao = ?, data_token = ?, data_cadastro = ?, experiencia_anos = ?
 WHERE id_cuidador = ?
 """
 

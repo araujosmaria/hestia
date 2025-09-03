@@ -17,7 +17,13 @@ SELECT
     u.email,
     u.senha,
     u.telefone,
-    u.endereco
+    u.endereco,
+    u.cpf,
+    u.perfil,
+    u.foto,
+    u.token_redefinicao,
+    u.data_token,
+    u.data_cadastro
 FROM cliente c
 JOIN usuario u ON c.id_cliente = u.id_usuario
 ORDER BY u.nome
@@ -30,7 +36,13 @@ SELECT
     u.email,
     u.senha,
     u.telefone,
-    u.endereco
+    u.endereco,
+    u.cpf,
+    u.perfil,
+    u.foto,
+    u.token_redefinicao,
+    u.data_token,
+    u.data_cadastro
 FROM cliente c
 JOIN usuario u ON c.id_cliente = u.id_usuario
 WHERE id_cliente = ?
