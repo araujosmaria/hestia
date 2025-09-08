@@ -17,16 +17,7 @@ def criar_tabela() -> bool:
 
 def inserir(cuidador: Cuidador) -> Optional[int]:
     try:
-        # Inserir usuário primeiro
-        usuario = Usuario(
-            id=0,
-            nome=cuidador.nome,
-            email=cuidador.email,
-            senha=cuidador.senha,
-            telefone=cuidador.telefone,
-            endereco=cuidador.endereco
-        )
-        id_usuario = usuario_repo.inserir(usuario)
+        id_usuario = usuario_repo.inserir(cuidador)
         if id_usuario is None:
             print("Erro: inserção do usuário retornou None")
             return None
@@ -34,8 +25,7 @@ def inserir(cuidador: Cuidador) -> Optional[int]:
         # Inserir cuidador
         with open_connection() as conn:
             cursor = conn.cursor()
-            cursor.execute(
-                "INSERT INTO cuidador (id_cuidador, experiencia_anos) VALUES (?, ?)",
+            cursor.execute(INSERIR_CUIDADOR,
                 (id_usuario, cuidador.experiencia_anos)
             )
             conn.commit()
@@ -59,7 +49,7 @@ def obter_todos() -> list[Cuidador]:
                 senha=row["senha"],
                 telefone=row["telefone"],
                 endereco=row["endereco"],
-                experiencia_anos=row["experiencia_anos"]
+                experiencia_anos=row["inicio_profissional"]
             ) for row in rows
         ]
         return cuidadores
@@ -90,9 +80,8 @@ def atualizar(cuidador: Cuidador) -> bool:
     # Depois atualiza a tabela cuidador (somente experiencia_anos)
     with open_connection() as conn:
         cursor = conn.cursor()
-        cursor.execute(
-            "UPDATE cuidador SET experiencia_anos = ? WHERE id_cuidador = ?",
-            (cuidador.experiencia_anos, cuidador.id)
+        cursor.execute(ATUALIZAR_CUIDADOR,
+            (cuidador.inicio_profissional, cuidador.id)
         )
         conn.commit()
         return cursor.rowcount > 0

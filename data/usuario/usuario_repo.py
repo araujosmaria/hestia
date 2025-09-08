@@ -23,13 +23,15 @@ def inserir(usuario: Usuario) -> Optional[int]:
             usuario.email, 
             usuario.senha,
             usuario.telefone, 
-            usuario.endereco))
+            usuario.endereco,
+            usuario.cpf,
+            usuario.perfil))
         return cursor.lastrowid
 
 def obter_todos() -> list[Usuario]:
     with open_connection() as conn:
         cursor = conn.cursor()
-        cursor.execute(OBTER_TODOS_USUARIO)
+        cursor.execute(OBTER_TODOS_USUARIOS)
         rows = cursor.fetchall()
         usuarios = [
             Usuario(
@@ -38,7 +40,11 @@ def obter_todos() -> list[Usuario]:
                 email=row["email"],
                 senha=row["senha"],
                 telefone=row["telefone"],
-                endereco=row["endereco"]) 
+                endereco=row["endereco"],
+                cpf=row["cpf"],
+                perfil=row["perfil"],
+                foto=row["foto"],
+                data_cadastro=row["data_cadastro"]) 
                 for row in rows]
         return usuarios
     
@@ -49,13 +55,16 @@ def obter_por_id(id_usuario: int) -> Optional[Usuario]:
         row = cursor.fetchone()
         if row:
             return Usuario(
-                id=row["id_usuario"],
-                nome=row["nome"],
+                id=row["id_usuario"], 
+                nome=row["nome"], 
                 email=row["email"],
                 senha=row["senha"],
                 telefone=row["telefone"],
-                endereco=row["endereco"])
-        
+                endereco=row["endereco"],
+                cpf=row["cpf"],
+                perfil=row["perfil"],
+                foto=row["foto"],
+                data_cadastro=row["data_cadastro"])
         return None
   
 def atualizar(usuario: Usuario) -> bool:
@@ -67,6 +76,7 @@ def atualizar(usuario: Usuario) -> bool:
             usuario.senha,
             usuario.telefone,
             usuario.endereco,
+            usuario.cpf,
             usuario.id
         ))
         return cursor.rowcount > 0
@@ -76,4 +86,24 @@ def excluir(usuario_id: int) -> bool:
     with open_connection() as conn:
         cursor = conn.cursor()
         cursor.execute(EXCLUIR_USUARIO, (usuario_id,))
+        return cursor.rowcount > 0
+
+def validar_token(token: str) -> Optional[Usuario]:
+    with open_connection() as conn:
+        cursor = conn.cursor()
+        cursor.execute(VALIDAR_TOKEN, (token,))
+        row = cursor.fetchone()
+        if row:
+            return Usuario(
+                id=row["id_usuario"], 
+                nome=row["nome"], 
+                email=row["email"],
+                token_redefinicao=row["token_redefinicao"],
+                data_token=row["data_token"])
+        return None
+    
+def ativar_usuario(usuario_id: int) -> bool:
+    with open_connection() as conn:
+        cursor = conn.cursor()
+        cursor.execute(ATIVAR_USUARIO, (usuario_id,))
         return cursor.rowcount > 0

@@ -1,4 +1,4 @@
-from fastapi import APIRouter, Request
+from fastapi import APIRouter, Form, Request
 from fastapi.templating import Jinja2Templates
 
 router = APIRouter() 
@@ -21,9 +21,35 @@ async def get_cadastro(request: Request):
 async def get_cadastro_cuidador(request: Request):
     return templates.TemplateResponse("cadastro_cuidador.html", {"request": request})
 
+@router.post("/cadastro_cuidador")
+async def get_cadastro_cuidador(
+    request: Request,
+    nome: str = Form(...),
+    email: str = Form(...),
+    senha: str = Form(...),
+    telefone: str = Form(...),
+    endereco: str = Form(...),
+    cpf: str = Form(...),
+    inicio_profissional: str = Form(...)):
+    return templates.TemplateResponse("cadastro_cuidador.html", {"request": request})
+
 @router.get("/cadastro_contratante")
 async def get_cadastro_contratante(request: Request):
     return templates.TemplateResponse("cadastro_contratante.html", {"request": request})
+
+
+# @router.post("/cadastro_cuidador")
+# async def get_cadastro_cuidador(
+#     request: Request,
+#     nome: str = Form(...),
+#     email: str = Form(...),
+#     senha: str = Form(...),
+#     telefone: str = Form(...),
+#     endereco: str = Form(...),
+#     cpf: str = Form(...),
+#     inicio_profissional: str = Form(...)):
+#     return templates.TemplateResponse("cadastro_cuidador.html", {"request": request})
+
 
 @router.get("/redefinicao_senha")
 async def get_redefinicao_senha(request: Request):
