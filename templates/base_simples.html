@@ -12,25 +12,22 @@
 
 <body data-bs-spy="scroll" data-bs-target="#navbarNav" data-bs-offset="80" tabindex="0">
 
-    <nav class="navbar navbar-expand-lg bg-white border-bottom sticky-top shadow-sm">
-        <div class="container">
-            <a class="navbar-brand" href="#">
-                <img src="/static/img/logo2.png" alt="Logo Hestia">
+    <nav class="navbar navbar-expand-lg sticky-top" style="background-color: #fff; border-bottom: 1px solid #ccc;">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="#" style="margin-left: 20px;">
+                <img src="/static/img/logo2.png" alt="Logo Hestia" style="height: 50px;">
             </a>
 
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
                 <span class="navbar-toggler-icon"></span>
             </button>
 
-            <!-- 🔴 REMOVIDO: form de busca -->
-            <!-- <form class="d-flex me-3" role="search">...</form> -->
-
-            <!-- Você pode deixar esse div vazio ou remover completamente -->
             <div class="collapse navbar-collapse" id="navbarNav">
                 <!-- Conteúdo adicional pode ir aqui -->
             </div>
         </div>
     </nav>
+
 
     <main>
         {% block conteudo %}
