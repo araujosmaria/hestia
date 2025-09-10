@@ -49,7 +49,7 @@ def obter_todos() -> list[Cuidador]:
                 senha=row["senha"],
                 telefone=row["telefone"],
                 endereco=row["endereco"],
-                experiencia_anos=row["inicio_profissional"]
+                experiencia_anos=row["experiencia_anos"]
             ) for row in rows
         ]
         return cuidadores
@@ -81,7 +81,7 @@ def atualizar(cuidador: Cuidador) -> bool:
     with open_connection() as conn:
         cursor = conn.cursor()
         cursor.execute(ATUALIZAR_CUIDADOR,
-            (cuidador.inicio_profissional, cuidador.id)
+            (cuidador.experiencia_anos, cuidador.id)
         )
         conn.commit()
         return cursor.rowcount > 0
