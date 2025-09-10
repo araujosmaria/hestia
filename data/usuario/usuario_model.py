@@ -11,8 +11,8 @@ class Usuario:
     telefone: str
     senha: str
     cpf: str
-    perfil: str = 'cliente'
-    foto: Optional[str] = None
-    token_redefinicao: Optional[str] = None
-    data_token: Optional[str] = None
-    data_cadastro: Optional[str] = None
+    perfil: str
+    foto: Optional[str]
+    token_redefinicao: Optional[str]
+    data_token: Optional[str]
+    data_cadastro: Optional[str]
