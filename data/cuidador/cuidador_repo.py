@@ -26,7 +26,7 @@ def inserir(cuidador: Cuidador) -> Optional[int]:
         with open_connection() as conn:
             cursor = conn.cursor()
             cursor.execute(INSERIR_CUIDADOR,
-                (id_usuario, cuidador.experiencia_anos)
+                (id_usuario, cuidador.inicio_profissional)
             )
             conn.commit()
             return id_usuario
@@ -49,7 +49,7 @@ def obter_todos() -> list[Cuidador]:
                 senha=row["senha"],
                 telefone=row["telefone"],
                 endereco=row["endereco"],
-                experiencia_anos=row["inicio_profissional"]
+                inicio_profissional=row["inicio_profissional"]
             ) for row in rows
         ]
         return cuidadores
@@ -67,7 +67,7 @@ def obter_por_id(id_cuidador: int) -> Optional[Cuidador]:
                 senha=row["senha"],
                 telefone=row["telefone"],
                 endereco=row["endereco"],
-                experiencia_anos=row["experiencia_anos"]
+                inicio_profissional=row["inicio_profissional"]
             )
         return None
 
@@ -93,103 +93,3 @@ def excluir(id_cuidador: int) -> bool:
         cuidador_excluido = cursor.rowcount > 0
     usuario_excluido = usuario_repo.excluir(id_cuidador)
     return cuidador_excluido and usuario_excluido
-
-
-# from typing import Optional
-# from data.cuidador.cuidador_model import Cuidador
-# from data.cuidador.cuidador_sql import *
-# from data.usuario import usuario_repo
-# from data.usuario.usuario_sql import * 
-# from data.util import open_connection 
-
-# def criar_tabela() -> bool:
-#     try:
-#         with open_connection() as conn:
-#             cursor = conn.cursor()
-#             cursor.execute(CRIAR_TABELA_CUIDADOR)
-#             return True
-#     except Exception as e:
-#         print(f"Erro ao criar tabela de cuidadores: {e}")
-#         return False
-
-
-# def inserir(cuidador: Cuidador) -> Optional[int]:
-#     try:
-#         with open_connection() as conn:
-#             cursor = conn.cursor()
-#             cursor.execute(INSERIR_CUIDADOR, (
-#                 cuidador.nome,
-#                 cuidador.email,
-#                 cuidador.senha,
-#                 cuidador.telefone,
-#                 cuidador.endereco,
-#                 cuidador.experiencia_anos
-#             ))
-#             conn.commit()
-#             return cursor.lastrowid
-#     except Exception as e:
-#         print(f"Erro ao inserir cuidador: {e}")
-#         return None
- 
-
-
-# def obter_todos() -> list[Cuidador]:
-#     with open_connection() as conn:
-#         cursor = conn.cursor()
-#         cursor.execute(OBTER_TODOS_CUIDADOR)
-#         rows = cursor.fetchall()
-#         cuidadores = [
-#             Cuidador(
-#                 id=row["id_cuidador"],
-#                 nome=row["nome"],
-#                 email=row["email"],
-#                 senha=row["senha"],
-#                 telefone=row["telefone"],
-#                 endereco=row["endereco"],
-#                 experiencia_anos=row["experiencia_anos"]
-#             )
-#             for row in rows
-#         ]
-#         return cuidadores
-
-
-
-# def obter_por_id(id_cuidador: int) -> Optional[Cuidador]:
-#     with open_connection() as conn:
-#         cursor = conn.cursor()
-#         cursor.execute(OBTER_CUIDADOR_POR_ID, (id_cuidador,))
-#         row = cursor.fetchone()
-#         if row:
-#             # Mapeia a linha do banco de dados para um objeto Cuidador
-#             return Cuidador(
-#                 # CORRIGIDO: Passando 'id' como argumento, usando o valor de row["id_cuidador"]
-#                 id=row["id_cuidador"],
-#                 nome=row["nome"],
-#                 email=row["email"],
-#                 senha=row["senha"],
-#                 telefone=row["telefone"],
-#                 endereco=row["endereco"],
-#                 experiencia_anos=row["experiencia_anos"]
-#             )
-#         return None
-
-
-# def atualizar(cuidador: Cuidador) -> bool:
-#     usuario_repo.atualizar(cuidador)
-#     with open_connection() as conn:
-#         cursor = conn.cursor()
-#         cursor.execute(ATUALIZAR_CUIDADOR, (
-#             cuidador.experiencia_anos,
-#             cuidador.id_cuidador
-#         ))
-#         cuidador_ok = cursor.rowcount > 0
-#         return cuidador_ok
-
-
-# def excluir(id_cuidador: int) -> bool:
-#     with open_connection() as conn:
-#         cursor = conn.cursor()
-#         cursor.execute(EXCLUIR_CUIDADOR, (id_cuidador,))
-#         cuidador_excluido = cursor.rowcount > 0
-#         usuario_excluido = usuario_repo.excluir(id_cuidador)
-#         return cuidador_excluido and usuario_excluido
