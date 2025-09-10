@@ -476,24 +476,14 @@
 }
 
 /* Validação de campos */
-.form-control.is-invalid,
-.form-select.is-invalid {
-    border-color: #dc3545;
+.form-label:after {
+    content: "";
 }
 
-.form-control.is-valid,
-.form-select.is-valid {
-    border-color: #28a745;
-}
-
-.invalid-feedback {
+.form-label:has(~ input[required]):after,
+.form-label:has(~ select[required]):after,
+.form-label:has(~ textarea[required]):after {
+    content: " *";
     color: #dc3545;
-    font-size: 12px;
-    margin-top: 4px;
-}
-
-.valid-feedback {
-    color: #28a745;
-    font-size: 12px;
-    margin-top: 4px;
+    margin-left: 2px;
 }
