@@ -1,10 +1,10 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Entrar no Hestia</title>
-<link rel="stylesheet" href="/static/css/login.css">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Entrar no Hestia</title>
+  <link rel="stylesheet" href="/static/css/login.css">
 </head>
 <body class="login-page">
 
@@ -12,30 +12,36 @@
   <a href="/" class="voltar">×</a>
 
   <div class="container login-container">
-      <h1>Entrar no Hestia</h1>
+    <h1>Entrar no Hestia</h1>
 
+    <form action="/login" method="post">
       <button class="google-btn" type="button">
-          <span class="google-icon">G</span>
-          <span class="google-text">Entrar com o Google</span>
+        <span class="google-icon">G</span>
+        <span class="google-text">Entrar com o Google</span>
       </button>
 
       <label for="email">Email</label>
-      <input type="email" id="email" placeholder="Digite seu email">
+      <input type="email" id="email" name="email" placeholder="Digite seu email" required>
 
       <label for="senha">Senha</label>
-      <input type="password" id="senha" placeholder="Digite sua senha">
+      <input type="password" id="senha" name="senha" placeholder="Digite sua senha" required>
 
-      <button class="btn-green btn-login" type="button">Entrar</button>
+      <button class="btn-green btn-login" type="submit">Entrar</button>
+    </form>
 
-      <p class="signup">
-        Esqueceu a senha?
-        <a href="/redefinicao_senha">Redefinir Senha</a>
-      </p>
+    {% if erro %}
+      <p class="erro-msg">{{ erro }}</p>
+    {% endif %}
 
-      <p class="signup">
-        Não tem cadastro ainda?
-        <a href="/cadastro">Cadastre-se aqui</a>
-      </p>
+    <p class="signup">
+      Esqueceu a senha?
+      <a href="/redefinicao_senha">Redefinir Senha</a>
+    </p>
+
+    <p class="signup">
+      Não tem cadastro ainda?
+      <a href="/cadastro">Cadastre-se aqui</a>
+    </p>
   </div>
 
 </body>
