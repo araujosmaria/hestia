@@ -2,11 +2,14 @@ CRIAR_TABELA_CLIENTE = """
 CREATE TABLE IF NOT EXISTS cliente (
     id_cliente INTEGER PRIMARY KEY,
     parentesco_paciente TEXT NOT NULL,
+    parentesco_paciente TEXT NOT NULL,
     FOREIGN KEY (id_cliente) REFERENCES usuario(id_usuario)
 )
 """
 
 INSERIR_CLIENTE = """
+INSERT INTO cliente (id_cliente, parentesco_paciente)
+VALUES (?,?)
 INSERT INTO cliente (id_cliente, parentesco_paciente)
 VALUES (?) (?)
 """
@@ -25,7 +28,7 @@ SELECT
     u.token_redefinicao,
     u.data_token,
     u.data_cadastro,
-    c. parentesco_paciente
+    c.parestesco_paciente
 FROM cliente c
 JOIN usuario u ON c.id_cliente = u.id_usuario
 ORDER BY u.nome
@@ -44,8 +47,8 @@ SELECT
     u.foto,
     u.token_redefinicao,
     u.data_token,
-    u.data_cadastro,
-    c.parentesco_paciente
+    u.data_cadastro
+    c.parestesco_paciente
 FROM cliente c
 JOIN usuario u ON c.id_cliente = u.id_usuario
 WHERE c.id_cliente = ?
