@@ -66,6 +66,27 @@ def obter_por_id(id_usuario: int) -> Optional[Usuario]:
                 foto=row["foto"],
                 data_cadastro=row["data_cadastro"])
         return None
+    
+def obter_por_email(email: str) -> Optional[Usuario]:
+    with open_connection() as conn:
+        cursor = conn.cursor()
+        cursor.execute(OBTER_USUARIO_POR_EMAIL, (email,))
+        row = cursor.fetchone()
+
+        if row:
+            return Usuario(
+                id_usuario=row["id_usuario"],
+                nome=row["nome"],
+                email=row["email"],
+                senha=row["senha"],
+                telefone=row["telefone"],
+                endereco=row["endereco"],
+                cpf=row["cpf"],
+                perfil=row["perfil"],
+                foto=row["foto"],
+                data_cadastro=row["data_cadastro"]
+            )
+        return None
   
 def atualizar(usuario: Usuario) -> bool:
     with open_connection() as conn:

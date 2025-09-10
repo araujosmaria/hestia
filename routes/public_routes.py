@@ -1,5 +1,8 @@
 from fastapi import APIRouter, Form, Request
+from fastapi.responses import RedirectResponse
 from fastapi.templating import Jinja2Templates
+from starlette.status import HTTP_302_FOUND
+from data.usuario import usuario_repo
 
 router = APIRouter() 
 templates = Jinja2Templates(directory="templates")
@@ -12,6 +15,28 @@ async def get_login(request: Request):
 @router.get("/login")
 async def get_login(request: Request): 
     return templates.TemplateResponse("login.html", {"request": request})
+
+
+@router.post("/login")
+async def post_login(
+    request: Request,
+    email: str = Form(...),
+    senha: str = Form(...)
+):
+    usuario = usuario_repo.obter_por_email(email)
+
+    if usuario and usuario["senha"] == senha:
+        response = RedirectResponse(url="/painel", status_code=HTTP_302_FOUND)
+        response.set_cookie("usuario_id", str(usuario["id_usuario"]))
+        return response
+    else:
+        return templates.TemplateResponse(
+            "login.html",
+            {
+                "request": request,
+                "erro": "Email ou senha inválidos. Tente novamente."
+            }
+        )
 
 
 @router.get("/cadastro")

@@ -34,6 +34,13 @@ FROM usuario
 WHERE id_usuario = ?
 """
 
+OBTER_USUARIO_POR_EMAIL = """
+SELECT 
+id_usuario, nome, email, senha, telefone, endereco, cpf, perfil, foto, data_cadastro
+FROM usuario
+WHERE email = ?
+"""
+
 EXCLUIR_USUARIO = """
 DELETE FROM usuario
 WHERE id_usuario = ?
