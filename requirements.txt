@@ -13,4 +13,3 @@ pytest-cov
 
 passlib[bcrypt]
 python-jose[cryptography]
-itsdangerous

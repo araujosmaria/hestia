@@ -2,6 +2,7 @@ CRIAR_TABELA_CLIENTE = """
 CREATE TABLE IF NOT EXISTS cliente (
     id_cliente INTEGER PRIMARY KEY,
     parentesco_paciente TEXT NOT NULL,
+    parentesco_paciente TEXT NOT NULL,
     FOREIGN KEY (id_cliente) REFERENCES usuario(id_usuario)
 )
 """
@@ -48,7 +49,7 @@ SELECT
     c.parestesco_paciente
 FROM cliente c
 JOIN usuario u ON c.id_cliente = u.id_usuario
-WHERE id_cliente = ?
+WHERE c.id_cliente = ?
 """
 
 EXCLUIR_CLIENTE = """
