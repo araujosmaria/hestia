@@ -10,8 +10,6 @@ CREATE TABLE IF NOT EXISTS cliente (
 INSERIR_CLIENTE = """
 INSERT INTO cliente (id_cliente, parentesco_paciente)
 VALUES (?,?)
-INSERT INTO cliente (id_cliente, parentesco_paciente)
-VALUES (?) (?)
 """
 
 OBTER_TODOS_CLIENTE = """
