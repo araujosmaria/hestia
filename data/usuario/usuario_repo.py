@@ -19,13 +19,25 @@ def inserir(usuario: Usuario) -> Optional[int]:
     with open_connection() as conn:
         cursor = conn.cursor()
         cursor.execute(INSERIR_USUARIO, (
-            usuario.nome,  
-            usuario.email, 
-            usuario.senha,
-            usuario.telefone, 
-            usuario.endereco,
+            usuario.nome,
+            usuario.dataNascimento,
+            usuario.email,
+            usuario.telefone,
             usuario.cpf,
-            usuario.perfil))
+            usuario.senha,
+            usuario.perfil,
+            usuario.foto,
+            usuario.token_redefinicao,
+            usuario.data_token,
+            usuario.data_cadastro,
+            usuario.cep,
+            usuario.logradouro,
+            usuario.numero,
+            usuario.complemento,
+            usuario.bairro,
+            usuario.cidade,
+            usuario.estado,
+            usuario.ativo))
         return cursor.lastrowid
 
 def obter_todos() -> list[Usuario]:

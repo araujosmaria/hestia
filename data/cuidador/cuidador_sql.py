@@ -2,14 +2,32 @@
 CRIAR_TABELA_CUIDADOR = """
 CREATE TABLE IF NOT EXISTS cuidador (
     id_cuidador INTEGER PRIMARY KEY,
-    inicio_profissional TIMESTAMP NOT NULL,
+    experiencia TEXT NOT NULL,
+    valorHora REAL NOT NULL,
+    escolaridade TEXT NOT NULL,
+    apresentacao TEXT NOT NULL,
+    cursos TEXT,
+    confirmarSenha TEXT NOT NULL,
+    termos BOOLEAN NOT NULL,
+    verificacao BOOLEAN NOT NULL,
+    comunicacoes BOOLEAN NOT NULL,
     FOREIGN KEY (id_cuidador) REFERENCES usuario(id_usuario)
 );
 """
 
 INSERIR_CUIDADOR = """
-INSERT INTO cuidador (id_cuidador, inicio_profissional)
-VALUES (?, ?)
+INSERT INTO cuidador (
+    id_cuidador,
+    experiencia,
+    valorHora,
+    escolaridade,
+    apresentacao,
+    cursos,
+    confirmarSenha,
+    termos,
+    verificacao,
+    comunicacoes)
+VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?);
 """
 
 OBTER_TODOS_CUIDADOR = """

@@ -1,8 +1,11 @@
-from fastapi import APIRouter, Form, Request
+from datetime import datetime
+from fastapi import APIRouter, File, Form, Request, UploadFile
 from fastapi.responses import RedirectResponse
 from fastapi.templating import Jinja2Templates
 from starlette.status import HTTP_302_FOUND
 from data.cliente.cliente_model import Cliente
+from data.cuidador import cuidador_repo
+from data.cuidador.cuidador_model import Cuidador
 from data.usuario import usuario_repo
 from data.usuario.usuario_model import Usuario
 from util.auth_decorator import criar_sessao
@@ -69,12 +72,28 @@ async def get_cadastro_cuidador(request: Request):
 async def post_cadastro_cuidador(
     request: Request,
     nome: str = Form(...),
+    dataNascimento: str = Form(...),
     email: str = Form(...),
-    senha: str = Form(...),
     telefone: str = Form(...),
-    endereco: str = Form(...),
     cpf: str = Form(...),
-    inicio_profissional: str = Form(...)
+    fotoPerfil: str = Form(None),
+    senha: str = Form(...),
+    cep: str = Form(...),
+    logradouro: str = Form(...),
+    numero: str = Form(...),
+    complemento: str = Form(None),
+    bairro: str = Form(...),
+    cidade: str = Form(...),
+    estado: str = Form(...),
+    experiencia: str = Form(...),
+    valorHora: float = Form(...),
+    escolaridade: str = Form(...),
+    apresentacao: str = Form(...),
+    cursos: str = Form(None),
+    confirmarSenha: str = Form(...),
+    termos: bool = Form(...),
+    verificacao: bool = Form(False),
+    comunicacoes: bool = Form(False),
 ):
     try:
         # Verificar se email já existe
@@ -88,20 +107,40 @@ async def post_cadastro_cuidador(
         senha_hash = criar_hash_senha(senha)
 
         # Criar usuário cuidador
-        usuario = Usuario(
+        cuidador = Cuidador(
             id=0,
             nome=nome,
+            dataNascimento=dataNascimento,
             email=email,
-            senha=senha_hash,
             telefone=telefone,
-            endereco=endereco,
             cpf=cpf,
-            inicio_profissional=inicio_profissional,  # campo específico do cuidador
-            perfil="cuidador"
+            senha=senha_hash,
+            perfil="cuidador",
+            foto=fotoPerfil,
+            token_redefinicao=None,
+            data_token=None,
+            data_cadastro=datetime.now().isoformat(),
+            cep=cep,
+            logradouro=logradouro,
+            numero=numero,
+            complemento=complemento,
+            bairro=bairro,
+            cidade=cidade,
+            estado=estado,
+            ativo=True,
+            experiencia=experiencia,
+            valorHora=valorHora,
+            escolaridade=escolaridade,
+            apresentacao=apresentacao,
+            cursos=cursos,
+            confirmarSenha=confirmarSenha,
+            termos=termos,
+            verificacao=verificacao,
+            comunicacoes=comunicacoes
         )
 
         # Inserir usuário no banco
-        usuario_id = usuario_repo.inserir(usuario)
+        usuario_id = cuidador_repo.inserir(cuidador)
         
         if not usuario_id:
             return templates.TemplateResponse(

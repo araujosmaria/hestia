@@ -26,7 +26,16 @@ def inserir(cuidador: Cuidador) -> Optional[int]:
         with open_connection() as conn:
             cursor = conn.cursor()
             cursor.execute(INSERIR_CUIDADOR,
-                (id_usuario, cuidador.inicio_profissional)
+                (id_usuario, 
+                 cuidador.experiencia, 
+                 cuidador.valorHora, 
+                 cuidador.escolaridade, 
+                 cuidador.apresentacao, 
+                 cuidador.cursos, 
+                 cuidador.confirmarSenha, 
+                 cuidador.termos, 
+                 cuidador.verificacao, 
+                 cuidador.comunicacoes)
             )
             conn.commit()
             return id_usuario
