@@ -54,10 +54,24 @@ def obter_todos() -> list[Cuidador]:
             Cuidador(
                 id=row["id_cuidador"],
                 nome=row["nome"],
+                dataNascimento=row["dataNascimento"],
                 email=row["email"],
-                senha=row["senha"],
                 telefone=row["telefone"],
-                endereco=row["endereco"],
+                cpf=row["cpf"],
+                senha=row["senha"],
+                perfil=row["perfil"],
+                foto=row["foto"],
+                token_redefinicao=row["token_redefinicao"],
+                data_token=row["data_token"],
+                data_cadastro=row["data_cadastro"],
+                cep=row["cep"],
+                logradouro=row["logradouro"],
+                numero=row["numero"],
+                complemento=row["complemento"],
+                bairro=row["bairro"],
+                cidade=row["cidade"],
+                estado=row["estado"],
+                ativo=row["ativo"],
                 inicio_profissional=row["inicio_profissional"]
             ) for row in rows
         ]
@@ -72,11 +86,24 @@ def obter_por_id(id_cuidador: int) -> Optional[Cuidador]:
             return Cuidador(
                 id=row["id_cuidador"],
                 nome=row["nome"],
+                dataNascimento=row["dataNascimento"],
                 email=row["email"],
-                senha=row["senha"],
                 telefone=row["telefone"],
-                endereco=row["endereco"],
-                inicio_profissional=row["inicio_profissional"]
+                cpf=row["cpf"],
+                senha=row["senha"],
+                perfil=row["perfil"],
+                foto=row["foto"],
+                token_redefinicao=row["token_redefinicao"],
+                data_token=row["data_token"],
+                data_cadastro=row["data_cadastro"],
+                cep=row["cep"],
+                logradouro=row["logradouro"],
+                numero=row["numero"],
+                complemento=row["complemento"],
+                bairro=row["bairro"],
+                cidade=row["cidade"],
+                estado=row["estado"],
+                ativo=row["ativo"],
             )
         return None
 

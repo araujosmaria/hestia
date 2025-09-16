@@ -1,26 +1,44 @@
 from datetime import datetime
-from fastapi import APIRouter, File, Form, Request, UploadFile
+from fastapi import APIRouter, File, Form, Request, UploadFile, status
 from fastapi.responses import RedirectResponse
 from fastapi.templating import Jinja2Templates
 from starlette.status import HTTP_302_FOUND
 from data.cliente.cliente_model import Cliente
-from data.cuidador import cuidador_repo
+from data.cliente import cliente_repo
 from data.cuidador.cuidador_model import Cuidador
-from data.usuario import usuario_repo
+from data.cuidador import cuidador_repo
 from data.usuario.usuario_model import Usuario
-from util.auth_decorator import criar_sessao
+from data.usuario import usuario_repo
 from util.security import criar_hash_senha, verificar_senha
+from util.auth_decorator import criar_sessao, obter_usuario_logado, esta_logado
+from util.template_util import criar_templates
 
 router = APIRouter() 
-templates = Jinja2Templates(directory="templates")
+templates = criar_templates("templates/auth")
 
 @router.get("/")
 async def get_login(request: Request): 
     return templates.TemplateResponse("index.html", {"request": request})
 
+# @router.get("/login")
+# async def get_login(request: Request): 
+#     return templates.TemplateResponse("login.html", {"request": request})
 @router.get("/login")
-async def get_login(request: Request): 
-    return templates.TemplateResponse("login.html", {"request": request})
+async def get_login(request: Request, redirect: str = None):
+    # Se já está logado, redirecionar conforme o perfil
+    if esta_logado(request):
+        usuario = obter_usuario_logado(request)
+        if usuario["perfil"] == "cuidador":
+            return RedirectResponse("/cuidador/home_cuidador", status.HTTP_303_SEE_OTHER)
+        elif usuario["perfil"] == "contratante":
+            return RedirectResponse("/contratante/home_contratante", status.HTTP_303_SEE_OTHER)
+        else:
+            return RedirectResponse("/", status.HTTP_303_SEE_OTHER)
+    
+    return templates.TemplateResponse(
+        "login.html", 
+        {"request": request, "redirect": redirect}
+    )
 
 @router.post("/login")
 async def post_login(
@@ -29,36 +47,41 @@ async def post_login(
     senha: str = Form(...),
     redirect: str = Form(None)
 ):
+    # Buscar usuário pelo email
     usuario = usuario_repo.obter_por_email(email)
-
-    if not usuario or not verificar_senha(senha, usuario["senha"]):
+    
+    if not usuario or not verificar_senha(senha, usuario.senha):
         return templates.TemplateResponse(
             "login.html",
-            {"request": request, "erro": "Email ou senha inválidos. Tente novamente."}
+            {
+                "request": request,
+                "erro": "Email ou senha inválidos",
+                "email": email,
+                "redirect": redirect
+            }
         )
-
-    # Criar sessão ou cookie
+    
+    # Criar sessão
     usuario_dict = {
-        "id": usuario["id_usuario"],
-        "nome": usuario["nome"],
-        "email": usuario["email"],
-        "perfil": usuario["perfil"],
-        "foto": usuario.get("foto")
+        "id": usuario.id,
+        "nome": usuario.nome,
+        "email": usuario.email,
+        "perfil": usuario.perfil,
+        "foto": usuario.foto
     }
     criar_sessao(request, usuario_dict)
-
-    # Redirecionar de acordo com perfil ou redirect
+    
+    # Redirecionar de acordo com o perfil ou redirect
     if redirect:
-        return RedirectResponse(redirect, status_code=303)
+        return RedirectResponse(redirect, status.HTTP_303_SEE_OTHER)
 
-    if usuario["perfil"] == "cuidador":
-        url_destino = "cuidador/home_cuidador"
-    elif usuario["perfil"] == "contratante":
-        url_destino = "contratante/home_contratante"
+    if usuario.perfil == "cuidador":
+        return RedirectResponse("/cuidador/home_cuidador", status.HTTP_303_SEE_OTHER)
+    elif usuario.perfil == "contratante":
+        return RedirectResponse("/contratante/home_contratante", status.HTTP_303_SEE_OTHER)
     else:
-        url_destino = "/painel"
+        return RedirectResponse("/", status.HTTP_303_SEE_OTHER)
 
-    return RedirectResponse(url=url_destino, status_code=303)
 
 @router.get("/cadastro")
 async def get_cadastro(request: Request):
@@ -166,51 +189,75 @@ async def get_cadastro_contratante(request: Request):
 async def post_cadastro_contratante(
     request: Request,
     nome: str = Form(...),
+    dataNascimento: str = Form(...),
     email: str = Form(...),
-    senha: str = Form(...),
     telefone: str = Form(...),
-    endereco: str = Form(...),
     cpf: str = Form(...),
-    parentesco_paciente: str = Form(...)
+    senha: str = Form(...),
+    cep: str = Form(...),
+    logradouro: str = Form(...),
+    numero: str = Form(...),
+    complemento: str = Form(None),
+    bairro: str = Form(...),
+    cidade: str = Form(...),
+    estado: str = Form(...),
+    parentesco_paciente: str = Form(...),
+    fotoPerfil: str = Form(None)
 ):
     try:
-        # Verificar se email já existe
+        # Verificar se o e-mail já está cadastrado
         if usuario_repo.obter_por_email(email):
             return templates.TemplateResponse(
-                "cadastro_contratante.html",  # Corrigido: estava retornando cadastro.html
+                "cadastro_contratante.html",
                 {"request": request, "erro": "Email já cadastrado"}
             )
 
-        # Criar hash da senha
         senha_hash = criar_hash_senha(senha)
 
-        # Criar usuário contratante
-        usuario = Usuario(
+        # Criar objeto Cliente
+        cliente = Cliente(
             id=0,
             nome=nome,
+            dataNascimento=dataNascimento,
             email=email,
-            senha=senha_hash,
             telefone=telefone,
-            endereco=endereco,
             cpf=cpf,
-            parentesco_paciente=parentesco_paciente,
-            perfil="contratante"
+            senha=senha_hash,
+            perfil="contratante",  # Garantir que está como "contratante"
+            foto=fotoPerfil,
+            token_redefinicao=None,
+            data_token=None,
+            data_cadastro=datetime.now().isoformat(),
+            cep=cep,
+            logradouro=logradouro,
+            numero=numero,
+            complemento=complemento,
+            bairro=bairro,
+            cidade=cidade,
+            estado=estado,
+            ativo=True,
+            parentesco_paciente=parentesco_paciente
         )
 
-        # Inserir usuário no banco com verificação
-        usuario_id = usuario_repo.inserir(usuario)
-        
-        if not usuario_id:
+        # Fallback defensivo: garantir que perfil está definido
+        if not cliente.perfil:
+            cliente.perfil = "contratante"
+
+        print(f"[DEBUG] Tentando cadastrar cliente com perfil: {cliente.perfil}")
+
+        cliente_id = cliente_repo.inserir(cliente)
+
+        if not cliente_id:
             return templates.TemplateResponse(
                 "cadastro_contratante.html",
-                {"request": request, "erro": "Erro ao cadastrar usuário. Tente novamente."}
+                {"request": request, "erro": "Erro ao cadastrar contratante. Tente novamente."}
             )
 
-        print(f"Contratante cadastrado com sucesso! ID: {usuario_id}")
-        return RedirectResponse("/login", status_code=303)
-        
+        print(f"[SUCESSO] Contratante cadastrado com sucesso! ID: {cliente_id}")
+        return RedirectResponse("/login", status.HTTP_303_SEE_OTHER)
+
     except Exception as e:
-        print(f"Erro ao cadastrar contratante: {e}")
+        print(f"[ERRO] Erro ao cadastrar contratante: {e}")
         return templates.TemplateResponse(
             "cadastro_contratante.html",
             {"request": request, "erro": "Erro interno ao cadastrar. Tente novamente."}

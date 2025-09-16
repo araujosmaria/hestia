@@ -87,10 +87,22 @@ SELECT
     cpf,
     senha,
     perfil,
-    foto
+    foto,
+    token_redefinicao,
+    data_token,
+    data_cadastro,
+    cep,
+    logradouro,
+    numero,
+    complemento,
+    bairro,
+    cidade,
+    estado,
+    ativo
 FROM usuario
 WHERE email = ?
 """
+
 
 EXCLUIR_USUARIO = """
 DELETE FROM usuario
@@ -99,9 +111,28 @@ WHERE id_usuario = ?
 
 ATUALIZAR_USUARIO = """
 UPDATE usuario
-SET nome = ?, email = ?, senha = ?, telefone = ?, endereco = ?, cpf = ?
+SET 
+    nome = ?, 
+    dataNascimento = ?, 
+    email = ?, 
+    telefone = ?, 
+    cpf = ?, 
+    perfil = ?, 
+    foto = ?, 
+    token_redefinicao = ?, 
+    data_token = ?, 
+    data_cadastro = ?, 
+    cep = ?, 
+    logradouro = ?, 
+    numero = ?, 
+    complemento = ?, 
+    bairro = ?, 
+    cidade = ?, 
+    estado = ?, 
+    ativo = ?
 WHERE id_usuario = ?
-""" 
+"""
+
 
 VALIDAR_TOKEN = """
 SELECT
