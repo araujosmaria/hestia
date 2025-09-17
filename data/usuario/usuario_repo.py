@@ -20,7 +20,6 @@ def criar_tabela() -> bool:
         with open_connection() as conn:
             cursor = conn.cursor()
             cursor.execute(CRIAR_TABELA_USUARIO)
-            cursor.execute(CORRIGIR_PERFIL_NULO)  # <- aqui faz o update após a criação da tabela
             return True
     except Exception as e:
         print(f"Erro ao criar tabela de usuarios: {e}")
@@ -28,29 +27,36 @@ def criar_tabela() -> bool:
 
 
 def inserir(usuario: Usuario) -> Optional[int]:
-    with open_connection() as conn:
-        cursor = conn.cursor()
-        cursor.execute(INSERIR_USUARIO, (
-            usuario.nome,
-            usuario.dataNascimento,
-            usuario.email,
-            usuario.telefone,
-            usuario.cpf,
-            usuario.senha,
-            usuario.perfil,
-            usuario.foto,
-            usuario.token_redefinicao,
-            usuario.data_token,
-            usuario.data_cadastro,
-            usuario.cep,
-            usuario.logradouro,
-            usuario.numero,
-            usuario.complemento,
-            usuario.bairro,
-            usuario.cidade,
-            usuario.estado,
-            usuario.ativo))
-        return cursor.lastrowid
+    try:
+        with open_connection() as conn:
+            cursor = conn.cursor()
+            cursor.execute(INSERIR_USUARIO, (
+                usuario.nome,
+                usuario.dataNascimento,
+                usuario.email,
+                usuario.telefone,
+                usuario.cpf,
+                usuario.senha,
+                usuario.perfil,
+                usuario.foto,
+                usuario.token_redefinicao,
+                usuario.data_token,
+                usuario.data_cadastro,
+                usuario.cep,
+                usuario.logradouro,
+                usuario.numero,
+                usuario.complemento,
+                usuario.bairro,
+                usuario.cidade,
+                usuario.estado,
+                usuario.ativo
+            ))
+            conn.commit() 
+            return cursor.lastrowid
+    except Exception as e:
+        print(f"Erro ao inserir usuário: {e}")
+        return None
+
 
 def obter_todos() -> list[Usuario]:
     with open_connection() as conn:

@@ -4,44 +4,48 @@ from data.cliente.cliente_model import Cliente
 from data.cliente.cliente_sql import *
 from data.usuario import usuario_repo
 
-
 def criar_tabela() -> bool:
     try:
         with open_connection() as conn:
             cursor = conn.cursor()
-            cursor.execute(CRIAR_TABELA_CLIENTE)
+            cursor.executescript(CRIAR_TABELA_CLIENTE)
+            conn.commit()
             return True
     except Exception as e:
         print(f"Erro ao criar tabela de clientes: {e}")
-        return False  
+        return False
 
 
 def inserir(cliente: Cliente) -> Optional[int]:
     try:
-        # Garantir que o perfil está definido como 'contratante'
-        if not cliente.perfil:
-            cliente.perfil = "contratante"
-        elif cliente.perfil != "contratante":
-            print(f"Warning: perfil diferente de 'contratante' detectado: {cliente.perfil}. Corrigindo.")
-            cliente.perfil = "contratante"
-
-        # Inserir usuário na tabela principal (usuario)
-        id_cliente = usuario_repo.inserir(cliente)
-        if id_cliente is None:
-            print("Erro: inserção do usuário (cliente) retornou None")
+        # Inserir primeiro na tabela usuario
+        id_usuario = usuario_repo.inserir(cliente)
+        if id_usuario is None:
+            print("Erro: inserção do usuário retornou None")
             return None
 
-        # Inserir dados específicos do cliente na tabela cliente
+        # Inserir na tabela cliente com o mesmo id_usuario
         with open_connection() as conn:
             cursor = conn.cursor()
-            cursor.execute(INSERIR_CLIENTE, (id_cliente, cliente.parentesco_paciente))
+            cursor.execute(
+                INSERIR_CLIENTE,
+                (
+                    id_usuario,  # mesmo id do usuário
+                    cliente.parentesco_paciente,
+                    cliente.confirmarSenha,
+                    cliente.termos,
+                    cliente.verificacao,
+                    cliente.comunicacoes
+                )
+            )
             conn.commit()
-            print(f"Cliente inserido com sucesso com ID {id_cliente}")
-            return id_cliente
+            print(f"Cliente inserido com sucesso com ID {id_usuario}")
+            return id_usuario
 
     except Exception as e:
         print(f"Erro ao inserir cliente: {e}")
         return None
+
 
 
 def obter_todos() -> list[Cliente]:
