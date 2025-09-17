@@ -129,3 +129,65 @@ def excluir(id_cuidador: int) -> bool:
         cuidador_excluido = cursor.rowcount > 0
     usuario_excluido = usuario_repo.excluir(id_cuidador)
     return cuidador_excluido and usuario_excluido
+
+# Adicione este método no arquivo data/cuidador/cuidador_repo.py
+
+def atualizar(cuidador: Cuidador) -> bool:
+    """
+    Atualiza os dados de um cuidador no banco de dados
+    """
+    try:
+        with open_connection() as conexao:
+            cursor = conexao.cursor()
+            
+            sql = """
+            UPDATE tb_usuario SET 
+                nome = %s,
+                dataNascimento = %s,
+                email = %s,
+                telefone = %s,
+                foto = %s,
+                cep = %s,
+                logradouro = %s,
+                numero = %s,
+                complemento = %s,
+                bairro = %s,
+                cidade = %s,
+                estado = %s,
+                experiencia = %s,
+                valorHora = %s,
+                escolaridade = %s,
+                apresentacao = %s,
+                cursos = %s
+            WHERE id = %s AND perfil = 'cuidador'
+            """
+            
+            cursor.execute(sql, (
+                cuidador.nome,
+                cuidador.dataNascimento,
+                cuidador.email,
+                cuidador.telefone,
+                cuidador.foto,
+                cuidador.cep,
+                cuidador.logradouro,
+                cuidador.numero,
+                cuidador.complemento,
+                cuidador.bairro,
+                cuidador.cidade,
+                cuidador.estado,
+                cuidador.experiencia,
+                cuidador.valorHora,
+                cuidador.escolaridade,
+                cuidador.apresentacao,
+                cuidador.cursos,
+                cuidador.id
+            ))
+            
+            conexao.commit()
+            
+            # Verificar se alguma linha foi afetada
+            return cursor.rowcount > 0
+            
+    except Exception as e:
+        print(f"Erro ao atualizar cuidador: {e}")
+        return False

@@ -199,7 +199,15 @@ def ativar_usuario(usuario_id: int) -> bool:
         cursor = conn.cursor()
         cursor.execute(ATIVAR_USUARIO, (usuario_id,))
         return cursor.rowcount > 0
-    
+
+def atualizar_foto(id: int, caminho_foto: str) -> bool:
+    """Atualiza apenas a foto do usuário"""
+    with open_connection() as conn:
+        cursor = conn.cursor()
+        cursor.execute(ATUALIZAR_FOTO, (caminho_foto, id))
+        return cursor.rowcount > 0
+
+
 # def atualizar_senha(email: str, nova_senha: str) -> bool:
 #     try:
 #         with open_connection() as conn:
