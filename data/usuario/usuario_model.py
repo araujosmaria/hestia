@@ -12,7 +12,7 @@ class Usuario:
     cpf: str
     senha: str
     perfil: str
-    foto: Optional[str]
+    foto: str
     token_redefinicao: Optional[str]
     data_token: Optional[str]
     data_cadastro: Optional[str]

@@ -146,3 +146,7 @@ UPDATE usuario
 SET ativo = 1
 WHERE id_usuario = ?
 """
+
+ATUALIZAR_FOTO = """
+UPDATE usuario SET foto = ? WHERE id = ?
+"""

@@ -13,6 +13,8 @@ from util.security import criar_hash_senha, verificar_senha
 from util.auth_decorator import criar_sessao, obter_usuario_logado, esta_logado
 from util.template_util import criar_templates
 
+import json
+
 router = APIRouter() 
 templates = criar_templates("templates/auth")
 
@@ -20,9 +22,6 @@ templates = criar_templates("templates/auth")
 async def get_login(request: Request): 
     return templates.TemplateResponse("index.html", {"request": request})
 
-# @router.get("/login")
-# async def get_login(request: Request): 
-#     return templates.TemplateResponse("login.html", {"request": request})
 @router.get("/login")
 async def get_login(request: Request, redirect: str = None):
     # Se já está logado, redirecionar conforme o perfil
@@ -86,6 +85,10 @@ async def post_login(
 @router.get("/cadastro")
 async def get_cadastro(request: Request):
     return templates.TemplateResponse("cadastro.html", {"request": request})
+
+# -----------------------------
+    # CADASTRO CUIDADOR
+# -----------------------------
 
 @router.get("/cadastro_cuidador")
 async def get_cadastro_cuidador(request: Request):
@@ -181,6 +184,10 @@ async def post_cadastro_cuidador(
             {"request": request, "erro": "Erro interno ao cadastrar. Tente novamente."}
         )
 
+# -----------------------------
+    # CADASTRO CONTRATANTE
+# -----------------------------
+
 @router.get("/cadastro_contratante")
 async def get_cadastro_contratante(request: Request):
     return templates.TemplateResponse("cadastro_contratante.html", {"request": request})
@@ -202,7 +209,11 @@ async def post_cadastro_contratante(
     cidade: str = Form(...),
     estado: str = Form(...),
     parentesco_paciente: str = Form(...),
-    fotoPerfil: str = Form(None)
+    fotoPerfil: str = Form(None),
+    confirmarSenha: str = Form(...),
+    termos: bool = Form(...),
+    verificacao: bool = Form(False),
+    comunicacoes: bool = Form(False),
 ):
     try:
         # Verificar se o e-mail já está cadastrado
@@ -212,6 +223,7 @@ async def post_cadastro_contratante(
                 {"request": request, "erro": "Email já cadastrado"}
             )
 
+        # Criar hash da senha
         senha_hash = criar_hash_senha(senha)
 
         # Criar objeto Cliente
@@ -223,7 +235,7 @@ async def post_cadastro_contratante(
             telefone=telefone,
             cpf=cpf,
             senha=senha_hash,
-            perfil="contratante",  # Garantir que está como "contratante"
+            perfil="contratante",
             foto=fotoPerfil,
             token_redefinicao=None,
             data_token=None,
@@ -236,28 +248,28 @@ async def post_cadastro_contratante(
             cidade=cidade,
             estado=estado,
             ativo=True,
-            parentesco_paciente=parentesco_paciente
+            parentesco_paciente=parentesco_paciente,
+            termos=termos,
+            verificacao=verificacao,
+            comunicacoes=comunicacoes
         )
 
-        # Fallback defensivo: garantir que perfil está definido
-        if not cliente.perfil:
-            cliente.perfil = "contratante"
+        print(f"Tentando cadastrar cliente com perfil: {cliente.perfil}")
 
-        print(f"[DEBUG] Tentando cadastrar cliente com perfil: {cliente.perfil}")
+        usuario_id = cliente_repo.inserir(cliente)
 
-        cliente_id = cliente_repo.inserir(cliente)
-
-        if not cliente_id:
+        if not usuario_id:
             return templates.TemplateResponse(
                 "cadastro_contratante.html",
                 {"request": request, "erro": "Erro ao cadastrar contratante. Tente novamente."}
             )
 
-        print(f"[SUCESSO] Contratante cadastrado com sucesso! ID: {cliente_id}")
-        return RedirectResponse("/login", status.HTTP_303_SEE_OTHER)
+        print(f"Contratante cadastrado com sucesso! ID: {usuario_id}")
+
+        return RedirectResponse("/login", status_code=303)
 
     except Exception as e:
-        print(f"[ERRO] Erro ao cadastrar contratante: {e}")
+        print(f"Erro ao cadastrar contratante: {e}")
         return templates.TemplateResponse(
             "cadastro_contratante.html",
             {"request": request, "erro": "Erro interno ao cadastrar. Tente novamente."}
