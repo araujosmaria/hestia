@@ -40,3 +40,6 @@ caso você queira padronizar os botões do seu projeto, o uso desse recurso é b
     border-color: var(--hestia-main-800); //borda verde escuro
 }
 ```
+
+# PROBLEMA COM O CONTRATANTE
+Sempre tava indo pra tela de login, pois o seu botão era uma ancora que apontava para /login, e não um botão do tipo submit.
