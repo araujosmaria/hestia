@@ -21,6 +21,14 @@ SELECT
 FROM atendimento
 ORDER BY dataInicio
 """
+
+OBTER_POR_ID_ATENDIMENTO = """
+SELECT 
+    id_atendimento, dataInicio, dataFim, id_cliente, id_cuidador
+FROM atendimento
+WHERE id_atendimento = ?
+"""
+
 ATUALIZAR_ATENDIMENTO = """
 UPDATE atendimento
 SET dataInicio = ?, dataFim = ?

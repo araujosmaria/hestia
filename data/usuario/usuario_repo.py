@@ -207,16 +207,3 @@ def atualizar_foto(id: int, caminho_foto: str) -> bool:
         cursor.execute(ATUALIZAR_FOTO, (caminho_foto, id))
         return cursor.rowcount > 0
 
-
-# def atualizar_senha(email: str, nova_senha: str) -> bool:
-#     try:
-#         with open_connection() as conn:
-#             cursor = conn.cursor()
-#             cursor.execute("""
-#                 UPDATE usuario SET senha = %s WHERE email = %s
-#             """, (nova_senha, email))
-#             conn.commit()
-#             return cursor.rowcount > 0  # retorna True se alguma linha foi alterada
-#     except Exception as e:
-#         print(f"Erro ao atualizar senha: {e}")
-#         return False

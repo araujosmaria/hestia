@@ -1,5 +1,4 @@
 from typing import Optional
-
 from data.atendimento.atendimento_model import Atendimento
 from data.atendimento.atendimento_sql import *
 from data.util import open_connection
@@ -42,7 +41,25 @@ def obter_todos() -> list[Atendimento]:
             for row in rows
         ]
         return atendimentos
- 
+
+def obter_por_id(id_atendimento) -> Atendimento:
+    with open_connection() as conn:
+        cursor = conn.cursor()
+        cursor.execute(OBTER_POR_ID_ATENDIMENTO, (id_atendimento,))
+        row = cursor.fetchone()
+        if row is None:
+            return None
+
+        atendimento = Atendimento(
+            id_atendimento=row["id_atendimento"],
+            dataInicio=row["dataInicio"],
+            dataFim=row["dataFim"],
+            id_cliente=row["id_cliente"],
+            id_cuidador=row["id_cuidador"]
+        )
+        return atendimento
+
+
 def atualizar(atendimento: Atendimento) -> bool:
     with open_connection() as conn:
         cursor = conn.cursor()
