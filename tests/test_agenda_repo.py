@@ -1,3 +1,4 @@
+import datetime
 from typing import Optional
 from data.agenda.agenda_model import Agenda
 from data.agenda.agenda_sql import *
@@ -52,23 +53,47 @@ class TestAgendaRepo:
                 for row in rows
             ]
             return agendas
-
-
-    def test_atualizar(self) -> bool:
+        
+    def test_obter_por_id(self):
         criar_tabela()
         agenda_teste = Agenda(
-            id_agenda = 0,
+            id_agenda=0,
             dataHora="2025-07-01 11:00:00",
             disponibilidade=True,
             id_cuidador=1
         )
         id_agenda = inserir(agenda_teste)
-        agenda_inserida = obter_por_id(id_agenda=id_agenda)
-        # Act
-        agenda_inserida.nome = "Especialidade Atualizada"
+
+        agenda = obter_por_id(id_agenda)
+
+        assert agenda is not None
+        assert agenda.id_agenda == id_agenda
+        assert isinstance(agenda.dataHora, (str, datetime.datetime))
+        assert agenda.disponibilidade in [True, False, 0, 1]
+        assert isinstance(agenda.id_cuidador, int)
+
+
+    def test_atualizar(self) -> bool:
+        criar_tabela()
+        agenda_teste = Agenda(
+            id_agenda=0,
+            dataHora="2025-07-01 11:00:00",
+            disponibilidade=True,
+            id_cuidador=1
+        )
+        id_agenda = inserir(agenda_teste)
+        agenda_inserida = obter_por_id(id_agenda)
+        
+        # Atualize um campo válido
+        agenda_inserida.disponibilidade = False
         resultado = atualizar(agenda_inserida)
-        # Assert
-        assert resultado == True, "A atualização da especialidade deveria retornar True"
+        
+        assert resultado == True, "A atualização da agenda deveria retornar True"
+
+        # Verifique se atualizou no banco
+        agenda_atualizada = obter_por_id(id_agenda)
+        assert agenda_atualizada.disponibilidade == False
+
 
 
     def test_excluir(self) -> bool:
