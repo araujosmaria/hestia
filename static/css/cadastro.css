@@ -14,21 +14,21 @@ body, html {
   position: relative;
   height: 100vh;
   width: 100%;
-  background: url(/static/img/velho\ no\ mato.jpg) no-repeat center center/cover;
+  background: url(/static/img/casas.png) no-repeat center center/cover;
   display: flex;
   align-items: center;
   justify-content: center;
 }
 
 /* Efeito escuro no fundo */
-.overlay {
+/* .overlay {
   position: absolute;
   bottom: 0;
   left: 0;
   width: 100%;
   height: 40%;
-  background: linear-gradient(to top, rgba(0,0,0,0.7), transparent);
-}
+  background: linear-gradient(to top, rgba(0, 0, 0, 0.7), transparent);
+} */
 
 /* Card central */
 .card {
@@ -39,14 +39,14 @@ body, html {
   border-radius: 20px;
   background: white;
   overflow: hidden;
-  box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.658);
   z-index: 1;
 }
 
 
 .left-panel {
   flex: 1;
-  background: #38d38b;
+  background: #5acca4;
   display: flex;
   flex-direction: column;
   justify-content: center;   /* centraliza verticalmente */
@@ -62,12 +62,12 @@ body, html {
   font-size: 60px;               /* aumentei o tamanho */
   font-weight: bold;
   margin-bottom: 15px;
-  color: #000;
+  color: #ffffff;
 }
 
 .left-panel p {
   font-size: 18px;
-  color: #000;
+  color: #ffffff;
 }
 
 
@@ -102,9 +102,9 @@ body, html {
   font-size: 16px;
   font-weight: bold;
   text-decoration: none;       /* tira o sublinhado do link */
-  color: #000;                 /* cor do texto */
+  color: #2b8c6a;                 /* cor do texto */
   background: transparent;
-  border: 1px solid #000;
+  border: 1px solid #2b8c6a;
   border-radius: 6px;
   cursor: pointer;
   transition: all 0.3s ease;
@@ -112,5 +112,5 @@ body, html {
 
 .btn:hover {
   background: #B8E6C1;
-  color: #000;
+  color: #ffffff;
 }
