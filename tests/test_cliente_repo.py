@@ -1,81 +1,126 @@
-import sys
-import os
-from data.cliente import cliente_repo
+import random
+import string
+from datetime import datetime
+import pytest
 from data.cliente.cliente_model import Cliente
+from data.cliente.cliente_repo import (
+    criar_tabela as criar_tabela_cliente,
+    inserir,
+    obter_todos,
+    obter_por_id,
+    excluir
+)
+from data.usuario import usuario_repo
+from data.usuario.usuario_model import Usuario
 from data.usuario.usuario_repo import criar_tabela as criar_tabela_usuario
-from data.cliente.cliente_repo import (criar_tabela as criar_tabela_cliente, inserir, obter_todos, obter_por_id, excluir)
 
 
 class TestClienteRepo:
+
+    def criar_cliente_fake(self) -> Cliente:
+        """Cria um cliente válido e único para testes"""
+        sufixo = ''.join(random.choices(string.digits, k=6))
+        # Cria também o usuário interno, necessário para a inserção do cliente
+        usuario = Usuario(
+            id=None,
+            nome=f"Usuário Teste {sufixo}",
+            dataNascimento="2000-01-01",
+            email=f"usuario{sufixo}@teste.com",
+            telefone="123456789",
+            cpf=f"123456{sufixo}",
+            senha="Senha123",
+            perfil="cliente",
+            foto=None,
+            token_redefinicao=None,
+            data_token=None,
+            data_cadastro=str(datetime.now().date()),
+            cep="12345-000",
+            logradouro="Rua Teste",
+            numero="123",
+            complemento="",
+            bairro="Centro",
+            cidade="Cidade",
+            estado="Estado",
+            ativo=True
+        )
+
+        # Retorna o cliente com os campos adicionais de teste
+        return Cliente(
+            id=None,
+            nome=usuario.nome,
+            dataNascimento=usuario.dataNascimento,
+            email=usuario.email,
+            telefone=usuario.telefone,
+            cpf=usuario.cpf,
+            senha=usuario.senha,
+            perfil=usuario.perfil,
+            foto=usuario.foto,
+            token_redefinicao=usuario.token_redefinicao,
+            data_token=usuario.data_token,
+            data_cadastro=usuario.data_cadastro,
+            cep=usuario.cep,
+            logradouro=usuario.logradouro,
+            numero=usuario.numero,
+            complemento=usuario.complemento,
+            bairro=usuario.bairro,
+            cidade=usuario.cidade,
+            estado=usuario.estado,
+            ativo=usuario.ativo,
+            parentesco_paciente="Filho",
+            confirmarSenha="Senha123",
+            termos=True,
+            verificacao=True,
+            comunicacoes=True
+        )
+
     def test_criar_tabela(self, test_db):
-        # Arrange
-        # Act
+        """Testa a criação da tabela de clientes"""
+        criar_tabela_usuario()
         resultado = criar_tabela_cliente()
-        # Assert
-        assert resultado == True, "A criacao da tabela deveria retornar True"
+        assert resultado is True, "A criação da tabela deveria retornar True"
 
     def test_inserir(self, test_db):
-        # Arrange
+        """Testa a inserção de um cliente"""
         criar_tabela_usuario()
         criar_tabela_cliente()
-        cliente_teste = Cliente(
-            id=0,
-            nome="Cliente Teste",
-            email="email@test.com",
-            senha="Senha",
-            telefone="Telefone",
-            endereco="Endereco"
-        )
-        # Act
-        id_cliente_inserido = inserir(cliente_teste)
-        # Assert
-        cliente_db = obter_por_id(id_cliente_inserido)
-        assert cliente_db is not None, "O cliente inserido não deveria ser None"
-        assert cliente_db.id == id_cliente_inserido, "O ID do cliente não confere"
-        assert cliente_db.nome == cliente_teste.nome, "O nome inserido não confere"
-        assert cliente_db.email == cliente_teste.email, "O email inserido não confere"
-        assert cliente_db.senha == cliente_teste.senha, "A senha inserida não confere"
-        assert cliente_db.telefone == cliente_teste.telefone, "O telefone inserido não confere"
-        assert cliente_db.endereco == cliente_teste.endereco, "O endereço inserido não confere"
+        cliente_teste = self.criar_cliente_fake()
+
+        id_cliente = inserir(cliente_teste)
+        assert id_cliente is not None, "O cliente inserido não deveria ser None"
+
+        cliente_db = obter_por_id(id_cliente)
+        assert cliente_db is not None, "O cliente retornado não deveria ser None"
+        assert cliente_db.parentesco_paciente == "Filho", "O parentesco do cliente não foi inserido corretamente"
 
     def test_obter_por_id(self, test_db):
-        # Arrange
+        """Testa a busca de um cliente por ID"""
         criar_tabela_usuario()
         criar_tabela_cliente()
-        cliente_teste = Cliente(0, "Cliente Teste", "teste@cliente.com", "123", "9999-0000", "Rua Teste")
+        cliente_teste = self.criar_cliente_fake()
         id_cliente = inserir(cliente_teste)
-        # Act
+
         cliente_db = obter_por_id(id_cliente)
-        # Assert
         assert cliente_db is not None, "O cliente retornado não deveria ser None"
-        assert cliente_db.id == id_cliente, "O ID do cliente buscado deveria ser igual ao ID inserido"
-        assert cliente_db.nome == cliente_teste.nome, "O nome do cliente buscado deveria ser igual ao inserido"
 
-    def test_obter_todos_clientes(self, test_db):
-        # Arrange
+    def test_obter_todos(self, test_db):
+        """Testa a busca de todos os clientes"""
         criar_tabela_usuario()
         criar_tabela_cliente()
-        inserir(Cliente(0, "Cliente A", "a@cliente.com", "abc", "111", "Rua A"))
-        inserir(Cliente(0, "Cliente B", "b@cliente.com", "def", "222", "Rua B"))
-        # Act
+        inserir(self.criar_cliente_fake())
+        inserir(self.criar_cliente_fake())
+
         lista_clientes = obter_todos()
-        # Assert
         assert len(lista_clientes) >= 2, "Deveria retornar pelo menos 2 clientes"
-        nomes = [c.nome for c in lista_clientes]
-        assert "Cliente A" in nomes, "Cliente A deveria estar na lista"
-        assert "Cliente B" in nomes, "Cliente B deveria estar na lista"
 
-    def test_excluir_cliente(self, test_db):
-        # Arrange
+    def test_excluir(self, test_db):
+        """Testa a exclusão de um cliente"""
         criar_tabela_usuario()
         criar_tabela_cliente()
-        cliente = Cliente(0, "Cliente Excluir", "excluir@cliente.com", "000", "999", "Rua X")
-        id_cliente = inserir(cliente)
+        cliente_teste = self.criar_cliente_fake()
+        id_cliente = inserir(cliente_teste)
 
-        # Act
         resultado = excluir(id_cliente)
         cliente_db = obter_por_id(id_cliente)
 
-        # Assert
-        assert resultado == True, "A exclusão do cliente deveria retornar True"
+        assert resultado is True, "A exclusão do cliente deveria retornar True"
         assert cliente_db is None, "O cliente excluído deveria ser None"

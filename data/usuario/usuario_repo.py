@@ -71,6 +71,7 @@ def obter_todos() -> list[Usuario]:
                 email=row["email"],
                 telefone=row["telefone"],
                 cpf=row["cpf"],
+                senha=row["senha"],
                 perfil=row["perfil"],
                 foto=row["foto"],
                 token_redefinicao=row["token_redefinicao"],
@@ -100,6 +101,7 @@ def obter_por_id(id_usuario: int) -> Optional[Usuario]:
                 email=row["email"],
                 telefone=row["telefone"],
                 cpf=row["cpf"],
+                senha=row["senha"],
                 perfil=row["perfil"],
                 foto=row["foto"],
                 token_redefinicao=row["token_redefinicao"],
@@ -155,6 +157,7 @@ def atualizar(usuario: Usuario) -> bool:
             usuario.email,
             usuario.telefone,
             usuario.cpf,
+            usuario.senha,   
             usuario.perfil,
             usuario.foto,
             usuario.token_redefinicao,
@@ -169,9 +172,9 @@ def atualizar(usuario: Usuario) -> bool:
             usuario.estado,
             usuario.ativo,
             usuario.id
-
         ))
         return cursor.rowcount > 0
+
 
 
 def excluir(usuario_id: int) -> bool:

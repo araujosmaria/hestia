@@ -56,12 +56,51 @@ SELECT
     email,
     telefone,
     cpf,
-    senha,
+    senha,           
     perfil,
-    foto
+    foto,
+    token_redefinicao,
+    data_token,
+    data_cadastro,
+    cep,
+    logradouro,
+    numero,
+    complemento,
+    bairro,
+    cidade,
+    estado,
+    ativo
 FROM usuario
 ORDER BY nome;
 """
+
+OBTER_USUARIO_POR_ID = """
+SELECT 
+    id_usuario, 
+    nome,
+    dataNascimento,
+    email,
+    telefone,
+    cpf,
+    senha,          
+    perfil,
+    foto,
+    token_redefinicao,
+    data_token,
+    data_cadastro,
+    cep,
+    logradouro,
+    numero,
+    complemento,
+    bairro,
+    cidade,
+    estado,
+    ativo
+FROM usuario
+WHERE id_usuario = ?
+"""
+
+
 OBTER_USUARIO_POR_ID = """
 SELECT 
     id_usuario, 
@@ -72,10 +111,22 @@ SELECT
     cpf,
     senha,
     perfil,
-    foto
+    foto,
+    token_redefinicao,
+    data_token,
+    data_cadastro,
+    cep,
+    logradouro,
+    numero,
+    complemento,
+    bairro,
+    cidade,
+    estado,
+    ativo
 FROM usuario
 WHERE id_usuario = ?
 """
+
 
 OBTER_USUARIO_POR_EMAIL = """
 SELECT 
@@ -117,6 +168,7 @@ SET
     email = ?, 
     telefone = ?, 
     cpf = ?, 
+    senha = ?, 
     perfil = ?, 
     foto = ?, 
     token_redefinicao = ?, 
@@ -132,6 +184,7 @@ SET
     ativo = ?
 WHERE id_usuario = ?
 """
+
 
 
 VALIDAR_TOKEN = """

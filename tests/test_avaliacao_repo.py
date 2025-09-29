@@ -18,30 +18,36 @@ class TestAvaliacaoRepo:
         criar_tabela_cliente()
         criar_tabela_cuidador()
         criar_tabela_atendimento()
-        criar_tabela()
+        criar_tabela()  # tabela de avaliação
 
     def criar_cliente_cuidador_atendimento(self):
+        # Cliente conforme tabela
         cliente = Cliente(
             id=0,
-            nome="Cliente Teste",
-            email="cliente@test.com",
-            senha="senha",
-            telefone="123456",
-            endereco="Rua Cliente"
+            parentesco_paciente="pai",
+            confirmarSenha="senha123",
+            termos=True,
+            verificacao=True,
+            comunicacoes=True
         )
         id_cliente = inserir_cliente(cliente)
 
+        # Cuidador conforme tabela
         cuidador = Cuidador(
             id=0,
-            nome="Cuidador Teste",
-            email="cuidador@test.com",
-            senha="senha",
-            telefone="987654",
-            endereco="Rua Cuidador",
-            experiencia_anos=2
+            experiencia="5 anos de experiência",
+            valorHora=45.0,
+            escolaridade="Ensino Superior",
+            apresentacao="Sou um cuidador dedicado e atencioso.",
+            cursos="Curso de primeiros socorros",
+            confirmarSenha="senha123",
+            termos=True,
+            verificacao=True,
+            comunicacoes=True
         )
         id_cuidador = inserir_cuidador(cuidador)
 
+        # Atendimento
         atendimento = Atendimento(
             id=0,
             dataInicio=datetime.datetime(2025, 7, 1, 14, 0),
@@ -55,7 +61,7 @@ class TestAvaliacaoRepo:
 
     def test_criar_tabela(self, test_db):
         resultado = criar_tabela()
-        assert resultado == True, "A criação da tabela de avaliação deveria retornar True"
+        assert resultado is True, "A criação da tabela de avaliação deveria retornar True"
 
     def test_inserir_avaliacao(self, test_db):
         _, _, id_atendimento = self.criar_cliente_cuidador_atendimento()
@@ -92,7 +98,7 @@ class TestAvaliacaoRepo:
             id_atendimento=id_atendimento
         )
         resultado = atualizar(avaliacao_atualizada)
-        assert resultado == True, "A atualização deveria retornar True"
+        assert resultado is True, "A atualização deveria retornar True"
 
     def test_excluir_avaliacao(self, test_db):
         _, _, id_atendimento = self.criar_cliente_cuidador_atendimento()
@@ -100,4 +106,4 @@ class TestAvaliacaoRepo:
         id_avaliacao = inserir(avaliacao)
 
         resultado = excluir(id_avaliacao)
-        assert resultado == True, "A exclusão deveria retornar True"
+        assert resultado is True, "A exclusão deveria retornar True"

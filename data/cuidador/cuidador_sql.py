@@ -1,4 +1,3 @@
-
 CRIAR_TABELA_CUIDADOR = """
 CREATE TABLE IF NOT EXISTS cuidador (
     id_cuidador INTEGER PRIMARY KEY,
@@ -11,6 +10,7 @@ CREATE TABLE IF NOT EXISTS cuidador (
     termos BOOLEAN NOT NULL,
     verificacao BOOLEAN NOT NULL,
     comunicacoes BOOLEAN NOT NULL,
+    inicio_profissional TEXT,
     FOREIGN KEY (id_cuidador) REFERENCES usuario(id_usuario)
 );
 """
@@ -23,30 +23,12 @@ INSERT INTO cuidador (
     escolaridade,
     apresentacao,
     cursos,
+    inicio_profissional,
     confirmarSenha,
     termos,
     verificacao,
     comunicacoes)
-VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?);
-"""
-
-OBTER_TODOS_CUIDADOR = """
-SELECT  
-    cu.id_cuidador, 
-    u.nome, 
-    u.email, 
-    u.senha, 
-    u.telefone, 
-    u.cpf,
-    u.perfil,
-    u.foto,
-    u.token_redefinicao,
-    u.data_token,
-    u.data_cadastro,
-    cu.inicio_profissional
-FROM cuidador cu
-JOIN usuario u ON cu.id_cuidador = u.id_usuario
-ORDER BY u.nome
+VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);
 """
 
 OBTER_CUIDADOR_POR_ID = """
@@ -62,10 +44,39 @@ SELECT
     u.token_redefinicao,
     u.data_token,
     u.data_cadastro,
+    cu.experiencia,
+    cu.valorHora,
+    cu.escolaridade,
+    cu.apresentacao,
+    cu.cursos,
     cu.inicio_profissional
 FROM cuidador cu
 JOIN usuario u ON cu.id_cuidador = u.id_usuario
 WHERE cu.id_cuidador = ?;
+"""
+
+OBTER_TODOS_CUIDADOR = """
+SELECT  
+    cu.id_cuidador, 
+    u.nome, 
+    u.email, 
+    u.senha, 
+    u.telefone, 
+    u.cpf,
+    u.perfil,
+    u.foto,
+    u.token_redefinicao,
+    u.data_token,
+    u.data_cadastro,
+    cu.experiencia,
+    cu.valorHora,
+    cu.escolaridade,
+    cu.apresentacao,
+    cu.cursos,
+    cu.inicio_profissional
+FROM cuidador cu
+JOIN usuario u ON cu.id_cuidador = u.id_usuario
+ORDER BY u.nome;
 """
 
 ATUALIZAR_CUIDADOR = """
