@@ -12,7 +12,7 @@ class Cuidador(Usuario):
    escolaridade: str
    apresentacao: str
    cursos: str
-   inicio_profissional: Optional[str] = None
+   inicio_profissional: str
    termos: bool
    verificacao: bool
    comunicacoes: bool

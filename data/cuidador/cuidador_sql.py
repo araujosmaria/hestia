@@ -31,6 +31,30 @@ INSERT INTO cuidador (
 VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);
 """
 
+# OBTER_CUIDADOR_POR_CPF = """
+# SELECT
+#     cu.id_cuidador,
+#     u.nome,
+#     u.email,
+#     u.senha,
+#     u.telefone,
+#     u.cpf,
+#     u.perfil,
+#     u.foto,
+#     u.token_redefinicao,
+#     u.data_token,
+#     u.data_cadastro,
+#     cu.experiencia,
+#     cu.valorHora,
+#     cu.escolaridade,
+#     cu.apresentacao,
+#     cu.cursos,
+#     cu.inicio_profissional
+# FROM cuidador cu
+# JOIN usuario u ON cu.id_cuidador = u.id_usuario
+# WHERE u.cpf = ?;
+# """
+
 OBTER_CUIDADOR_POR_ID = """
 SELECT
     cu.id_cuidador,

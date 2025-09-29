@@ -54,6 +54,53 @@ def inserir(cuidador: Cuidador) -> Optional[int]:
         print(f"Erro ao inserir cuidador: {e}")
         return None
 
+# def obter_por_cpf(cpf: str) -> Optional[Cuidador]:
+#     try:
+#         with open_connection() as conn:
+#             conn.row_factory = sqlite3.Row
+#             cursor = conn.cursor()
+#             cursor.execute(OBTER_CUIDADOR_POR_CPF, (cpf,))
+#             row = cursor.fetchone()
+
+#             if row:
+#                 return Cuidador(
+#                     id=row["id_cuidador"],
+#                     nome=row["nome"],
+#                     email=row["email"],
+#                     senha=row["senha"],
+#                     telefone=row["telefone"],
+#                     cpf=row["cpf"],
+#                     perfil=row["perfil"],
+#                     foto=row["foto"],
+#                     token_redefinicao=row["token_redefinicao"],
+#                     data_token=row["data_token"],
+#                     data_cadastro=row["data_cadastro"],
+#                     dataNascimento=None, 
+#                     cep=None,
+#                     logradouro=None,
+#                     numero=None,
+#                     complemento=None,
+#                     bairro=None,
+#                     cidade=None,
+#                     estado=None,
+#                     ativo=True,
+#                     experiencia=row["experiencia"],
+#                     valorHora=row["valorHora"],
+#                     escolaridade=row["escolaridade"],
+#                     apresentacao=row["apresentacao"],
+#                     cursos=row["cursos"],
+#                     confirmarSenha=row["senha"], 
+#                     termos=True,
+#                     verificacao=True,
+#                     comunicacoes=True,
+#                     inicio_profissional=row["inicio_profissional"]
+#                 )
+#             return None
+#     except Exception as e:
+#         print(f"Erro ao obter cuidador por CPF: {e}")
+#         return None
+    
+
 def obter_por_id(id_cuidador: int) -> Optional[Cuidador]:
     with open_connection() as conn:
         conn.row_factory = sqlite3.Row
