@@ -7,20 +7,20 @@ from data.administrador.administrador_repo import (
     atualizar,
     excluir
 )
-from data.usuario.usuario_repo import criar_tabela as criar_tabela_usuario
+# from data.usuario.usuario_repo import criar_tabela as criar_tabela_usuario
 
 class TestAdministradorRepo:
     def test_criar_tabela(self, test_db):
-        criar_tabela_usuario()  
+        # criar_tabela_usuario()  
         resultado = criar_tabela()
         assert resultado == True, "A criação da tabela de administradores deveria retornar True"
 
     def test_inserir_administrador(self, test_db):
-        criar_tabela_usuario()
+        # criar_tabela_usuario()
         criar_tabela()
 
         admin = Administrador(
-            id=0,
+            id=None,
             nome="Admin Teste",
             email="admin@test.com",
             senha="senha123",
@@ -37,7 +37,7 @@ class TestAdministradorRepo:
         assert admin_db.email == admin.email
 
     def test_obter_todos_administradores(self, test_db):
-        criar_tabela_usuario()
+        # criar_tabela_usuario()
         criar_tabela()
 
         inserir(Administrador(0, "Admin A", "a@admin.com", "senhaA", "1111", "Rua A"))
@@ -51,7 +51,7 @@ class TestAdministradorRepo:
         assert len(lista) >= 2
 
     def test_obter_por_id(self, test_db):
-        criar_tabela_usuario()
+        # criar_tabela_usuario()
         criar_tabela()
 
         admin = Administrador(0, "Admin Teste", "teste@admin.com", "123", "123456", "Rua A")
@@ -63,7 +63,7 @@ class TestAdministradorRepo:
         assert admin_db.nome == admin.nome
 
     def test_atualizar_administrador(self, test_db):
-        criar_tabela_usuario()
+        # criar_tabela_usuario()
         criar_tabela()
 
         admin = Administrador(0, "Admin Antigo", "antigo@admin.com", "senha", "123", "Rua Antiga")
@@ -86,7 +86,7 @@ class TestAdministradorRepo:
         assert atualizado.email == "novo@admin.com"
 
     def test_excluir_administrador(self, test_db):
-        criar_tabela_usuario()
+        # criar_tabela_usuario()
         criar_tabela()
 
         admin = Administrador(0, "Excluir Admin", "del@admin.com", "senha", "000", "Rua Delete")

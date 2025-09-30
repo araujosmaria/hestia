@@ -39,7 +39,7 @@ def inserir(usuario: Usuario) -> Optional[int]:
                 usuario.bairro,
                 usuario.cidade,
                 usuario.estado,
-                int(usuario.ativo)
+                (usuario.ativo)
             ))
             conn.commit()
             return cursor.lastrowid

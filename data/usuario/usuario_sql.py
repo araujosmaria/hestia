@@ -35,7 +35,6 @@ INSERT INTO usuario (
     foto,
     token_redefinicao,
     data_token,
-    data_cadastro,
     cep,
     logradouro,
     numero,
@@ -227,5 +226,5 @@ WHERE id_usuario = ?
 """
 
 ATUALIZAR_FOTO = """
-UPDATE usuario SET foto = ? WHERE id = ?
+UPDATE usuario SET foto = ? WHERE id_usuario = ?
 """
