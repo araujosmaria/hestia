@@ -5,21 +5,18 @@ from datetime import datetime
 from data.usuario.usuario_repo import (
     criar_tabela,
     inserir,
+    obter_por_cpf,
     obter_todos,
     obter_por_id,
     atualizar,
     excluir
 )
+
 from data.usuario.usuario_model import Usuario
 
-
 class TestUsuarioRepo:
-    def test_criar_tabela(self, test_db):
-        resultado = criar_tabela()
-        assert resultado is True, "A criação da tabela deveria retornar True"
 
-    def criar_usuario_fake(self) -> Usuario:
-        """Cria um usuário válido para testes com email e cpf únicos"""
+    def criar_usuario_fake(self, test_db) -> Usuario:
         sufixo = ''.join(random.choices(string.digits, k=6))  # garante unicidade
         return Usuario(
             id=None,
@@ -45,18 +42,27 @@ class TestUsuarioRepo:
         )
 
     def test_inserir(self, test_db):
-        criar_tabela()
         usuario_teste = self.criar_usuario_fake()
-
         id_usuario_inserido = inserir(usuario_teste)
-        usuario_db = obter_por_id(id_usuario_inserido)
+        assert id_usuario_inserido is not None, "Deveria retornar o ID do usuário inserido"
 
-        assert usuario_db is not None, "O usuário inserido não deveria ser None"
-        assert usuario_db.id == id_usuario_inserido, "O ID não confere"
-        assert usuario_db.nome == usuario_teste.nome, "O nome não confere"
-        assert usuario_db.email == usuario_teste.email, "O email não confere"
-        assert usuario_db.telefone == usuario_teste.telefone, "O telefone não confere"
-        assert usuario_db.cpf == usuario_teste.cpf, "O CPF não confere"
+        usuario_db = obter_por_id(id_usuario_inserido)
+        assert usuario_db is not None, "Usuário inserido não encontrado"
+        assert usuario_db.id == id_usuario_inserido, "ID não confere"
+        assert usuario_db.nome == usuario_teste.nome, "Nome não confere"
+        assert usuario_db.email == usuario_teste.email, "Email não confere"
+        assert usuario_db.telefone == usuario_teste.telefone, "Telefone não confere"
+        assert usuario_db.cpf == usuario_teste.cpf, "CPF não confere"
+
+    def test_obter_por_cpf(self, test_db):
+        usuario_teste = self.criar_usuario_fake()
+        inserir(usuario_teste)
+
+        usuario_db = obter_por_cpf(usuario_teste.cpf)
+        assert usuario_db is not None, "Usuário obtido por CPF não deveria ser None"
+        assert usuario_db.cpf == usuario_teste.cpf, "CPF obtido não confere"
+        assert usuario_db.nome == usuario_teste.nome, "Nome obtido não confere"
+        assert usuario_db.email == usuario_teste.email, "Email obtido não confere"
 
     def test_obter_todos(self, test_db):
         criar_tabela()

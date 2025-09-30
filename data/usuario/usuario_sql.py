@@ -48,6 +48,32 @@ INSERT INTO usuario (
 VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
 """
 
+OBTER_USUARIO_POR_CPF = """
+SELECT 
+    id_usuario,
+    nome,
+    dataNascimento,
+    email,
+    telefone,
+    cpf,
+    senha,
+    perfil,
+    foto,
+    token_redefinicao,
+    data_token,
+    data_cadastro,
+    cep,
+    logradouro,
+    numero,
+    complemento,
+    bairro,
+    cidade,
+    estado,
+    ativo
+FROM usuario
+WHERE cpf = ?
+"""
+
 OBTER_TODOS_USUARIOS = """ 
 SELECT 
     id_usuario, 

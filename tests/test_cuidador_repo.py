@@ -1,3 +1,7 @@
+from data.cuidador import cuidador_repo
+from data.usuario import usuario_repo
+from data.usuario.usuario_model import Usuario
+from data.usuario.usuario_repo import inserir as inserir_usuario, criar_tabela as criar_tabela_usuario
 from data.cuidador.cuidador_model import Cuidador
 from data.cuidador.cuidador_repo import (
     criar_tabela as criar_tabela_cuidador,
@@ -7,11 +11,36 @@ from data.cuidador.cuidador_repo import (
     atualizar,
     excluir
 )
-from data.usuario.usuario_repo import criar_tabela as criar_tabela_usuario
+
+def criar_usuario_teste():
+    usuario = Usuario(
+        id=None,
+        nome="Usuário Teste",
+        dataNascimento="1990-01-01",
+        email="usuario@teste.com",
+        telefone="999999999",
+        cpf="12345678901",
+        senha="senha123",
+        perfil="cuidador",
+        foto=None,
+        token_redefinicao=None,
+        data_token=None,
+        data_cadastro=None,
+        cep="00000-000",
+        logradouro="Rua Teste",
+        numero="100",
+        complemento="",
+        bairro="Bairro Teste",
+        cidade="Cidade Teste",
+        estado="Estado Teste",
+        ativo=True
+    )
+    return inserir_usuario(usuario)
 
 class TestCuidadorRepo:
+
     def test_criar_tabela(self):
-        criar_tabela_usuario()  # cria tabela usuário se necessário
+        criar_tabela_usuario()
         resultado = criar_tabela_cuidador()
         assert resultado is True
 
@@ -19,71 +48,36 @@ class TestCuidadorRepo:
         criar_tabela_usuario()
         criar_tabela_cuidador()
 
+        id_usuario = criar_usuario_teste()
+
         cuidador = Cuidador(
-            id=None,
-            nome="Teste Cuidador",
-            dataNascimento="1990-01-01",
-            email="teste@cuidador.com",
-            telefone="123456789",
-            cpf="",
-            senha="senha123",
-            perfil="cuidador",
-            foto=None,
-            token_redefinicao=None,
-            data_token=None,
-            data_cadastro="2025-01-01",
-            cep="12345-000",
-            logradouro="Rua Teste",
-            numero="123",
-            complemento="",
-            bairro="Centro",
-            cidade="Cidade",
-            estado="Estado",
-            ativo=True,
+            id=id_usuario,
             experiencia="5 anos",
             valorHora=50.0,
             escolaridade="Ensino Médio",
             apresentacao="Apresentação teste",
             cursos="Curso teste",
+            inicio_profissional="2015-01-01",
             confirmarSenha="senha123",
             termos=True,
             verificacao=True,
-            comunicacoes=True,
-            inicio_profissional="2015-01-01"
+            comunicacoes=True
         )
+        id_cuidador = inserir(cuidador)
+        assert id_cuidador == id_usuario
 
-        id_inserido = inserir(cuidador)
-        assert id_inserido is not None
-
-        cuidador_db = obter_por_id(id_inserido)
+        cuidador_db = obter_por_id(id_cuidador)
         assert cuidador_db is not None
-        assert cuidador_db.nome == cuidador.nome
+        assert cuidador_db.id == id_usuario
+        assert cuidador_db.experiencia == cuidador.experiencia
 
     def test_obter_todos(self):
         criar_tabela_usuario()
         criar_tabela_cuidador()
 
-        c1 = Cuidador(
-            id=None,
-            nome="Cuidador A",
-            dataNascimento="1980-01-01",
-            email="cuidadorA@teste.com",
-            telefone="111111111",
-            cpf="11111111111",
-            senha="senhaA",
-            perfil="cuidador",
-            foto=None,
-            token_redefinicao=None,
-            data_token=None,
-            data_cadastro="2025-01-01",
-            cep="00000-000",
-            logradouro="Rua A",
-            numero="1",
-            complemento="",
-            bairro="Bairro A",
-            cidade="Cidade A",
-            estado="Estado A",
-            ativo=True,
+        id_usuario1 = criar_usuario_teste()
+        cuidador1 = Cuidador(
+            id=id_usuario1,
             experiencia="3 anos",
             valorHora=40.0,
             escolaridade="Ensino Médio",
@@ -95,9 +89,9 @@ class TestCuidadorRepo:
             comunicacoes=True,
             inicio_profissional="2012-01-01"
         )
-        inserir(c1)
+        inserir(cuidador1)
 
-        c2 = Cuidador(
+        usuario2 = Usuario(
             id=None,
             nome="Cuidador B",
             dataNascimento="1985-02-02",
@@ -109,7 +103,7 @@ class TestCuidadorRepo:
             foto=None,
             token_redefinicao=None,
             data_token=None,
-            data_cadastro="2025-01-01",
+            data_cadastro=None,
             cep="11111-111",
             logradouro="Rua B",
             numero="2",
@@ -117,7 +111,11 @@ class TestCuidadorRepo:
             bairro="Bairro B",
             cidade="Cidade B",
             estado="Estado B",
-            ativo=True,
+            ativo=True
+        )
+        id_usuario2 = inserir_usuario(usuario2)
+        cuidador2 = Cuidador(
+            id=id_usuario2,
             experiencia="4 anos",
             valorHora=45.0,
             escolaridade="Ensino Superior",
@@ -129,40 +127,22 @@ class TestCuidadorRepo:
             comunicacoes=True,
             inicio_profissional="2013-01-01"
         )
-        inserir(c2)
+        inserir(cuidador2)
 
         lista = obter_todos()
-        nomes = [c.nome for c in lista]
+        ids = [c.id for c in lista]
 
-        assert "Cuidador A" in nomes
-        assert "Cuidador B" in nomes
+        assert id_usuario1 in ids
+        assert id_usuario2 in ids
         assert len(lista) >= 2
 
     def test_atualizar_cuidador(self):
         criar_tabela_usuario()
         criar_tabela_cuidador()
 
+        id_usuario = criar_usuario_teste()
         cuidador = Cuidador(
-            id=None,
-            nome="Atualizar Teste",
-            dataNascimento="1990-01-01",
-            email="atualizar@teste.com",
-            telefone="333333333",
-            cpf="33333333333",
-            senha="senha",
-            perfil="cuidador",
-            foto=None,
-            token_redefinicao=None,
-            data_token=None,
-            data_cadastro="2025-01-01",
-            cep="22222-222",
-            logradouro="Rua Atualizar",
-            numero="3",
-            complemento="",
-            bairro="Bairro Atualizar",
-            cidade="Cidade Atualizar",
-            estado="Estado Atualizar",
-            ativo=True,
+            id=id_usuario,
             experiencia="2 anos",
             valorHora=30.0,
             escolaridade="Ensino Médio",
@@ -174,42 +154,23 @@ class TestCuidadorRepo:
             comunicacoes=True,
             inicio_profissional="2014-01-01"
         )
-        id_cuidador = inserir(cuidador)
+        inserir(cuidador)
 
-        # atualiza
-        cuidador_atualizado = obter_por_id(id_cuidador)
+        cuidador_atualizado = obter_por_id(id_usuario)
         cuidador_atualizado.experiencia = "10 anos"
         resultado = atualizar(cuidador_atualizado)
         assert resultado is True
 
-        atualizado = obter_por_id(id_cuidador)
+        atualizado = obter_por_id(id_usuario)
         assert atualizado.experiencia == "10 anos"
 
     def test_excluir_cuidador(self):
         criar_tabela_usuario()
         criar_tabela_cuidador()
 
+        id_usuario = criar_usuario_teste()
         cuidador = Cuidador(
-            id=None,
-            nome="Excluir Teste",
-            dataNascimento="1990-01-01",
-            email="excluir@teste.com",
-            telefone="444444444",
-            cpf="44444444444",
-            senha="senha",
-            perfil="cuidador",
-            foto=None,
-            token_redefinicao=None,
-            data_token=None,
-            data_cadastro="2025-01-01",
-            cep="33333-333",
-            logradouro="Rua Excluir",
-            numero="4",
-            complemento="",
-            bairro="Bairro Excluir",
-            cidade="Cidade Excluir",
-            estado="Estado Excluir",
-            ativo=True,
+            id=id_usuario,
             experiencia="1 ano",
             valorHora=25.0,
             escolaridade="Ensino Fundamental",
@@ -221,10 +182,15 @@ class TestCuidadorRepo:
             comunicacoes=True,
             inicio_profissional="2016-01-01"
         )
-        id_cuidador = inserir(cuidador)
+        inserir(cuidador)
 
-        resultado = excluir(id_cuidador)
+        resultado = excluir(id_usuario)
         assert resultado is True
 
-        cuidador_db = obter_por_id(id_cuidador)
+        cuidador_db = obter_por_id(id_usuario)
         assert cuidador_db is None
+
+
+if __name__ == "__main__":
+    import pytest
+    pytest.main([__file__])

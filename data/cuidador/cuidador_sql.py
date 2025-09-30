@@ -31,73 +31,35 @@ INSERT INTO cuidador (
 VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);
 """
 
-# OBTER_CUIDADOR_POR_CPF = """
-# SELECT
-#     cu.id_cuidador,
-#     u.nome,
-#     u.email,
-#     u.senha,
-#     u.telefone,
-#     u.cpf,
-#     u.perfil,
-#     u.foto,
-#     u.token_redefinicao,
-#     u.data_token,
-#     u.data_cadastro,
-#     cu.experiencia,
-#     cu.valorHora,
-#     cu.escolaridade,
-#     cu.apresentacao,
-#     cu.cursos,
-#     cu.inicio_profissional
-# FROM cuidador cu
-# JOIN usuario u ON cu.id_cuidador = u.id_usuario
-# WHERE u.cpf = ?;
-# """
-
 OBTER_CUIDADOR_POR_ID = """
 SELECT
     cu.id_cuidador,
     u.nome,
     u.email,
-    u.senha,
     u.telefone,
-    u.cpf,
-    u.perfil,
     u.foto,
-    u.token_redefinicao,
-    u.data_token,
-    u.data_cadastro,
     cu.experiencia,
     cu.valorHora,
     cu.escolaridade,
     cu.apresentacao,
     cu.cursos,
-    cu.inicio_profissional
+    cu.inicio_profissional,
+    cu.confirmarSenha,
+    cu.termos,
+    cu.verificacao,
+    cu.comunicacoes
 FROM cuidador cu
 JOIN usuario u ON cu.id_cuidador = u.id_usuario
 WHERE cu.id_cuidador = ?;
 """
 
-OBTER_TODOS_CUIDADOR = """
+OBTER_TODOS_CUIDADORES = """
 SELECT  
     cu.id_cuidador, 
     u.nome, 
-    u.email, 
-    u.senha, 
-    u.telefone, 
-    u.cpf,
-    u.perfil,
-    u.foto,
-    u.token_redefinicao,
-    u.data_token,
-    u.data_cadastro,
-    cu.experiencia,
     cu.valorHora,
     cu.escolaridade,
-    cu.apresentacao,
-    cu.cursos,
-    cu.inicio_profissional
+    u.foto
 FROM cuidador cu
 JOIN usuario u ON cu.id_cuidador = u.id_usuario
 ORDER BY u.nome;
@@ -105,9 +67,20 @@ ORDER BY u.nome;
 
 ATUALIZAR_CUIDADOR = """
 UPDATE cuidador
-SET inicio_profissional = ?
+SET
+    experiencia = ?,
+    valorHora = ?,
+    escolaridade = ?,
+    apresentacao = ?,
+    cursos = ?,
+    confirmarSenha = ?,
+    termos = ?,
+    verificacao = ?,
+    comunicacoes = ?,
+    inicio_profissional = ?
 WHERE id_cuidador = ?
 """
+
 
 EXCLUIR_CUIDADOR = """
 DELETE FROM cuidador

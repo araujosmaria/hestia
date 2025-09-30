@@ -1,10 +1,9 @@
 from dataclasses import dataclass
 from typing import Optional
 
-
 @dataclass
 class Usuario:
-    id: int
+    id: Optional[int] = None
     nome: str    
     dataNascimento: str
     email: str
@@ -12,15 +11,15 @@ class Usuario:
     cpf: str
     senha: str
     perfil: str
-    foto: str
-    token_redefinicao: Optional[str]
-    data_token: Optional[str]
-    data_cadastro: Optional[str]
+    foto: Optional[str] = None
+    token_redefinicao: Optional[str] = None
+    data_token: Optional[str] = None
+    data_cadastro: Optional[str] = None
     cep: str
     logradouro: str
     numero: str
-    complemento: str
+    complemento: Optional[str] = None
     bairro: str
     cidade: str
     estado: str
-    ativo: bool
+    ativo: bool = False
