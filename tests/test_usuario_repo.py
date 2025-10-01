@@ -1,9 +1,9 @@
+import sqlite3
 import pytest
 import random
 import string
 from datetime import datetime
-from data.usuario.usuario_repo import (criar_tabela, inserir, obter_por_cpf, obter_todos, obter_por_id, atualizar, excluir)
-
+from data.usuario.usuario_repo import (criar_tabela, inserir,  obter_por_cpf, obter_por_id, obter_todos, atualizar, excluir,)
 from data.usuario.usuario_model import Usuario
 
 class TestUsuarioRepo:
