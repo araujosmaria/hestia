@@ -1,29 +1,29 @@
 CRIAR_TABELA_CLIENTE = """
 CREATE TABLE IF NOT EXISTS cliente (
-    id_cliente INTEGER PRIMARY KEY,
-    parentesco_paciente TEXT NOT NULL,
-    confirmarSenha TEXT NOT NULL,
-    termos BOOLEAN NOT NULL,
-    verificacao BOOLEAN NOT NULL,
-    comunicacoes BOOLEAN NOT NULL,
-    FOREIGN KEY (id_cliente) REFERENCES usuario(id_usuario)
+    id INTEGER PRIMARY KEY,  -- recebe o id do usuario
+    parentesco_paciente TEXT,
+    confirmarSenha TEXT,
+    termos BOOLEAN,
+    verificacao BOOLEAN,
+    comunicacoes BOOLEAN,
+    FOREIGN KEY(id) REFERENCES usuario(id_usuario)
 );
 """
 
 INSERIR_CLIENTE = """
 INSERT INTO cliente (
-    id_cliente, 
+    id, 
     parentesco_paciente,
     confirmarSenha,
     termos,
     verificacao,
     comunicacoes
-) VALUES (?,?,?,?,?,?);
+) VALUES (?, ?, ?, ?, ?, ?);
 """
 
 OBTER_TODOS_CLIENTE = """
 SELECT 
-    c.id_cliente AS id_cliente,
+    c.id AS id,
     u.nome,
     u.dataNascimento,
     u.email,
@@ -42,20 +42,22 @@ SELECT
     u.bairro,
     u.cidade,
     u.estado,
-    c.ativo,
+    u.ativo,
     c.parentesco_paciente,
     c.confirmarSenha,
     c.termos,
     c.verificacao,
     c.comunicacoes
 FROM cliente c
-JOIN usuario u ON c.id_cliente = u.id_usuario
+JOIN usuario u ON c.id = u.id_usuario
 ORDER BY u.nome
 """
 
+
+
 OBTER_CLIENTE_POR_ID = """
 SELECT 
-    c.id_cliente AS id_cliente,
+    c.id AS id,
     u.nome,
     u.dataNascimento,
     u.email,
@@ -74,24 +76,23 @@ SELECT
     u.bairro,
     u.cidade,
     u.estado,
-    c.ativo,
     c.parentesco_paciente,
     c.confirmarSenha,
     c.termos,
     c.verificacao,
     c.comunicacoes
 FROM cliente c
-JOIN usuario u ON c.id_cliente = u.id_usuario
-WHERE c.id_cliente = ?
+JOIN usuario u ON c.id = u.id_usuario
+WHERE c.id = ?
 """
                     
 ATUALIZAR_CLIENTE = """
 UPDATE cliente
 SET parentesco_paciente = ?, termos = ?, comunicacoes = ?
-WHERE id_cliente = ?
+WHERE id = ?
 """
 
 EXCLUIR_CLIENTE = """
 DELETE FROM cliente
-WHERE id_cliente = ?
+WHERE id = ?
 """

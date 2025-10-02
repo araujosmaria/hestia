@@ -1,15 +1,29 @@
-import sqlite3
 import pytest
 import random
 import string
 from datetime import datetime
-from data.usuario.usuario_repo import (criar_tabela, inserir,  obter_por_cpf, obter_por_id, obter_todos, atualizar, excluir,)
+import sqlite3
+
+from data.usuario.usuario_repo import (
+    criar_tabela, inserir, obter_por_cpf, obter_por_id,
+    obter_todos, atualizar, excluir
+)
 from data.usuario.usuario_model import Usuario
+
+DB_PATH = "dados.db"
 
 class TestUsuarioRepo:
 
-    def criar_usuario_fake(self) -> Usuario:
+    def setup_method(self):
+        """Roda antes de cada teste: recria a tabela para garantir ambiente limpo"""
+        conn = sqlite3.connect(DB_PATH)
+        cursor = conn.cursor()
+        cursor.execute("DROP TABLE IF EXISTS usuarios;")  # nome deve ser igual ao do SQL
+        conn.commit()
+        conn.close()
         criar_tabela()
+
+    def criar_usuario_fake(self) -> Usuario:
         sufixo = ''.join(random.choices(string.digits, k=6))  # garante unicidade
         return Usuario(
             id=None,
@@ -34,7 +48,7 @@ class TestUsuarioRepo:
             ativo=True,
         )
 
-    def test_inserir(self, test_db):
+    def test_inserir(self):
         usuario_teste = self.criar_usuario_fake()
         id_usuario_inserido = inserir(usuario_teste)
         assert id_usuario_inserido is not None, "Deveria retornar o ID do usuário inserido"
@@ -47,7 +61,7 @@ class TestUsuarioRepo:
         assert usuario_db.telefone == usuario_teste.telefone, "Telefone não confere"
         assert usuario_db.cpf == usuario_teste.cpf, "CPF não confere"
 
-    def test_obter_por_cpf(self, test_db):
+    def test_obter_por_cpf(self):
         usuario_teste = self.criar_usuario_fake()
         inserir(usuario_teste)
 
@@ -57,8 +71,7 @@ class TestUsuarioRepo:
         assert usuario_db.nome == usuario_teste.nome, "Nome obtido não confere"
         assert usuario_db.email == usuario_teste.email, "Email obtido não confere"
 
-    def test_obter_todos(self, test_db):
-        criar_tabela()
+    def test_obter_todos(self):
         inserir(self.criar_usuario_fake())
         inserir(self.criar_usuario_fake())
 
@@ -67,8 +80,7 @@ class TestUsuarioRepo:
         nomes = [u.nome for u in lista_usuarios]
         assert "Usuario Teste" in nomes, "Usuario Teste deveria estar na lista"
 
-    def test_obter_por_id(self, test_db):
-        criar_tabela()
+    def test_obter_por_id(self):
         usuario_teste = self.criar_usuario_fake()
         id_usuario_inserido = inserir(usuario_teste)
 
@@ -77,8 +89,7 @@ class TestUsuarioRepo:
         assert usuario_db.id == id_usuario_inserido, "O ID buscado não confere"
         assert usuario_db.nome == usuario_teste.nome, "O nome buscado não confere"
 
-    def test_atualizar_usuario(self, test_db):
-        criar_tabela()
+    def test_atualizar_usuario(self):
         usuario_teste = self.criar_usuario_fake()
         id_usuario_inserido = inserir(usuario_teste)
         usuario_inserido = obter_por_id(id_usuario_inserido)
@@ -99,8 +110,7 @@ class TestUsuarioRepo:
         assert usuario_db.telefone == "987654321", "Telefone atualizado não confere"
         assert usuario_db.cidade == "Cidade Nova", "Cidade atualizada não confere"
 
-    def test_excluir_usuario(self, test_db):
-        criar_tabela()
+    def test_excluir_usuario(self):
         usuario_teste = self.criar_usuario_fake()
         id_usuario_inserido = inserir(usuario_teste)
 

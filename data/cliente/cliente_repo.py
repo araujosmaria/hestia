@@ -1,13 +1,24 @@
 import sqlite3
 from typing import Optional, List
 from data.cliente.cliente_model import Cliente
-from data.cliente.cliente_sql import *
+from data.cliente.cliente_sql import (
+    CRIAR_TABELA_CLIENTE,
+    INSERIR_CLIENTE,
+    OBTER_CLIENTE_POR_ID,
+    OBTER_TODOS_CLIENTE,
+    ATUALIZAR_CLIENTE,
+    EXCLUIR_CLIENTE,
+)
 from data.usuario import usuario_repo
+from data.usuario.usuario_model import Usuario
 
-# Função para criar a tabela de clientes
-def criar_tabela(db_path: str = "default.db") -> bool:
+# Banco fixo da aplicação
+DB_PATH = "dados.db"
+
+def criar_tabela(db_path: str = None) -> bool:
+    if db_path is None:
+        db_path = DB_PATH
     try:
-        # Cria tabela de usuário primeiro
         usuario_repo.criar_tabela(db_path=db_path)
         with sqlite3.connect(db_path) as conn:
             cursor = conn.cursor()
@@ -18,15 +29,39 @@ def criar_tabela(db_path: str = "default.db") -> bool:
         print(f"Erro ao criar tabela de clientes: {e}")
         return False
 
-# Função para inserir um cliente
-def inserir(cliente: Cliente, db_path: str = "default.db") -> Optional[int]:
+def inserir(cliente: Cliente, db_path: str = DB_PATH) -> Optional[int]:
     try:
-        # Inserir primeiro no usuário
-        id_usuario = usuario_repo.inserir(cliente, db_path=db_path)
+        # Converte Cliente em Usuario
+        usuario = Usuario(
+            id=None,  # precisa ser None para AUTOINCREMENT do usuário
+            nome=cliente.nome,
+            dataNascimento=cliente.dataNascimento,
+            email=cliente.email,
+            telefone=cliente.telefone,
+            cpf=cliente.cpf,
+            senha=cliente.senha,
+            perfil=cliente.perfil,
+            token_redefinicao=cliente.token_redefinicao,
+            data_token=cliente.data_token,
+            data_cadastro=cliente.data_cadastro,
+            cep=cliente.cep,
+            logradouro=cliente.logradouro,
+            numero=cliente.numero,
+            complemento=cliente.complemento,
+            bairro=cliente.bairro,
+            cidade=cliente.cidade,
+            estado=cliente.estado,
+            ativo=True,
+            foto=cliente.foto
+        )
+
+        # Insere usuário
+        id_usuario = usuario_repo.inserir(usuario, db_path=db_path)
         if id_usuario is None:
             print("Erro: inserção do usuário retornou None")
             return None
 
+        # Insere dados específicos do cliente
         with sqlite3.connect(db_path) as conn:
             cursor = conn.cursor()
             cursor.execute(
@@ -35,10 +70,10 @@ def inserir(cliente: Cliente, db_path: str = "default.db") -> Optional[int]:
                     id_usuario,
                     cliente.parentesco_paciente,
                     cliente.confirmarSenha,
-                    cliente.termos,
-                    cliente.verificacao,
-                    cliente.comunicacoes
-                )
+                    int(cliente.termos),
+                    int(cliente.verificacao),
+                    int(cliente.comunicacoes),
+                ),
             )
             conn.commit()
         return id_usuario
@@ -46,8 +81,10 @@ def inserir(cliente: Cliente, db_path: str = "default.db") -> Optional[int]:
         print(f"Erro ao inserir cliente: {e}")
         return None
 
-# Função para obter cliente por ID
-def obter_por_id(id_cliente: int, db_path: str = "default.db") -> Optional[Cliente]:
+
+def obter_por_id(id_cliente: int, db_path: str = None) -> Optional[Cliente]:
+    if db_path is None:
+        db_path = DB_PATH
     try:
         with sqlite3.connect(db_path) as conn:
             conn.row_factory = sqlite3.Row
@@ -56,7 +93,7 @@ def obter_por_id(id_cliente: int, db_path: str = "default.db") -> Optional[Clien
             row = cursor.fetchone()
             if row:
                 return Cliente(
-                    id=row["id_cliente"],
+                    id=row["id"],
                     nome=row["nome"],
                     dataNascimento=row["dataNascimento"],
                     email=row["email"],
@@ -75,29 +112,29 @@ def obter_por_id(id_cliente: int, db_path: str = "default.db") -> Optional[Clien
                     bairro=row["bairro"],
                     cidade=row["cidade"],
                     estado=row["estado"],
-                    ativo=bool(row["ativo"]),
+                    ativo=True,  # sempre True para cliente inserido
                     parentesco_paciente=row["parentesco_paciente"],
-                    confirmarSenha=row.get("confirmarSenha", ""),
-                    termos=row.get("termos", True),
-                    verificacao=row.get("verificacao", True),
-                    comunicacoes=row.get("comunicacoes", True)
+                    confirmarSenha=row["confirmarSenha"] or "",
+                    termos=bool(row["termos"]),
+                    verificacao=bool(row["verificacao"]),
+                    comunicacoes=bool(row["comunicacoes"]),
                 )
             return None
     except Exception as e:
         print(f"Erro ao obter cliente por ID: {e}")
         return None
 
-# Função para obter todos os clientes
-def obter_todos(db_path: str = "default.db") -> List[Cliente]:
+
+def obter_todos(db_path: str = DB_PATH) -> List[Cliente]:
     try:
         with sqlite3.connect(db_path) as conn:
             conn.row_factory = sqlite3.Row
             cursor = conn.cursor()
             cursor.execute(OBTER_TODOS_CLIENTE)
             rows = cursor.fetchall()
-            clientes = [
+            return [
                 Cliente(
-                    id=row["id_cliente"],
+                    id=row["id"],
                     nome=row["nome"],
                     dataNascimento=row["dataNascimento"],
                     email=row["email"],
@@ -116,28 +153,33 @@ def obter_todos(db_path: str = "default.db") -> List[Cliente]:
                     bairro=row["bairro"],
                     cidade=row["cidade"],
                     estado=row["estado"],
-                    ativo=bool(row["ativo"]),
                     parentesco_paciente=row["parentesco_paciente"],
-                    confirmarSenha=row.get("confirmarSenha", ""),
-                    termos=row.get("termos", True),
-                    verificacao=row.get("verificacao", True),
-                    comunicacoes=row.get("comunicacoes", True)
+                    confirmarSenha=row["confirmarSenha"],
+                    termos=bool(row["termos"]),
+                    verificacao=bool(row["verificacao"]),
+                    comunicacoes=bool(row["comunicacoes"]),
                 )
                 for row in rows
             ]
-            return clientes
     except Exception as e:
         print(f"Erro ao obter todos os clientes: {e}")
         return []
 
-# Função para atualizar um cliente
-def atualizar(cliente: Cliente, db_path: str = "default.db") -> bool:
+
+def atualizar(cliente: Cliente, db_path: str = None) -> bool:
+    if db_path is None:
+        db_path = DB_PATH
     try:
         with sqlite3.connect(db_path) as conn:
             cursor = conn.cursor()
             cursor.execute(
                 ATUALIZAR_CLIENTE,
-                (cliente.parentesco_paciente, bool(cliente.termos), bool(cliente.comunicacoes), cliente.id)
+                (
+                    cliente.parentesco_paciente,
+                    bool(cliente.termos),
+                    bool(cliente.comunicacoes),
+                    cliente.id,
+                ),
             )
             conn.commit()
             return cursor.rowcount > 0
@@ -146,8 +188,9 @@ def atualizar(cliente: Cliente, db_path: str = "default.db") -> bool:
         return False
 
 
-# Função para excluir um cliente
-def excluir(id_cliente: int, db_path: str = "default.db") -> bool:
+def excluir(id_cliente: int, db_path: str = None) -> bool:
+    if db_path is None:
+        db_path = DB_PATH
     try:
         with sqlite3.connect(db_path) as conn:
             cursor = conn.cursor()

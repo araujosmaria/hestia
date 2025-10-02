@@ -1,16 +1,30 @@
 import sqlite3
 from typing import Optional, List
 from data.usuario.usuario_model import Usuario
-from data.usuario.usuario_sql import (CRIAR_TABELA_USUARIO, INSERIR_USUARIO, OBTER_USUARIO_POR_ID, OBTER_USUARIO_POR_CPF, OBTER_TODOS_USUARIOS, ATUALIZAR_USUARIO, EXCLUIR_USUARIO)
+from data.usuario.usuario_sql import (
+    CRIAR_TABELA_USUARIO, INSERIR_USUARIO, OBTER_USUARIO_POR_ID,
+    OBTER_USUARIO_POR_CPF, OBTER_TODOS_USUARIOS, ATUALIZAR_USUARIO, EXCLUIR_USUARIO
+)
 
-DB_PATH = "hestia.db"  # caminho fixo do banco, pode ajustar se quiser parametrizar
+# Caminho padrão do banco
+DB_PATH = "dados.db"
 
-def criar_conexao() -> sqlite3.Connection:
-    conn = sqlite3.connect(DB_PATH)
+# ===============================
+# CRIA CONEXÃO
+# ===============================
+def criar_conexao(db_path: str = DB_PATH) -> sqlite3.Connection:
+    if db_path is None:
+        db_path = DB_PATH
+    conn = sqlite3.connect(db_path)
     conn.row_factory = sqlite3.Row
     return conn
 
-def criar_tabela(db_path: str = "default.db") -> bool:
+# ===============================
+# CRIA TABELA
+# ===============================
+def criar_tabela(db_path: str = None) -> bool:
+    if db_path is None:
+        db_path = DB_PATH
     try:
         with sqlite3.connect(db_path) as conn:
             cursor = conn.cursor()
@@ -21,9 +35,13 @@ def criar_tabela(db_path: str = "default.db") -> bool:
         print(f"Erro ao criar tabela de usuários: {e}")
         return False
 
-def inserir(usuario: Usuario, db_path: str = "default.db") -> Optional[int]:
+# ===============================
+# INSERIR
+# ===============================
+
+def inserir(usuario: Usuario, db_path: str = DB_PATH) -> Optional[int]:
     try:
-        with criar_conexao() as conn:
+        with criar_conexao(db_path) as conn:
             cursor = conn.cursor()
             cursor.execute(INSERIR_USUARIO, (
                 usuario.nome, usuario.dataNascimento, usuario.email, usuario.telefone,
@@ -38,14 +56,15 @@ def inserir(usuario: Usuario, db_path: str = "default.db") -> Optional[int]:
     except Exception as e:
         print(f"Erro ao inserir usuário: {e}")
         return None
-
-def obter_por_id(id_usuario: int, db_path: str = "default.db") -> Optional[Usuario]:
+# ===============================
+# OBTER POR ID
+# ===============================
+def obter_por_id(id_usuario: int, db_path: str = None) -> Optional[Usuario]:
     try:
-        with criar_conexao() as conn:
+        with criar_conexao(db_path) as conn:
             cursor = conn.execute(OBTER_USUARIO_POR_ID, (id_usuario,))
             row = cursor.fetchone()
             if row:
-                # mapear explicitamente as colunas
                 return Usuario(
                     id=row["id_usuario"],
                     nome=row["nome"],
@@ -73,9 +92,12 @@ def obter_por_id(id_usuario: int, db_path: str = "default.db") -> Optional[Usuar
         print(f"Erro ao obter usuário por ID: {e}")
         return None
 
-def obter_por_cpf(cpf: str, db_path: str = "default.db") -> Optional[Usuario]:
+# ===============================
+# OBTER POR CPF
+# ===============================
+def obter_por_cpf(cpf: str, db_path: str = None) -> Optional[Usuario]:
     try:
-        with criar_conexao() as conn:
+        with criar_conexao(db_path) as conn:
             cursor = conn.execute(OBTER_USUARIO_POR_CPF, (cpf,))
             row = cursor.fetchone()
             if row:
@@ -106,10 +128,12 @@ def obter_por_cpf(cpf: str, db_path: str = "default.db") -> Optional[Usuario]:
         print(f"Erro ao obter usuário por CPF: {e}")
         return None
 
-
-def obter_todos(db_path: str = "default.db") -> list[Usuario]:
+# ===============================
+# OBTER TODOS
+# ===============================
+def obter_todos(db_path: str = None) -> List[Usuario]:
     try:
-        with criar_conexao() as conn:
+        with criar_conexao(db_path) as conn:
             cursor = conn.execute(OBTER_TODOS_USUARIOS)
             return [
                 Usuario(
@@ -140,17 +164,33 @@ def obter_todos(db_path: str = "default.db") -> list[Usuario]:
         print(f"Erro ao obter todos os usuários: {e}")
         return []
 
-
-def atualizar(usuario: Usuario, db_path: str = "default.db") -> bool:
+# ===============================
+# ATUALIZAR
+# ===============================
+def atualizar(usuario: Usuario, db_path: str = None) -> bool:
     try:
-        with criar_conexao() as conn:
+        with criar_conexao(db_path) as conn:
             cursor = conn.execute(ATUALIZAR_USUARIO, (
-                usuario.nome, usuario.dataNascimento, usuario.email, usuario.telefone,
-                usuario.cpf, usuario.senha, usuario.perfil,
-                usuario.token_redefinicao, usuario.data_token, usuario.data_cadastro,
-                usuario.cep, usuario.logradouro, usuario.numero, usuario.complemento,
-                usuario.bairro, usuario.cidade, usuario.estado, int(usuario.ativo),
-                usuario.foto, usuario.id
+                usuario.nome,
+                usuario.dataNascimento,
+                usuario.email,
+                usuario.telefone,
+                usuario.cpf,
+                usuario.senha,
+                usuario.perfil,
+                usuario.token_redefinicao,
+                usuario.data_token,
+                usuario.data_cadastro,
+                usuario.cep,
+                usuario.logradouro,
+                usuario.numero,
+                usuario.complemento,
+                usuario.bairro,
+                usuario.cidade,
+                usuario.estado,
+                int(usuario.ativo),
+                usuario.foto,
+                usuario.id
             ))
             conn.commit()
             return cursor.rowcount > 0
@@ -158,9 +198,12 @@ def atualizar(usuario: Usuario, db_path: str = "default.db") -> bool:
         print(f"Erro ao atualizar usuário: {e}")
         return False
 
-def excluir(id_usuario: int, db_path: str = "default.db") -> bool:
+# ===============================
+# EXCLUIR
+# ===============================
+def excluir(id_usuario: int, db_path: str = None) -> bool:
     try:
-        with criar_conexao() as conn:
+        with criar_conexao(db_path) as conn:
             cursor = conn.execute(EXCLUIR_USUARIO, (id_usuario,))
             conn.commit()
             return cursor.rowcount > 0
