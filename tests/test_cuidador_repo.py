@@ -5,10 +5,8 @@ import pytest
 from datetime import datetime
 from data.cuidador.cuidador_model import Cuidador
 from data.cuidador import cuidador_repo
-from data.usuario.usuario_model import Usuario
-from data.usuario import usuario_repo
 
-TEST_DB = "test_dados_cuidador.db"
+TEST_DB = "test_dados.db"
 
 # ===============================
 # FIXTURE DO BANCO DE TESTES
@@ -17,8 +15,7 @@ TEST_DB = "test_dados_cuidador.db"
 def reset_test_db():
     if os.path.exists(TEST_DB):
         os.remove(TEST_DB)
-    usuario_repo.criar_tabela()  # garante que tabela de usuário exista
-    cuidador_repo.criar_tabela()
+    cuidador_repo.criar_tabela(db_path=TEST_DB)
     yield
     if os.path.exists(TEST_DB):
         os.remove(TEST_DB)
@@ -31,30 +28,30 @@ def criar_cuidador_fake() -> Cuidador:
     return Cuidador(
         id=None,
         nome=f"Cuidador {sufixo}",
-        dataNascimento="1990-01-01",
+        dataNascimento="1985-05-15",
         email=f"cuidador{sufixo}@teste.com",
         telefone=f"1199999{sufixo}",
-        cpf=f"{random.randint(10000000000, 99999999999)}",
+        cpf=f"123456{sufixo}",
         senha="senha123",
         perfil="cuidador",
-        foto=None,
         token_redefinicao=None,
         data_token=None,
         data_cadastro=datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
         cep="12345678",
-        logradouro="Rua Teste",
-        numero="100",
-        complemento="Apto 1",
-        bairro="Centro",
+        logradouro="Rua dos Testes",
+        numero="123",
+        complemento="Casa B",
+        bairro="Bairro Legal",
         cidade="São Paulo",
         estado="SP",
         ativo=True,
-        experiencia="5 anos",
-        valorHora=50.0,
-        escolaridade="Ensino Médio",
-        apresentacao="Apresentação teste",
-        cursos="Curso teste",
-        inicio_profissional="2015-01-01",
+        foto=None,
+        experiencia="3 anos em cuidados com idosos",
+        valorHora=30.0,
+        escolaridade="Ensino Médio Completo",
+        apresentacao="Sou cuidador dedicado e experiente.",
+        cursos="Primeiros Socorros, Cuidados Geriátricos",
+        inicio_profissional="2018-01-01",
         confirmarSenha="senha123",
         termos=True,
         verificacao=True,
@@ -66,47 +63,53 @@ def criar_cuidador_fake() -> Cuidador:
 # ===============================
 class TestCuidadorRepo:
 
+    def test_criar_tabela(self):
+        assert cuidador_repo.criar_tabela(db_path=TEST_DB)
+
     def test_inserir(self):
         cuidador = criar_cuidador_fake()
-        id_cuidador = cuidador_repo.inserir(cuidador)
+        id_cuidador = cuidador_repo.inserir(cuidador, db_path=TEST_DB)
         assert id_cuidador is not None
 
     def test_obter_por_id(self):
         cuidador = criar_cuidador_fake()
-        id_cuidador = cuidador_repo.inserir(cuidador)
+        id_cuidador = cuidador_repo.inserir(cuidador, db_path=TEST_DB)
         cuidador.id = id_cuidador
 
-        cuidador_db = cuidador_repo.obter_por_id(id_cuidador)
+        cuidador_db = cuidador_repo.obter_por_id(id_cuidador, db_path=TEST_DB)
         assert cuidador_db is not None
         assert cuidador_db.id == id_cuidador
+        assert cuidador_db.nome == cuidador.nome
 
     def test_obter_todos(self):
         cuidador1 = criar_cuidador_fake()
         cuidador2 = criar_cuidador_fake()
-        cuidador_repo.inserir(cuidador1)
-        cuidador_repo.inserir(cuidador2)
+        cuidador_repo.inserir(cuidador1, db_path=TEST_DB)
+        cuidador_repo.inserir(cuidador2, db_path=TEST_DB)
 
-        cuidadores = cuidador_repo.obter_todos()
+        cuidadores = cuidador_repo.obter_todos(db_path=TEST_DB)
         assert len(cuidadores) >= 2
 
     def test_atualizar(self):
         cuidador = criar_cuidador_fake()
-        id_cuidador = cuidador_repo.inserir(cuidador)
+        id_cuidador = cuidador_repo.inserir(cuidador, db_path=TEST_DB)
         cuidador.id = id_cuidador
-        cuidador.experiencia = "10 anos"
+        cuidador.experiencia = "Atualizado: 5 anos de experiência"
+        cuidador.valorHora = 50.0
 
-        atualizado = cuidador_repo.atualizar(cuidador)
+        atualizado = cuidador_repo.atualizar(cuidador, db_path=TEST_DB)
         assert atualizado
 
-        cuidador_db = cuidador_repo.obter_por_id(id_cuidador)
-        assert cuidador_db.experiencia == "10 anos"
+        cuidador_db = cuidador_repo.obter_por_id(id_cuidador, db_path=TEST_DB)
+        assert cuidador_db.experiencia == "Atualizado: 5 anos de experiência"
+        assert cuidador_db.valorHora == 50.0
 
     def test_excluir(self):
         cuidador = criar_cuidador_fake()
-        id_cuidador = cuidador_repo.inserir(cuidador)
+        id_cuidador = cuidador_repo.inserir(cuidador, db_path=TEST_DB)
 
-        excluido = cuidador_repo.excluir(id_cuidador)
+        excluido = cuidador_repo.excluir(id_cuidador, db_path=TEST_DB)
         assert excluido
 
-        cuidador_db = cuidador_repo.obter_por_id(id_cuidador)
+        cuidador_db = cuidador_repo.obter_por_id(id_cuidador, db_path=TEST_DB)
         assert cuidador_db is None
