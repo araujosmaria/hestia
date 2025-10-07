@@ -7,24 +7,44 @@ from data.cliente.cliente_model import Cliente
 from data.cliente import cliente_repo
 from data.cuidador.cuidador_model import Cuidador
 from data.cuidador import cuidador_repo
-from data.usuario.usuario_model import Usuario
+from data.usuario.usuario_model import *
 from data.usuario import usuario_repo
 from util.security import criar_hash_senha, verificar_senha
 from util.auth_decorator import criar_sessao, obter_usuario_logado, esta_logado
 from util.template_util import criar_templates
-
+from dtos.login_dto import LoginDTO  
 import json
+import os
+import uuid
 
 router = APIRouter() 
 templates = criar_templates("templates/auth")
+
+
+# Função auxiliar para salvar imagem
+async def salvar_imagem(foto: UploadFile):
+    if foto is None:
+        return None
+
+    ext = foto.filename.split(".")[-1]
+    nome_arquivo = f"{uuid.uuid4()}.{ext}"
+    caminho = f"static/img/perfil/{nome_arquivo}"
+    os.makedirs(os.path.dirname(caminho), exist_ok=True)
+
+    with open(caminho, "wb") as buffer:
+        buffer.write(await foto.read())
+
+    return nome_arquivo
+
 
 @router.get("/")
 async def get_login(request: Request): 
     return templates.TemplateResponse("index.html", {"request": request})
 
+
 @router.get("/login")
 async def get_login(request: Request, redirect: str = None):
-    # Se já está logado, redirecionar conforme o perfil
+    # Se já está logado, redireciona conforme o perfil
     if esta_logado(request):
         usuario = obter_usuario_logado(request)
         if usuario["perfil"] == "cuidador":
@@ -39,6 +59,7 @@ async def get_login(request: Request, redirect: str = None):
         {"request": request, "redirect": redirect}
     )
 
+
 @router.post("/login")
 async def post_login(
     request: Request,
@@ -46,10 +67,22 @@ async def post_login(
     senha: str = Form(...),
     redirect: str = Form(None)
 ):
-    # Buscar usuário pelo email
-    usuario = usuario_repo.obter_por_email(email)
-    
-    if not usuario or not verificar_senha(senha, usuario.senha):
+    # Validação via DTO LoginDTO
+    try:
+        login_dto = LoginDTO(email=email, senha=senha)
+    except Exception as e:
+        return templates.TemplateResponse(
+            "login.html",
+            {
+                "request": request,
+                "erro": str(e),
+                "email": email,
+                "redirect": redirect
+            }
+        )
+
+    usuario = usuario_repo.obter_por_email(login_dto.email)
+    if not usuario or not verificar_senha(login_dto.senha, usuario.senha):
         return templates.TemplateResponse(
             "login.html",
             {
@@ -59,8 +92,7 @@ async def post_login(
                 "redirect": redirect
             }
         )
-    
-    # Criar sessão
+
     usuario_dict = {
         "id": usuario.id,
         "nome": usuario.nome,
@@ -69,8 +101,7 @@ async def post_login(
         "foto": usuario.foto
     }
     criar_sessao(request, usuario_dict)
-    
-    # Redirecionar de acordo com o perfil ou redirect
+
     if redirect:
         return RedirectResponse(redirect, status.HTTP_303_SEE_OTHER)
 
@@ -87,7 +118,7 @@ async def get_cadastro(request: Request):
     return templates.TemplateResponse("cadastro.html", {"request": request})
 
 # -----------------------------
-    # CADASTRO CUIDADOR
+# CADASTRO CUIDADOR
 # -----------------------------
 
 @router.get("/cadastro_cuidador")
@@ -102,7 +133,7 @@ async def post_cadastro_cuidador(
     email: str = Form(...),
     telefone: str = Form(...),
     cpf: str = Form(...),
-    fotoPerfil: str = Form(None),
+    fotoPerfil: UploadFile = File(None),
     senha: str = Form(...),
     cep: str = Form(...),
     logradouro: str = Form(...),
@@ -122,17 +153,16 @@ async def post_cadastro_cuidador(
     comunicacoes: bool = Form(False),
 ):
     try:
-        # Verificar se email já existe
         if usuario_repo.obter_por_email(email):
             return templates.TemplateResponse(
                 "cadastro_cuidador.html",
                 {"request": request, "erro": "Email já cadastrado"}
             )
 
-        # Criar hash da senha
         senha_hash = criar_hash_senha(senha)
 
-        # Criar usuário cuidador
+        nome_arquivo_foto = await salvar_imagem(fotoPerfil)
+
         cuidador = Cuidador(
             id=0,
             nome=nome,
@@ -142,7 +172,7 @@ async def post_cadastro_cuidador(
             cpf=cpf,
             senha=senha_hash,
             perfil="cuidador",
-            foto=fotoPerfil,
+            foto=nome_arquivo_foto,
             token_redefinicao=None,
             data_token=None,
             data_cadastro=datetime.now().isoformat(),
@@ -165,7 +195,6 @@ async def post_cadastro_cuidador(
             comunicacoes=comunicacoes
         )
 
-        # Inserir usuário no banco
         usuario_id = cuidador_repo.inserir(cuidador)
         
         if not usuario_id:
@@ -185,7 +214,7 @@ async def post_cadastro_cuidador(
         )
 
 # -----------------------------
-    # CADASTRO CONTRATANTE
+# CADASTRO CONTRATANTE
 # -----------------------------
 
 @router.get("/cadastro_contratante")
@@ -209,24 +238,23 @@ async def post_cadastro_contratante(
     cidade: str = Form(...),
     estado: str = Form(...),
     parentesco_paciente: str = Form(...),
-    fotoPerfil: str = Form(None),
+    fotoPerfil: UploadFile = File(None),
     confirmarSenha: str = Form(...),
     termos: bool = Form(...),
     verificacao: bool = Form(False),
     comunicacoes: bool = Form(False),
 ):
     try:
-        # Verificar se o e-mail já está cadastrado
         if usuario_repo.obter_por_email(email):
             return templates.TemplateResponse(
                 "cadastro_contratante.html",
                 {"request": request, "erro": "Email já cadastrado"}
             )
 
-        # Criar hash da senha
         senha_hash = criar_hash_senha(senha)
 
-        # Criar objeto Cliente
+        nome_arquivo_foto = await salvar_imagem(fotoPerfil)
+
         cliente = Cliente(
             id=0,
             nome=nome,
@@ -236,7 +264,7 @@ async def post_cadastro_contratante(
             cpf=cpf,
             senha=senha_hash,
             perfil="contratante",
-            foto=fotoPerfil,
+            foto=nome_arquivo_foto,
             token_redefinicao=None,
             data_token=None,
             data_cadastro=datetime.now().isoformat(),
@@ -274,6 +302,7 @@ async def post_cadastro_contratante(
             "cadastro_contratante.html",
             {"request": request, "erro": "Erro interno ao cadastrar. Tente novamente."}
         )
+
 
 @router.get("/redefinicao_senha")
 async def get_redefinicao_senha(request: Request):

@@ -6,10 +6,12 @@ Babel
 python-multipart
 itsdangerous
 
-# Dependências de teste
 pytest
 pytest-asyncio
 pytest-cov
 
 passlib[bcrypt]
 python-jose[cryptography]
+
+pydantic>=2.0.0
+email-validator>=2.0.0
