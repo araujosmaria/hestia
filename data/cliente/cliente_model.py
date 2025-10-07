@@ -8,3 +8,4 @@ class Cliente(Usuario):
     termos: bool = False
     verificacao: bool = False
     comunicacoes: bool = False
+    perfil: str = 'contratante'  # sobrescreve o valor herdado para garantir o perfil correto

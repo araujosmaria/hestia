@@ -1,11 +1,8 @@
 from dataclasses import dataclass
-from datetime import date
-from typing import Optional
 from data.usuario.usuario_model import Usuario
 
-
 @dataclass
-class Cuidador(Usuario):   
+class Cuidador(Usuario):
    experiencia: str
    confirmarSenha: str
    valorHora: float
@@ -16,4 +13,5 @@ class Cuidador(Usuario):
    termos: bool
    verificacao: bool
    comunicacoes: bool
+   perfil: str = 'cuidador'  # sobrescreve o valor herdado para garantir o perfil correto
 

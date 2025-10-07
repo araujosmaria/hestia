@@ -214,3 +214,4 @@ def excluir(id_cuidador: int, db_path: str = None) -> bool:
         print(f"Erro ao excluir cuidador: {e}")
         return False
 
+

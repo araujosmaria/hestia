@@ -125,3 +125,4 @@ EXCLUIR_CUIDADOR = """
 DELETE FROM cuidador
 WHERE id = ?;
 """
+

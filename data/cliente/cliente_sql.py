@@ -96,3 +96,4 @@ EXCLUIR_CLIENTE = """
 DELETE FROM cliente
 WHERE id = ?
 """
+
