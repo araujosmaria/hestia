@@ -1,7 +1,7 @@
 {% extends "base_simples.html" %}
 
 {% block conteudo %}
-<form id="formContratante" class="cadastro-form" method="post">
+<form id="formContratante" class="cadastro-form" method="post" action="/cadastro_contratante">
     <div class="form-section">
         <h3 class="section-title">
             <i class="bi bi-person-fill"></i>
@@ -38,7 +38,7 @@
         <div class="row">
             <div class="col-md-6">
                 <label for="relacao" class="form-label">Relação com a pessoa a ser cuidada</label>
-                <select class="form-select" id="relacao" name="relacao" required>
+                <select class="form-select" id="relacao" name="parentesco_paciente" required>
                     <option value="">Selecione...</option>
                     <option value="filho">Filho(a)</option>
                     <option value="conjuge">Cônjuge</option>
@@ -70,7 +70,7 @@
             </div>
             <div class="col-md-6">
                 <label for="endereco" class="form-label">Endereço</label>
-                <input type="text" class="form-control" id="endereco" name="endereco" required>
+                <input type="text" class="form-control" id="endereco" name="logradouro" required>
             </div>
             <div class="col-md-3">
                 <label for="numero" class="form-label">Número</label>
@@ -149,10 +149,10 @@
     </div>
 
     <div class="form-actions">
-        <a href="/login" class="btn-criar-conta">
+        <button type="submit" class="btn-criar-conta">
             <i class="bi bi-check-circle"></i>
             Criar Minha Conta
-        </a>
+        </button>
         <p class="login-link">
             Já tem conta? <a href="/login">Faça login aqui</a>
         </p>

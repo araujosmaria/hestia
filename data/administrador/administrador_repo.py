@@ -1,11 +1,8 @@
 import sqlite3
 from data.util import open_connection
 from typing import Optional
-
 from data.administrador.administrador_model import Administrador
 from data.administrador.administrador_sql import *
-
-
 
 def criar_tabela() -> bool:
     try:
@@ -24,12 +21,13 @@ def inserir(administrador: Administrador) -> Optional[int]:
             administrador.nome,  
             administrador.email, 
             administrador.senha,
-            administrador.telefone, 
-            administrador.endereco))
+            administrador.telefone
+        ))
         return cursor.lastrowid
 
 def obter_todos() -> list[Administrador]:
     with open_connection() as conn:
+        conn.row_factory = sqlite3.Row
         cursor = conn.cursor()
         cursor.execute(OBTER_TODOS_ADMINISTRADOR)
         rows = cursor.fetchall()
@@ -39,9 +37,9 @@ def obter_todos() -> list[Administrador]:
                 nome=row["nome"], 
                 email=row["email"],
                 senha=row["senha"],
-                telefone=row["telefone"],
-                endereco=row["endereco"]) 
-                for row in rows]
+                telefone=row["telefone"]
+            ) for row in rows
+        ]
         return administradores
     
 def obter_por_id(administrador_id: int) -> Optional[Administrador]:
@@ -56,11 +54,9 @@ def obter_por_id(administrador_id: int) -> Optional[Administrador]:
                 nome=row["nome"],
                 email=row["email"],
                 senha=row["senha"],
-                telefone=row["telefone"],
-                endereco=row["endereco"]
+                telefone=row["telefone"]
             )
         return None
-
 
 def atualizar(administrador: Administrador) -> bool:
     with open_connection() as conn:
@@ -70,11 +66,9 @@ def atualizar(administrador: Administrador) -> bool:
             administrador.email,
             administrador.senha,
             administrador.telefone,
-            administrador.endereco,
             administrador.id
         ))
         return cursor.rowcount > 0
-
 
 def excluir(administrador_id: int) -> bool:
     with open_connection() as conn:

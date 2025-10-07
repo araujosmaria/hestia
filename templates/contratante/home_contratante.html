@@ -6,6 +6,10 @@
         <div class="text-center">
             <h1 class="mb-4">Painel do Contratante</h1>
 
+            <h2 class="mb-3" style="color: #2c7a5f; font-weight: bold;">
+                Bem-vindo, {{ user.first_name|default:user.username }}!
+            </h2>
+
             {% if request.query_params.get('mensagem') %}
             <div class="alert alert-success text-center">
                 {{ request.query_params.get('mensagem') }}

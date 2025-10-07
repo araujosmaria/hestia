@@ -5,32 +5,30 @@ nome TEXT NOT NULL,
 email TEXT NOT NULL,
 senha TEXT NOT NULL,
 telefone TEXT NOT NULL,
-endereco TEXT NOT NULL,
-FOREIGN KEY (id_usuario) REFERENCES usuario(id_usuario)
 );
 """
 
 INSERIR_ADMINISTRADOR = """
-INSERT INTO administrador (nome, email, senha, telefone, endereco ) 
-VALUES (?, ?, ?, ?, ?)
+INSERT INTO administrador (nome, email, senha, telefone ) 
+VALUES (?, ?, ?, ?)
 """
 
 OBTER_TODOS_ADMINISTRADOR = """
 SELECT 
-id, nome, email, senha, telefone, endereco
+id, nome, email, senha, telefone
 FROM administrador
 ORDER BY nome
 """ 
 
 OBTER_ADMINISTRADOR_POR_ID = """
-SELECT id, nome, email, senha, telefone, endereco
+SELECT id, nome, email, senha, telefone
 FROM administrador
 WHERE id = ?
 """
 
 ATUALIZAR_ADMINISTRADOR = """
 UPDATE administrador
-SET nome = ?, email = ?, senha = ?, telefone = ?, endereco = ?
+SET nome = ?, email = ?, senha = ?, telefone = ?
 WHERE id = ?
 """
 

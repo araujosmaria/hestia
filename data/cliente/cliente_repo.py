@@ -15,7 +15,7 @@ from data.usuario.usuario_model import Usuario
 # Banco fixo da aplicação
 DB_PATH = "dados.db"
 
-def criar_tabela(db_path: str = None) -> bool:
+def criar_tabela(db_path: str = DB_PATH) -> bool:
     if db_path is None:
         db_path = DB_PATH
     try:
@@ -82,7 +82,7 @@ def inserir(cliente: Cliente, db_path: str = DB_PATH) -> Optional[int]:
         return None
 
 
-def obter_por_id(id_cliente: int, db_path: str = None) -> Optional[Cliente]:
+def obter_por_id(id_cliente: int, db_path: str = DB_PATH) -> Optional[Cliente]:
     if db_path is None:
         db_path = DB_PATH
     try:
@@ -166,7 +166,7 @@ def obter_todos(db_path: str = DB_PATH) -> List[Cliente]:
         return []
 
 
-def atualizar(cliente: Cliente, db_path: str = None) -> bool:
+def atualizar(cliente: Cliente, db_path: str = DB_PATH) -> bool:
     if db_path is None:
         db_path = DB_PATH
     try:
@@ -188,7 +188,7 @@ def atualizar(cliente: Cliente, db_path: str = None) -> bool:
         return False
 
 
-def excluir(id_cliente: int, db_path: str = None) -> bool:
+def excluir(id_cliente: int, db_path: str = DB_PATH) -> bool:
     if db_path is None:
         db_path = DB_PATH
     try:

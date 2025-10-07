@@ -1,4 +1,4 @@
-{% extends "base_simples.html" %}
+{% comment %} {% extends "base_simples.html" %}
 
 {% block conteudo %}
 
@@ -745,4 +745,96 @@
         console.log('Página de edição de perfil carregada com sucesso!');
     </script>
     <link rel="stylesheet" href="/static/css/cadastro_cuidador.css">
-    {% endblock conteudo %}
+    {% endblock conteudo %} {% endcomment %}
+
+{% extends "base_simples.html" %}
+
+{% block conteudo %}
+<div class="container py-4">
+    <form id="formEditarPerfil" class="edit-form">
+        <div class="text-center mb-4">
+            <img src="{{ usuario.foto|default:'/static/img/user-default.png' }}" alt="Foto do perfil" class="rounded-circle" style="width:90px; height:90px;">
+            <h2 class="mt-2">{{ usuario.nome_completo }}</h2>
+            <p class="mb-1">{{ usuario.titulo|default:"Cuidador Profissional" }}</p>
+            <small class="text-muted">Avaliação: {{ usuario.avaliacao|default:"-" }} | Atendimentos: {{ usuario.atendimentos|default:"-" }} | Experiência: {{ usuario.anos_experiencia|default:"-" }} anos</small>
+        </div>
+
+        <div class="mb-3">
+            <label class="form-label">Nome Completo</label>
+            <input type="text" class="form-control" value="{{ usuario.nome_completo }}" disabled>
+        </div>
+        <div class="mb-3">
+            <label class="form-label">Data de Nascimento</label>
+            <input type="date" class="form-control" value="{{ usuario.data_nascimento }}" disabled>
+        </div>
+        <div class="mb-3">
+            <label class="form-label">Email</label>
+            <input type="email" class="form-control" value="{{ usuario.email }}" disabled>
+        </div>
+        <div class="mb-3">
+            <label class="form-label">Telefone/WhatsApp</label>
+            <input type="tel" class="form-control" value="{{ usuario.telefone }}" disabled>
+        </div>
+        <div class="mb-3">
+            <label class="form-label">CPF</label>
+            <input type="text" class="form-control" value="{{ usuario.cpf }}" disabled>
+        </div>
+        <div class="mb-3">
+            <label class="form-label">Endereço</label>
+            <input type="text" class="form-control" value="{{ usuario.endereco }}" disabled>
+        </div>
+        <div class="mb-3">
+            <label class="form-label">Bairro</label>
+            <input type="text" class="form-control" value="{{ usuario.bairro }}" disabled>
+        </div>
+        <div class="mb-3">
+            <label class="form-label">Cidade</label>
+            <input type="text" class="form-control" value="{{ usuario.cidade }}" disabled>
+        </div>
+        <div class="mb-3">
+            <label class="form-label">Estado</label>
+            <input type="text" class="form-control" value="{{ usuario.estado }}" disabled>
+        </div>
+        <div class="mb-3">
+            <label class="form-label">Anos de Experiência</label>
+            <input type="text" class="form-control" value="{{ usuario.anos_experiencia }}" disabled>
+        </div>
+        <div class="mb-3">
+            <label class="form-label">Valor por Hora (R$)</label>
+            <input type="text" class="form-control" value="{{ usuario.valor_hora }}" disabled>
+        </div>
+        <div class="mb-3">
+            <label class="form-label">Escolaridade</label>
+            <input type="text" class="form-control" value="{{ usuario.escolaridade }}" disabled>
+        </div>
+        <div class="mb-3">
+            <label class="form-label">Apresentação Pessoal</label>
+            <textarea class="form-control" rows="3" disabled>{{ usuario.apresentacao }}</textarea>
+        </div>
+        <div class="mb-3">
+            <label class="form-label">Disponibilidade</label>
+            <input type="text" class="form-control" value="{{ usuario.disponibilidade }}" disabled>
+        </div>
+        <div class="mb-3">
+            <label class="form-label">Especialidades</label>
+            <input type="text" class="form-control" value="{{ usuario.especialidades }}" disabled>
+        </div>
+        <div class="mb-3">
+            <label class="form-label">Cursos e Certificações</label>
+            <textarea class="form-control" rows="2" disabled>{{ usuario.cursos }}</textarea>
+        </div>
+        <div class="mb-3">
+            <label class="form-label">Documentos Anexados</label>
+            {% for doc in usuario.documentos %}
+                <div>
+                    <i class="bi bi-file-earmark-pdf text-danger"></i>
+                    <span>{{ doc.nome }}</span>
+                </div>
+            {% empty %}
+                <span class="text-muted">Nenhum documento anexado.</span>
+            {% endfor %}
+        </div>
+    </form>
+</div>
+<link rel="stylesheet" href="/static/css/cadastro_cuidador.css">
+{% endblock conteudo %}
