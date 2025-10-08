@@ -127,27 +127,27 @@ async def get_cadastro_cuidador(request: Request):
 
 @router.post("/cadastro_cuidador")
 async def post_cadastro_cuidador(
+    # tirar as (...), roda f5, cadastra normalmente, vai dando f10 e vendo onde esta o erro no breakpoint 
     request: Request,
-    nome: str = Form(...),
-    dataNascimento: str = Form(...),
-    email: str = Form(...),
-    telefone: str = Form(...),
-    cpf: str = Form(...),
-    fotoPerfil: UploadFile = File(None),
-    senha: str = Form(...),
-    cep: str = Form(...),
-    logradouro: str = Form(...),
-    numero: str = Form(...),
+    nome: str = Form(),
+    dataNascimento: str = Form(),
+    email: str = Form(),
+    telefone: str = Form(),
+    cpf: str = Form(),
+    senha: str = Form(),
+    cep: str = Form(),
+    logradouro: str = Form(),
+    numero: str = Form(),
     complemento: str = Form(None),
-    bairro: str = Form(...),
-    cidade: str = Form(...),
-    estado: str = Form(...),
-    experiencia: str = Form(...),
-    valorHora: float = Form(...),
-    escolaridade: str = Form(...),
-    apresentacao: str = Form(...),
+    bairro: str = Form(),
+    cidade: str = Form(),
+    estado: str = Form(),
+    experiencia: str = Form(),
+    valorHora: float = Form(),
+    escolaridade: str = Form(),
+    apresentacao: str = Form(),
     cursos: str = Form(None),
-    confirmarSenha: str = Form(...),
+    confirmarSenha: str = Form(),
     termos: bool = Form(...),
     verificacao: bool = Form(False),
     comunicacoes: bool = Form(False),
@@ -161,7 +161,6 @@ async def post_cadastro_cuidador(
 
         senha_hash = criar_hash_senha(senha)
 
-        nome_arquivo_foto = await salvar_imagem(fotoPerfil)
 
         cuidador = Cuidador(
             id=0,
@@ -172,7 +171,6 @@ async def post_cadastro_cuidador(
             cpf=cpf,
             senha=senha_hash,
             perfil="cuidador",
-            foto=nome_arquivo_foto,
             token_redefinicao=None,
             data_token=None,
             data_cadastro=datetime.now().isoformat(),

@@ -1,6 +1,5 @@
 CRIAR_TABELA_CUIDADOR = """
-CREATE TABLE IF NOT EXISTS cuidador (
-    id INTEGER PRIMARY KEY,  -- recebe o id do usuário
+id INTEGER PRIMARY KEY,
     experiencia TEXT NOT NULL,
     valorHora REAL NOT NULL,
     escolaridade TEXT NOT NULL,
@@ -11,9 +10,11 @@ CREATE TABLE IF NOT EXISTS cuidador (
     termos BOOLEAN NOT NULL,
     verificacao BOOLEAN NOT NULL,
     comunicacoes BOOLEAN NOT NULL,
-    FOREIGN KEY(id) REFERENCES usuario(id_usuario)
+    FOREIGN KEY(id) REFERENCES usuario(id)
 );
+
 """
+
 
 INSERIR_CUIDADOR = """
 INSERT INTO cuidador (

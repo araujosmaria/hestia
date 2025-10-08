@@ -14,7 +14,7 @@ def criar_tabela(db_path: str = None) -> bool:
     if db_path is None:
         db_path = DB_PATH
     try:
-        usuario_repo.criar_tabela(db_path=db_path)
+        usuario_repo.inserir(Cuidador)
         with sqlite3.connect(db_path) as conn:
             cursor = conn.cursor()
             cursor.executescript(CRIAR_TABELA_CUIDADOR)

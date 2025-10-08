@@ -9,7 +9,10 @@ def criar_tabela() -> bool:
         cursor.executescript(CRIAR_TABELA_USUARIO)
         return True  # executscript não retorna rowcount, assumimos sucesso se não levantar erro
 
-def inserir(usuario: Usuario, cursor: Any = None) -> Optional[int]:
+def inserir(usuario: Usuario, cursor: Any = None, db_path: str = None) -> Optional[int]:
+    from util.db_util import get_connection
+    from data.config import DB_PATH  # se tiver constante padrão
+
     params = (
         usuario.nome,
         usuario.dataNascimento,
@@ -31,14 +34,23 @@ def inserir(usuario: Usuario, cursor: Any = None) -> Optional[int]:
         int(usuario.ativo),
         usuario.foto
     )
+
     if cursor:
         cursor.execute(INSERIR_USUARIO, params)
         return cursor.lastrowid
     else:
-        with get_connection() as conn:
-            cursor = conn.cursor()
-            cursor.execute(INSERIR_USUARIO, params)
-            return cursor.lastrowid
+        if db_path:
+            import sqlite3
+            with sqlite3.connect(db_path) as conn:
+                cursor = conn.cursor()
+                cursor.execute(INSERIR_USUARIO, params)
+                return cursor.lastrowid
+        else:
+            with get_connection() as conn:
+                cursor = conn.cursor()
+                cursor.execute(INSERIR_USUARIO, params)
+                return cursor.lastrowid
+
 
 def alterar(usuario: Usuario, cursor: Any = None) -> bool:
     # Aqui "alterar" seria atualizar, sem senha e token, vamos considerar que alterar atualiza campos básicos
