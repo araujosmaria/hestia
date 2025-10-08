@@ -7,8 +7,30 @@ from data.usuario.usuario_model import Usuario
 from data.util import open_connection
 import sqlite3
 import uuid
+from util.db_util import get_connection
 
 DB_PATH = "dados.db"
+
+def get_dados_cuidador(id_usuario: int) -> Optional[Cuidador]:
+    query = """
+    SELECT especialidade, experiencia, valorHora, escolaridade, apresentacao
+    FROM cuidador
+    WHERE id_usuario = ?
+    """
+    with get_connection() as conn:
+        cursor = conn.cursor()
+        cursor.execute(query, (id_usuario,))
+        row = cursor.fetchone()
+        if row:
+            return Cuidador(
+                id_usuario=id_usuario,
+                especialidade=row["especialidade"],
+                experiencia=row["experiencia"],
+                valorHora=row["valorHora"],
+                escolaridade=row["escolaridade"],
+                apresentacao=row["apresentacao"]
+            )
+    return None
 
 def criar_tabela(db_path: str = None) -> bool:
     if db_path is None:

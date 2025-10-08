@@ -102,7 +102,7 @@ async def get_chamados_abertos(request: Request, usuario_logado: dict = None):
 # ======================
 # DADOS DO PERFIL
 # ======================
-@router.get("/cuidador/perfil")
+@router.get("/perfil/dados")
 @requer_autenticacao()
 async def get_dados_perfil(request: Request, sucesso: str = None, erro: str = None, foto_sucesso: str = None, usuario_logado: dict = None):
     # Buscar dados reais do perfil do banco
@@ -139,7 +139,7 @@ async def get_dados_perfil(request: Request, sucesso: str = None, erro: str = No
         mensagem_erro = "Erro no upload da foto. Tente novamente."
     
     return templates.TemplateResponse(
-        "cuidador/perfil.html",
+        "perfil/dados.html",
         {
             "request": request, 
             "perfil": perfil_cuidador,
@@ -318,7 +318,6 @@ async def post_editar_perfil(
             escolaridade=escolaridade,
             apresentacao=apresentacao,
             cursos=cursos,
-            # Campos do cadastro que não mudam na edição
             confirmarSenha=cuidador_atual.confirmarSenha,
             termos=cuidador_atual.termos,
             verificacao=cuidador_atual.verificacao,
@@ -436,30 +435,3 @@ async def alterar_foto(
 
     return RedirectResponse("/cuidador/perfil?foto_sucesso=1", status.HTTP_303_SEE_OTHER)
 
-# ======================
-# UPLOAD DE CERTIFICADOS
-# ======================
-@router.post("/cuidador/upload_certificados")
-@requer_autenticacao()
-async def upload_certificados(
-    request: Request,
-    # Aqui usaria UploadFile do FastAPI para arquivos
-    # certificados: List[UploadFile] = File(...)
-    usuario_logado: dict = None
-):
-    try:
-        id_usuario = usuario_logado['id']
-        # Lógica para validar e salvar certificados
-        # Validar formato (PDF, JPG, PNG)
-        # Validar tamanho máximo
-        # Salvar no storage
-        
-        documentos_salvos = [
-            {"nome": "novo_certificado.pdf", "tipo": "pdf"},
-            {"nome": "outro_documento.jpg", "tipo": "image"}
-        ]
-        
-        return {"success": True, "documentos": documentos_salvos}
-        
-    except Exception as e:
-        return {"success": False, "erro": "Erro ao fazer upload dos certificados"}

@@ -6,7 +6,7 @@ import sqlite3
 
 from data.usuario.usuario_repo import (
     criar_tabela, inserir, obter_por_cpf, obter_por_id,
-    obter_todos, atualizar, excluir
+    obter_todos, atualizar, excluir, atualizar_foto
 )
 from data.usuario.usuario_model import Usuario
 
@@ -18,7 +18,7 @@ class TestUsuarioRepo:
         """Roda antes de cada teste: recria a tabela para garantir ambiente limpo"""
         conn = sqlite3.connect(DB_PATH)
         cursor = conn.cursor()
-        cursor.execute("DROP TABLE IF EXISTS usuarios;")  # nome deve ser igual ao do SQL
+        cursor.execute("DROP TABLE IF EXISTS usuario;")  # corrigido: nome correto da tabela
         conn.commit()
         conn.close()
         criar_tabela()
@@ -29,15 +29,15 @@ class TestUsuarioRepo:
             id=None,
             nome="Usuario Teste",
             dataNascimento="2000-01-01",
-            email=f"email{sufixo}@test.com",  # email único
+            email=f"email{sufixo}@test.com",
             telefone="123456789",
-            cpf=f"123456{sufixo}",  # cpf único
+            cpf=f"123456{sufixo}",
             senha="Senha123",
             perfil="contratante",
             foto=None,
             token_redefinicao=None,
             data_token=None,
-            data_cadastro=str(datetime.now().date()),
+            data_cadastro=datetime.now(),  # melhor usar datetime, não string
             cep="00000000",
             logradouro="Rua Teste",
             numero="123",
@@ -51,45 +51,45 @@ class TestUsuarioRepo:
     def test_inserir(self):
         usuario_teste = self.criar_usuario_fake()
         id_usuario_inserido = inserir(usuario_teste)
-        assert id_usuario_inserido is not None, "Deveria retornar o ID do usuário inserido"
+        assert id_usuario_inserido is not None
 
         usuario_db = obter_por_id(id_usuario_inserido)
-        assert usuario_db is not None, "Usuário inserido não encontrado"
-        assert usuario_db.id == id_usuario_inserido, "ID não confere"
-        assert usuario_db.nome == usuario_teste.nome, "Nome não confere"
-        assert usuario_db.email == usuario_teste.email, "Email não confere"
-        assert usuario_db.telefone == usuario_teste.telefone, "Telefone não confere"
-        assert usuario_db.cpf == usuario_teste.cpf, "CPF não confere"
+        assert usuario_db is not None
+        assert usuario_db.id == id_usuario_inserido
+        assert usuario_db.nome == usuario_teste.nome
+        assert usuario_db.email == usuario_teste.email
+        assert usuario_db.telefone == usuario_teste.telefone
+        assert usuario_db.cpf == usuario_teste.cpf
 
     def test_obter_por_cpf(self):
         usuario_teste = self.criar_usuario_fake()
         inserir(usuario_teste)
 
         usuario_db = obter_por_cpf(usuario_teste.cpf)
-        assert usuario_db is not None, "Usuário obtido por CPF não deveria ser None"
-        assert usuario_db.cpf == usuario_teste.cpf, "CPF obtido não confere"
-        assert usuario_db.nome == usuario_teste.nome, "Nome obtido não confere"
-        assert usuario_db.email == usuario_teste.email, "Email obtido não confere"
+        assert usuario_db is not None
+        assert usuario_db.cpf == usuario_teste.cpf
+        assert usuario_db.nome == usuario_teste.nome
+        assert usuario_db.email == usuario_teste.email
 
     def test_obter_todos(self):
         inserir(self.criar_usuario_fake())
         inserir(self.criar_usuario_fake())
 
         lista_usuarios = obter_todos()
-        assert len(lista_usuarios) >= 2, "Deveria retornar pelo menos 2 usuários"
+        assert len(lista_usuarios) >= 2
         nomes = [u.nome for u in lista_usuarios]
-        assert "Usuario Teste" in nomes, "Usuario Teste deveria estar na lista"
+        assert "Usuario Teste" in nomes
 
     def test_obter_por_id(self):
         usuario_teste = self.criar_usuario_fake()
         id_usuario_inserido = inserir(usuario_teste)
 
         usuario_db = obter_por_id(id_usuario_inserido)
-        assert usuario_db is not None, "O usuário retornado não deveria ser None"
-        assert usuario_db.id == id_usuario_inserido, "O ID buscado não confere"
-        assert usuario_db.nome == usuario_teste.nome, "O nome buscado não confere"
+        assert usuario_db is not None
+        assert usuario_db.id == id_usuario_inserido
+        assert usuario_db.nome == usuario_teste.nome
 
-    def test_atualizar_usuario(self):
+    def test_atualizar(self):
         usuario_teste = self.criar_usuario_fake()
         id_usuario_inserido = inserir(usuario_teste)
         usuario_inserido = obter_por_id(id_usuario_inserido)
@@ -99,23 +99,36 @@ class TestUsuarioRepo:
         usuario_inserido.senha = "NovaSenha"
         usuario_inserido.telefone = "987654321"
         usuario_inserido.cidade = "Cidade Nova"
+        usuario_inserido.foto = "nova_foto.png"
 
         resultado = atualizar(usuario_inserido)
-        assert resultado is True, "A atualização deveria retornar True"
+        assert resultado is True
 
         usuario_db = obter_por_id(id_usuario_inserido)
-        assert usuario_db.nome == "Usuario Atualizado", "Nome atualizado não confere"
-        assert usuario_db.email == "atualizado@test.com", "Email atualizado não confere"
-        assert usuario_db.senha == "NovaSenha", "Senha atualizada não confere"
-        assert usuario_db.telefone == "987654321", "Telefone atualizado não confere"
-        assert usuario_db.cidade == "Cidade Nova", "Cidade atualizada não confere"
+        assert usuario_db.nome == "Usuario Atualizado"
+        assert usuario_db.email == "atualizado@test.com"
+        assert usuario_db.senha == "NovaSenha"
+        assert usuario_db.telefone == "987654321"
+        assert usuario_db.cidade == "Cidade Nova"
+        assert usuario_db.foto == "nova_foto.png"
+
+    def test_atualizar_foto(self):
+        usuario_teste = self.criar_usuario_fake()
+        id_usuario = inserir(usuario_teste)
+
+        nova_foto = "foto_atualizada.png"
+        resultado = atualizar_foto(id_usuario, nova_foto)
+
+        assert resultado is True
+        usuario_db = obter_por_id(id_usuario)
+        assert usuario_db.foto == nova_foto
 
     def test_excluir_usuario(self):
         usuario_teste = self.criar_usuario_fake()
         id_usuario_inserido = inserir(usuario_teste)
 
         resultado = excluir(id_usuario_inserido)
-        assert resultado is True, "A exclusão deveria retornar True"
+        assert resultado is True
 
         usuario_db = obter_por_id(id_usuario_inserido)
-        assert usuario_db is None, "Usuário excluído não deveria ser encontrado"
+        assert usuario_db is None

@@ -17,7 +17,7 @@ async def get_home_contratante(request: Request):
 # ======================
 # PERFIL
 # ======================
-@router.get("/contratante/dados_perfil")
+@router.get("/perfil/dados")
 async def get_dados_perfil(request: Request):
     perfil_fake = {
         "id": 1,
@@ -28,7 +28,7 @@ async def get_dados_perfil(request: Request):
         "senha": "********"
     }
     return templates.TemplateResponse(
-        "contratante/dados_perfil.html",
+        "perfil/dados.html",
         {"request": request, "perfil": perfil_fake}
     )
 

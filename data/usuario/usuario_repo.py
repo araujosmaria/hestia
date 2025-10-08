@@ -1,4 +1,5 @@
 from typing import Any, Optional, List
+from fastapi import HTTPException, Request,  status, Depends
 from data.usuario.usuario_sql import *
 from data.usuario.usuario_model import Usuario
 from util.db_util import get_connection
@@ -40,8 +41,18 @@ def inserir(usuario: Usuario, cursor: Any = None) -> Optional[int]:
             cursor.execute(INSERIR_USUARIO, params)
             return cursor.lastrowid
 
-def alterar(usuario: Usuario, cursor: Any = None) -> bool:
-    # Aqui "alterar" seria atualizar, sem senha e token, vamos considerar que alterar atualiza campos básicos
+# def get_usuario_logado(request: Request) -> Usuario:
+#     session_id = request.cookies.get("session_id")
+#     if not session_id:
+#         raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="Usuário não autenticado.")
+
+#     usuario = obter_por_id(int(session_id))
+#     if not usuario or not usuario.ativo:
+#         raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="Usuário inválido ou inativo.")
+
+#     return usuario
+
+def atualizar(usuario: Usuario, cursor: Any = None) -> bool:
     params = (
         usuario.nome,
         usuario.dataNascimento,
@@ -72,6 +83,44 @@ def alterar(usuario: Usuario, cursor: Any = None) -> bool:
             cursor = conn.cursor()
             cursor.execute(ATUALIZAR_USUARIO, params)
             return cursor.rowcount > 0
+
+# def autenticar_usuario(email: str, senha: str) -> Optional[Usuario]:
+#     """
+#     Verifica se há um usuário com o e-mail e senha fornecidos e se ele está ativo.
+#     Retorna o objeto Usuario se a autenticação for bem-sucedida, ou None caso contrário.
+#     """
+#     query = """
+#     SELECT * FROM usuario
+#     WHERE email = ? AND senha = ? AND ativo = 1
+#     """
+#     with get_connection() as conn:
+#         cursor = conn.cursor()
+#         cursor.execute(query, (email, senha))
+#         row = cursor.fetchone()
+#         if row:
+#             return Usuario(
+#                 id=row["id_usuario"],
+#                 nome=row["nome"],
+#                 dataNascimento=row["dataNascimento"],
+#                 email=row["email"],
+#                 telefone=row["telefone"],
+#                 cpf=row["cpf"],
+#                 senha=row["senha"],
+#                 perfil=row["perfil"],
+#                 token_redefinicao=row["token_redefinicao"],
+#                 data_token=row["data_token"],
+#                 data_cadastro=row["data_cadastro"],
+#                 cep=row["cep"],
+#                 logradouro=row["logradouro"],
+#                 numero=row["numero"],
+#                 complemento=row["complemento"],
+#                 bairro=row["bairro"],
+#                 cidade=row["cidade"],
+#                 estado=row["estado"],
+#                 ativo=bool(row["ativo"]),
+#                 foto=row["foto"]
+#             )
+#         return None
 
 def atualizar_senha(id_usuario: int, senha: str, cursor: Any = None) -> bool:
     query = "UPDATE usuario SET senha = ? WHERE id_usuario = ?"

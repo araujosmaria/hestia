@@ -32,23 +32,23 @@ INSERT INTO usuario (
 """
 
 OBTER_USUARIO_POR_CPF = """
-SELECT * FROM usuario WHERE cpf = ?
+SELECT * FROM usuario WHERE cpf = ?;
 """
 
 OBTER_USUARIO_POR_EMAIL = """
-SELECT * FROM usuario WHERE email = ?
+SELECT * FROM usuario WHERE email = ?;
 """
 
 OBTER_USUARIO_POR_ID = """
-SELECT * FROM usuario WHERE id_usuario = ?
+SELECT * FROM usuario WHERE id_usuario = ?;
 """
 
 OBTER_TODOS_USUARIOS = """
-SELECT * FROM usuario ORDER BY nome
+SELECT * FROM usuario ORDER BY nome;
 """
 
 EXCLUIR_USUARIO = """
-DELETE FROM usuario WHERE id_usuario = ?
+DELETE FROM usuario WHERE id_usuario = ?;
 """
 
 ATUALIZAR_USUARIO = """
@@ -59,18 +59,19 @@ SET
     cep = ?, logradouro = ?, numero = ?, complemento = ?, bairro = ?, cidade = ?, 
     estado = ?, ativo = ?, foto = ?
 WHERE id_usuario = ?
+
+"""
+ATUALIZAR_FOTO = """
+UPDATE usuario SET foto = ? WHERE id_usuario = ?;
 """
 
 VALIDAR_TOKEN = """
 SELECT id_usuario, nome, email, token_redefinicao, data_token
 FROM usuario
-WHERE token_redefinicao = ?
+WHERE token_redefinicao = ?;
 """
 
 ATIVAR_USUARIO = """
-UPDATE usuario SET ativo = 1 WHERE id_usuario = ?
+UPDATE usuario SET ativo = 1 WHERE id_usuario = ?;
 """
 
-ATUALIZAR_FOTO = """
-UPDATE usuario SET foto = ? WHERE id_usuario = ?
-"""
