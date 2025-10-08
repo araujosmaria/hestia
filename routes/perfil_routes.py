@@ -1,193 +1,161 @@
 import os
-from fastapi import APIRouter, Form, Request, status, UploadFile, File
+import secrets
+from io import BytesIO
+from fastapi import APIRouter, FastAPI, Request, status, UploadFile, File
 from fastapi.responses import RedirectResponse
-from typing import Optional
-
-from data.usuario.usuario_model import Usuario
-from data.cliente.cliente_model import Cliente
-from data.usuario import usuario_repo
+from PIL import Image, ImageDraw
+from data.cuidador import cuidador_repo
 from data.cliente import cliente_repo
-from util.security import criar_hash_senha, verificar_senha, validar_forca_senha
-from util.auth_decorator import requer_autenticacao, obter_usuario_logado
+from util.auth_decorator import criar_sessao, requer_autenticacao
 from util.template_util import criar_templates
 
-router = APIRouter()
+perfil_router = APIRouter()
 templates = criar_templates("templates/perfil")
+app = FastAPI()
+router = APIRouter()
 
+@perfil_router.post("/upload_foto_perfil")
+async def upload_foto_perfil(fotoPerfil: UploadFile = File(...)):
+    # Verifique o tipo do arquivo
+    if not fotoPerfil.content_type.startswith('image/'):
+        return {"error": "Arquivo deve ser uma imagem (JPG, JPEG, PNG)."}
 
-@router.get("/perfil")
-@requer_autenticacao()
-async def get_perfil(request: Request, usuario_logado: dict = None):
-    usuario = usuario_repo.obter_por_id(usuario_logado['id'])
-    cliente_dados = None
-    if usuario.perfil == 'cliente':
-        try:
-            from util.db_util import get_connection
-            with get_connection() as conn:
-                cursor = conn.cursor()
-                cursor.execute("SELECT cpf, telefone FROM cliente WHERE id=?", (usuario.id,))
-                row = cursor.fetchone()
-                if row:
-                    cliente_dados = {
-                        'cpf': row['cpf'],
-                        'telefone': row['telefone']
-                    }
-        except:
-            pass
-    return templates.TemplateResponse(
-        "dados.html",
-        {
-            "request": request,
-            "usuario": usuario,
-            "cliente_dados": cliente_dados
-        }
-    )
-
-
-@router.post("/perfil")
-@requer_autenticacao()
-async def post_perfil(
-    request: Request,
-    nome: str = Form(...),
-    email: str = Form(...),
-    cpf: str = Form(None),
-    telefone: str = Form(None),
-    usuario_logado: dict = None
-):
-    usuario = usuario_repo.obter_por_id(usuario_logado['id'])
-    usuario_existente = usuario_repo.obter_por_email(email)
-    if usuario_existente and usuario_existente.id != usuario.id:
-        cliente_dados = None
-        if usuario.perfil == 'cliente':
-            try:
-                from util.db_util import get_connection
-                with get_connection() as conn:
-                    cursor = conn.cursor()
-                    cursor.execute("SELECT cpf, telefone FROM cliente WHERE id=?", (usuario.id,))
-                    row = cursor.fetchone()
-                    if row:
-                        cliente_dados = {
-                            'cpf': row['cpf'],
-                            'telefone': row['telefone']
-                        }
-            except:
-                pass
-        return templates.TemplateResponse(
-            "dados.html",
-            {
-                "request": request,
-                "usuario": usuario,
-                "cliente_dados": cliente_dados,
-                "erro": "Este email já está em uso"
-            }
-        )
-    usuario.nome = nome
-    usuario.email = email
-    usuario_repo.alterar(usuario)
-    if usuario.perfil == 'cliente' and cpf and telefone:
-        try:
-            from util.db_util import get_connection
-            with get_connection() as conn:
-                cursor = conn.cursor()
-                cursor.execute(
-                    "UPDATE cliente SET cpf=?, telefone=? WHERE id=?",
-                    (cpf, telefone, usuario.id)
-                )
-                conn.commit()
-        except:
-            pass
-    from util.auth_decorator import criar_sessao
-    usuario_dict = {
-        "id": usuario.id,
-        "nome": nome,
-        "email": email,
-        "perfil": usuario.perfil,
-        "foto": usuario.foto
-    }
-    criar_sessao(request, usuario_dict)
-    return RedirectResponse("/perfil?sucesso=1", status.HTTP_303_SEE_OTHER)
-
-
-@router.get("/perfil/alterar-senha")
-@requer_autenticacao()
-async def get_alterar_senha(request: Request, usuario_logado: dict = None):
-    return templates.TemplateResponse(
-        "alterar_senha.html",
-        {"request": request}
-    )
-
-
-@router.post("/perfil/alterar-senha")
-@requer_autenticacao()
-async def post_alterar_senha(
-    request: Request,
-    senha_atual: str = Form(...),
-    senha_nova: str = Form(...),
-    confirmar_senha: str = Form(...),
-    usuario_logado: dict = None
-):
-    usuario = usuario_repo.obter_por_id(usuario_logado['id'])
-    if not verificar_senha(senha_atual, usuario.senha):
-        return templates.TemplateResponse(
-            "alterar_senha.html",
-            {
-                "request": request,
-                "erro": "Senha atual incorreta"
-            }
-        )
-    if senha_nova != confirmar_senha:
-        return templates.TemplateResponse(
-            "alterar_senha.html",
-            {
-                "request": request,
-                "erro": "As novas senhas não coincidem"
-            }
-        )
-    senha_valida, msg_erro = validar_forca_senha(senha_nova)
-    if not senha_valida:
-        return templates.TemplateResponse(
-            "alterar_senha.html",
-            {
-                "request": request,
-                "erro": msg_erro
-            }
-        )
-    senha_hash = criar_hash_senha(senha_nova)
-    usuario_repo.atualizar_senha(usuario.id, senha_hash)
-    return templates.TemplateResponse(
-        "alterar_senha.html",
-        {
-            "request": request,
-            "sucesso": "Senha alterada com sucesso!"
-        }
-    )
-
-
-@router.post("/perfil/alterar-foto")
-@requer_autenticacao()
-async def alterar_foto(
-    request: Request,
-    foto: UploadFile = File(...),
-    usuario_logado: dict = None
-):
-    tipos_permitidos = ["image/jpeg", "image/png", "image/jpg"]
-    if foto.content_type not in tipos_permitidos:
-        return RedirectResponse("/perfil?erro=tipo_invalido", status.HTTP_303_SEE_OTHER)
-    upload_dir = "static/uploads/usuarios"
+    # Diretório onde a foto será salva
+    upload_dir = "uploads/fotos_perfil"
     os.makedirs(upload_dir, exist_ok=True)
-    import secrets
-    extensao = foto.filename.split(".")[-1]
-    nome_arquivo = f"{usuario_logado['id']}_{secrets.token_hex(8)}.{extensao}"
-    caminho_arquivo = os.path.join(upload_dir, nome_arquivo)
-    try:
-        conteudo = await foto.read()
-        with open(caminho_arquivo, "wb") as f:
-            f.write(conteudo)
-        caminho_relativo = f"/static/uploads/usuarios/{nome_arquivo}"
-        usuario_repo.atualizar_foto(usuario_logado['id'], caminho_relativo)
-        usuario_logado['foto'] = caminho_relativo
-        from util.auth_decorator import criar_sessao
-        criar_sessao(request, usuario_logado)
-    except Exception as e:
-        return RedirectResponse("/perfil?erro=upload_falhou", status.HTTP_303_SEE_OTHER)
-    return RedirectResponse("/perfil?foto_sucesso=1", status.HTTP_303_SEE_OTHER)
+
+    # Caminho do arquivo onde será salvo
+    file_path = os.path.join(upload_dir, fotoPerfil.filename)
+
+    # Salve o arquivo no diretório especificado
+    with open(file_path, "wb") as f:
+        f.write(fotoPerfil.file.read())
+
+    return {"filename": fotoPerfil.filename, "file_path": file_path}
+
+# ======================
+# DADOS DO PERFIL (CLIENTE E CUIDADOR)
+# ======================
+@router.route("/perfil/dados", methods=["GET", "POST"])
+@requer_autenticacao()
+async def perfil_dados(
+    request: Request,
+    usuario_logado: dict = None,
+    foto: UploadFile = File(None),
+    sucesso: str = None,
+    erro: str = None,
+    foto_sucesso: str = None
+):
+    id_usuario = usuario_logado["id"]
+    
+    # Verificar se é cliente ou cuidador
+    cliente = cliente_repo.obter_por_id(id_usuario)
+    cuidador = cuidador_repo.obter_por_id(id_usuario)
+
+    # Se não encontrar o usuário (cliente ou cuidador), redireciona para login
+    if not cliente and not cuidador:
+        return RedirectResponse("/login", status_code=303)
+
+    # Definindo qual perfil será usado
+    if cliente:
+        perfil_usuario = cliente
+        perfil_tipo = 'cliente'
+    else:
+        perfil_usuario = cuidador
+        perfil_tipo = 'cuidador'
+
+    mensagem_sucesso = None
+    mensagem_erro = None
+
+    if request.method == "POST" and foto:
+        tipos_permitidos = ["image/jpeg", "image/png", "image/jpg"]
+        
+        # Verifica se o tipo da imagem é válido
+        if foto.content_type not in tipos_permitidos:
+            mensagem_erro = "Tipo de arquivo inválido. Use apenas JPG, JPEG ou PNG."
+        else:
+            try:
+                # Processamento da foto para deixar redonda
+                conteudo = await foto.read()
+                imagem = Image.open(BytesIO(conteudo))
+
+                # Definir o diâmetro e calcular a parte central da imagem
+                largura, altura = imagem.size
+                diametro = min(largura, altura)
+                margem = (largura - diametro) // 2, (altura - diametro) // 2
+
+                # Criar máscara circular
+                mascara = Image.new('L', (diametro, diametro), 0)
+                draw = ImageDraw.Draw(mascara)
+                draw.ellipse((0, 0, diametro, diametro), fill=255)
+
+                # Cortar a imagem para o centro e aplicar a máscara circular
+                imagem = imagem.crop((margem[0], margem[1], margem[0] + diametro, margem[1] + diametro))
+                imagem.putalpha(mascara)
+
+                # Criar diretório de upload se não existir
+                upload_dir = "static/uploads/usuarios"
+                os.makedirs(upload_dir, exist_ok=True)
+
+                # Gerar nome único para o arquivo
+                extensao = foto.filename.split(".")[-1].lower()
+                nome_arquivo = f"{id_usuario}_{secrets.token_hex(8)}.png"
+                caminho_arquivo = os.path.join(upload_dir, nome_arquivo)
+
+                # Salvar a imagem processada
+                buffer = BytesIO()
+                imagem.save(buffer, format="PNG")  # Salvar como PNG para manter transparência
+                conteudo_redondo = buffer.getvalue()
+
+                with open(caminho_arquivo, "wb") as f:
+                    f.write(conteudo_redondo)
+
+                # Caminho relativo para salvar no banco
+                caminho_relativo = f"/static/uploads/usuarios/{nome_arquivo}"
+
+                # Atualizar foto no banco de dados
+                if perfil_tipo == 'cliente':
+                    cliente_repo.atualizar_foto(id_usuario, caminho_relativo)
+                else:
+                    cuidador_repo.atualizar_foto(id_usuario, caminho_relativo)
+
+                # Atualizar foto na sessão
+                usuario_logado['foto'] = caminho_relativo
+                criar_sessao(request, usuario_logado)
+
+                mensagem_sucesso = "Foto de perfil atualizada com sucesso!"
+
+            except Exception:
+                mensagem_erro = "Erro no upload da foto. Tente novamente."
+
+    # Dados do perfil a serem exibidos
+    perfil_dados = {
+        "nome": perfil_usuario.nome,
+        "email": perfil_usuario.email,
+        "telefone": perfil_usuario.telefone,
+        "foto_perfil": perfil_usuario.foto or "/static/img/default-avatar.jpg"
+    }
+
+    # Mensagens de sucesso/erro
+    if sucesso:
+        mensagem_sucesso = "Perfil atualizado com sucesso!"
+    if foto_sucesso:
+        mensagem_sucesso = "Foto de perfil atualizada com sucesso!"
+    if erro == "tipo_invalido":
+        mensagem_erro = "Tipo de arquivo inválido. Use apenas JPG, PNG ou JPEG."
+    elif erro == "upload_falhou":
+        mensagem_erro = "Erro no upload da foto. Tente novamente."
+
+    # Retorno do template
+    return templates.TemplateResponse(
+        "perfil/dados.html",
+        {
+            "request": request,
+            "usuario": usuario_logado,
+            "cuidador_dados": cuidador if perfil_tipo == 'cuidador' else None,
+            "cliente_dados": cliente if perfil_tipo == 'cliente' else None,
+            "mensagem": mensagem_sucesso,
+            "erro": mensagem_erro
+        }
+    )
+

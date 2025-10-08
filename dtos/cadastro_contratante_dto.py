@@ -1,7 +1,7 @@
 from pydantic import Field, field_validator
 from dtos.base_dto import BaseDTO
 from datetime import date
-from util.validacoes_dto import validar_texto_obrigatorio, validar_email, validar_cpf, validar_nome_pessoa
+from util.validacoes_dto import validar_texto_obrigatorio, validar_email, validar_cpf, validar_nome_pessoa, validar_telefone, validar_estado_brasileiro
 
 class CadastroContratanteDTO(BaseDTO):
     nome: str = Field(..., description="Nome completo")
@@ -11,9 +11,7 @@ class CadastroContratanteDTO(BaseDTO):
     cpf: str = Field(..., description="CPF do usuário")
     relacao: str = Field(..., description="Relação com a pessoa a ser cuidada")
     outro_relacao: str | None = Field(None, alias="outroRelacao", description="Descrição se 'outro' foi selecionado")
-
     foto_perfil: str | None = Field(None, alias="fotoPerfil", description="Foto de perfil (opcional)")
-
     cep: str = Field(..., description="CEP")
     endereco: str = Field(..., description="Endereço")
     numero: str | None = Field(None, description="Número do endereço")
@@ -21,10 +19,8 @@ class CadastroContratanteDTO(BaseDTO):
     cidade: str = Field(..., description="Cidade")
     estado: str = Field(..., description="Estado")
     local_atendimento: bool = Field(default=False, alias="localAtendimento")
-
     senha: str = Field(..., min_length=8)
     confirmar_senha: str = Field(..., alias="confirmarSenha")
-
     termos: bool = Field(..., description="Aceitou os termos de uso?")
     comunicacoes: bool = Field(default=False)
     compartilhar_dados: bool = Field(default=False, alias="compartilharDados")
@@ -48,3 +44,11 @@ class CadastroContratanteDTO(BaseDTO):
     @field_validator("cpf")
     def validar_cpf_valido(cls, valor):
         return validar_cpf(valor, "CPF")
+    
+    @field_validator("telefone")
+    def validar_telefone_valido(cls, valor):
+        return validar_telefone(valor)  # Validação do telefone
+
+    @field_validator("estado")
+    def validar_estado_valido(cls, valor):
+        return validar_estado_brasileiro(valor)  #

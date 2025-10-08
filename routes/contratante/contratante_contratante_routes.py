@@ -1,6 +1,13 @@
-from fastapi import APIRouter, Request, Form
+from fastapi import APIRouter, Request, UploadFile, File, status, Form
 from fastapi.templating import Jinja2Templates
 from fastapi.responses import RedirectResponse
+from data.cliente import cliente_repo
+from util.auth_decorator import criar_sessao, requer_autenticacao
+import os
+import secrets
+from io import BytesIO
+from PIL import Image, ImageDraw
+
 
 router = APIRouter()
 templates = Jinja2Templates(directory="templates")
@@ -14,23 +21,7 @@ async def get_home_contratante(request: Request):
 )
 
 
-# ======================
-# PERFIL
-# ======================
-@router.get("/perfil/dados")
-async def get_dados_perfil(request: Request):
-    perfil_fake = {
-        "id": 1,
-        "nome": "Contratante",
-        "email": "xcontratante@teste.com",
-        "telefone": "28 99912-3456",
-        "cpf": "XXX.XXX.XXX.-XX",
-        "senha": "********"
-    }
-    return templates.TemplateResponse(
-        "perfil/dados.html",
-        {"request": request, "perfil": perfil_fake}
-    )
+
 
 # ======================
 # ALTERAR SENHA CONTRATANTE

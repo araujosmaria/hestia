@@ -17,6 +17,7 @@ from data.especialidade_cuidador import especialidade_cuidador_repo
 from data.solicitacao import solicitacao_repo
 from data.usuario import usuario_repo
 from routes import public_routes
+from routes import perfil_routes
 from routes.admin import (
     admin_administradores_routes,
     admin_avaliacoes_routes,
@@ -42,6 +43,8 @@ from routes.cuidador import (
     cuidador_especializacoes_routes,
     cuidador_solicitacoes_routes
 )
+
+
 
 app = FastAPI()
 app.mount("/static", StaticFiles(directory="static"), name="static")
@@ -92,6 +95,8 @@ app.include_router(cuidador_contratacoes_recebidas_routes.router)
 app.include_router(cuidador_cuidador_routes.router)
 app.include_router(cuidador_especializacoes_routes.router)
 app.include_router(cuidador_solicitacoes_routes.router)
+app.include_router(perfil_routes.router, prefix="/perfil", tags=["perfil"])
+
 
 if __name__ == "__main__":
     uvicorn.run(app="main:app", host="127.0.0.1", port=8082, reload=True)
