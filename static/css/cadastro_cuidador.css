@@ -389,4 +389,18 @@
         width: 100%;
         padding: 12px 20px;
     }
+/* Esconder header ao rolar */
+.hidden-on-scroll {
+  transition: opacity 0.3s ease, visibility 0.3s ease;
+  opacity: 1;
+  visibility: visible;
 }
+
+.hidden-on-scroll.hidden {
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+}
+
+}
+

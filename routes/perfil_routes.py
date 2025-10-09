@@ -10,7 +10,7 @@ from util.auth_decorator import criar_sessao, requer_autenticacao
 from util.template_util import criar_templates
 
 perfil_router = APIRouter()
-templates = criar_templates("templates/perfil")
+templates = criar_templates("templates/perfil/dados.html")
 app = FastAPI()
 router = APIRouter()
 

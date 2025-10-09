@@ -28,7 +28,7 @@ def criar_sessao(request: Request, usuario: dict) -> None:
         request.session['usuario'] = usuario_sessao
 
 
-def obter_usuario_logado(request: Request) -> Optional[dict]:
+def obter_usuario_logado(request: Request ) -> Optional[dict]:
     """
     Obtém os dados do usuário logado da sessão
     

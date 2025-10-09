@@ -7,7 +7,7 @@
             <h1 class="mb-4">Painel do Contratante</h1>
 
             <h2 class="mb-3" style="color: #2c7a5f; font-weight: bold;">
-                Bem-vindo, {{ user.nome }}!
+                Bem-vindo, {{ user.nome if user else "Visitante"}}!
             </h2>
 
             {% if request.query_params.get('mensagem') %}
@@ -22,8 +22,8 @@
             <div class="d-flex justify-content-center gap-3 mt-4 flex-wrap">
                 <a href="/contratante/cuidadores" class="btn btn-outline-primary"> Procurar Cuidadores</a>
                 <a href="/contratante/solicitar_verificacao/1" class="btn btn-outline-secondary">Minhas Verificações</a>
-                <a href="/contratante/contratacoes-realizadas" class="btn btn-outline-secondary"> Minhas Contratações</a>
-                <a href="/contratante/dados_perfil" class="btn btn-outline-warning"> Editar Perfil</a>
+                <a href="/contratante/contratacoes_realizadas" class="btn btn-outline-secondary"> Minhas Contratações</a>
+                <a href="/perfil/dados" class="btn btn-outline-warning"> Editar Perfil</a>
                 <a href="/contratante/alterar_senha/1" class="btn btn-outline-danger">Alterar Senha</a>
                 <a href="/contratante/avaliacoes_realizadas" class="btn btn-outline-warning">Avaliações Realizadas</a>
                 <a href="/contratante/avaliacoes_recebidas" class="btn btn-outline-warning"> Avaliações Recebidas</a>

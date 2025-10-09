@@ -220,10 +220,16 @@ def criar_tabela() -> bool:
 
 
 def inserir(cliente: Cliente) -> Optional[int]:
-    """Insere um novo cliente (e o respectivo usuário)."""
+    """Insere um novo cliente (e o respectivo usuário), evitando CPF duplicado."""
     with get_connection() as conn:
         cursor = conn.cursor()
 
+        # Verifica se o CPF já existe
+        cursor.execute("SELECT id_usuario FROM usuario WHERE cpf = ?", (cliente.cpf,))
+        if cursor.fetchone():
+            print(f"Erro: CPF {cliente.cpf} já cadastrado")
+            return None
+        
         # Cria o usuário primeiro
         usuario = Usuario(
             nome=cliente.nome,

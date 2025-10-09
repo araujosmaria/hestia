@@ -14,15 +14,23 @@ from PIL import Image, ImageDraw, ImageOps
 router = APIRouter()
 templates = Jinja2Templates(directory="templates")
 
-# ======================
-# TELA INICIAL
-# ======================
 @router.get("/cuidador/home_cuidador")
-@requer_autenticacao()
-async def get_home_cuidador(request: Request, usuario_logado: dict = None):
+async def get_home_cuidador(request: Request, mensagem: str = None):
+    user = obter_usuario_logado(request) 
+    print("Sessão atual:", request.session)  # 🔹 debug
+    print("Usuário logado:", user) # pega usuário da sessão
+
+    if not user:
+        # redireciona se não estiver logado
+        return RedirectResponse("/login", status_code=303)
+
     return templates.TemplateResponse(
         "cuidador/home_cuidador.html",
-        {"request": request, "mensagem": "Bem-vindo ao painel do cuidador!"}
+        {
+            "request": request,
+            "mensagem": mensagem,
+            "user": user # passa para o template
+        }
     )
 
 # ======================

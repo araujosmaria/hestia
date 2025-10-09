@@ -1,14 +1,4 @@
-<!DOCTYPE html>
-<html lang="pt-BR">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Entrar no Hestia</title>
-  <link rel="stylesheet" href="/static/css/login.css">
-</head>
-<body class="login-page">
-
-  <!-- Botão de voltar -->
+<!-- 
   <a href="/" class="voltar">×</a>
 
   <div class="container login-container">
@@ -45,4 +35,44 @@
   </div>
 
 </body>
-</html>
+</html>  -->
+{% extends "base_login.html" %}
+
+{% block conteudo %}
+<div class="login-container">
+
+    <h1>Faça seu Login</h1>
+
+    <button class="google-login-card" type="button">
+        <div class="icon-text">
+            <span class="google-logo">G</span>
+            <div>
+                <h2>Entrar com o Google</h2>
+            </div>
+        </div>
+    </button>
+
+    <form action="#" method="POST" class="login-form">
+        <label for="email">Email</label>
+        <input type="email" id="email" name="email" placeholder="seu.email@exemplo.com" required>
+
+        <label for="senha">Senha</label>
+        <input type="password" id="senha" name="senha" placeholder="Digite sua senha" required>
+
+        <button class="submit-btn" type="submit">Entrar</button>
+    </form>
+
+    <div class="links-auxiliares">
+        <a href="/redefinicao_senha" class="link-redefinir">
+            Esqueceu a senha? <span>Redefinir Senha</span>
+        </a>
+
+        <p>
+            Não tem cadastro ainda? <a href="/cadastro" class="link-cadastrar">Cadastre-se aqui</a>
+        </p>
+    </div>
+</div>
+
+<div class="background-shape top-left"></div>
+<div class="background-shape bottom-left"></div>
+{% endblock %}

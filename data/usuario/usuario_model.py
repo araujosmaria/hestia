@@ -1,11 +1,11 @@
-
 from dataclasses import dataclass
 from typing import Optional
+from datetime import datetime
 
 @dataclass
 class Usuario:
-    id: int =''
-    nome: str = ''   
+    id: Optional[int] = None
+    nome: str = ''
     dataNascimento: str = ''
     email: str = ''
     telefone: str = ''
@@ -21,6 +21,6 @@ class Usuario:
     ativo: bool = False
     token_redefinicao: Optional[str] = None
     data_token: Optional[str] = None
-    data_cadastro: Optional[str] = None
+    data_cadastro: datetime = datetime.now()  
     foto: Optional[str] = None
     complemento: Optional[str] = None

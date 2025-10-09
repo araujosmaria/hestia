@@ -1,4 +1,4 @@
-/* login */
+/* 
 
 body {
   background-color: #f9f9f9;
@@ -88,7 +88,6 @@ html {
   scroll-behavior: smooth;
 }
 
-/* Página de login */
 body.login-page {
   background-color: rgba(43, 140, 106, 0.24); 
   min-height: 100vh;
@@ -196,4 +195,194 @@ body.login-page .login-container input[type="password"] {
   font-size: 32px;
   color: black;
   font-weight: bold;
+} */
+
+:root {
+    --primary-color: #2a6b4c;
+    --background-color: #ffffff;
+    --light-bg-color: #EAF9F1;
+    --text-color: #333333;
+    --light-text-color: #666666;
+    --input-bg-color: #f7f9fb;
+    --border-color: #e0e0e0;
+}
+
+/* Reset */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Poppins', sans-serif;
+    background-color: var(--light-bg-color);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    position: relative;
+    overflow: hidden;
+    color: var(--text-color);
+}
+
+/* Container */
+.login-container {
+    background-color: var(--background-color);
+    padding: 40px 30px;
+    border-radius: 12px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+    width: 100%;
+    max-width: 400px;
+    text-align: center;
+    position: relative;
+    z-index: 10;
+}
+
+/* Título */
+h1 {
+    font-size: 28px;
+    font-weight: 700;
+    margin-bottom: 30px;
+    color: var(--primary-color);
+}
+
+/* Google login */
+.google-login-card {
+    width: 100%;
+    padding: 15px 20px;
+    margin-bottom: 30px;
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    background-color: var(--background-color);
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    cursor: pointer;
+}
+
+.google-login-card .icon-text {
+    display: flex;
+    align-items: center;
+}
+
+.google-logo {
+    background-color: #f5f5f5;
+    color: #444;
+    width: 30px;
+    height: 30px;
+    border-radius: 4px;
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+    font-weight: 700;
+    font-size: 15px;
+    margin-right: 15px;
+}
+
+.google-login-card h2 {
+    font-size: 16px;
+    font-weight: 500;
+    margin: 0;
+}
+
+/* Formulário */
+.login-form {
+    text-align: left;
+}
+
+.login-form label {
+    display: block;
+    font-size: 14px;
+    font-weight: 600;
+    margin-bottom: 8px;
+    color: var(--text-color);
+}
+
+.login-form input {
+    width: 100%;
+    padding: 12px 15px;
+    margin-bottom: 20px;
+    border: none;
+    border-radius: 8px;
+    background-color: var(--input-bg-color);
+    font-size: 16px;
+    color: var(--text-color);
+    outline: none;
+}
+
+.submit-btn {
+    width: 100%;
+    padding: 12px;
+    margin-top: 15px;
+    background-color: var(--primary-color);
+    color: #ffffff;
+    border: none;
+    border-radius: 8px;
+    font-size: 18px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background-color 0.2s;
+}
+
+.submit-btn:hover {
+    background-color: #21563f;
+}
+
+/* Links Auxiliares */
+.links-auxiliares {
+    margin-top: 25px;
+    font-size: 14px;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+/* Texto cinza */
+.links-auxiliares p,
+.links-auxiliares a.link-redefinir {
+    color: var(--light-text-color);
+    text-decoration: none;
+    font-weight: 400;
+}
+
+/* Somente os links em verde */
+.links-auxiliares a span,
+.links-auxiliares a.link-cadastrar {
+    color: var(--primary-color);
+    font-weight: 600;
+    text-decoration: none;
+    transition: color 0.2s;
+}
+
+.links-auxiliares a span:hover,
+.links-auxiliares a.link-cadastrar:hover {
+    color: #1f513a;
+}
+
+/* Fundo decorativo */
+.background-shape {
+    position: absolute;
+    width: 250px;
+    height: 250px;
+    background-color: var(--primary-color);
+    opacity: 0.1;
+    z-index: 1;
+    border-radius: 30%;
+    filter: blur(50px);
+}
+
+.top-left {
+    top: -100px;
+    left: -100px;
+    transform: rotate(45deg);
+}
+
+.bottom-left {
+    bottom: -150px;
+    right: -100px;
+    transform: rotate(15deg);
+    width: 300px;
+    height: 300px;
 }

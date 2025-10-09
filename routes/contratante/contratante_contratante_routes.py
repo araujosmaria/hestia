@@ -1,6 +1,6 @@
 from fastapi import APIRouter, Request, UploadFile, File, status, Form
 from fastapi.templating import Jinja2Templates
-from fastapi.responses import RedirectResponse
+from fastapi.responses import HTMLResponse, RedirectResponse
 from data.cliente import cliente_repo
 from util.auth_decorator import criar_sessao, requer_autenticacao
 import os
@@ -8,36 +8,40 @@ import secrets
 from io import BytesIO
 from PIL import Image, ImageDraw
 from util.auth_decorator import criar_sessao, requer_autenticacao, obter_usuario_logado
-
+from fastapi.requests import Request
 
 
 router = APIRouter()
+# ajuste para sua função real
+
 templates = Jinja2Templates(directory="templates")
 
-
-
-# ======================
-# HOME CONTRATANTE
-# ======================
 @router.get("/contratante/home_contratante")
-async def get_home_contratante(request: Request, mensagem: str = None):
-    usuario = obter_usuario_logado(request) 
-    print("Sessão atual:", request.session)  # 🔹 debug
-    print("Usuário logado:", usuario) # pega usuário da sessão
+async def get_home_contratante(request: Request, mensagem: str | None = None):
+    # Pega o usuário da sessão
+    user = obter_usuario_logado(request)
+    print("Sessão atual:", request.session)  # debug
+    print("Usuário logado:", user)           # debug
 
-    if not usuario:
-        # redireciona se não estiver logado
+    # Se não tiver usuário logado, redireciona para login
+    if not user:
         return RedirectResponse("/login", status_code=303)
 
+    # Converte dataclass/objeto para dict caso necessário
+    if not isinstance(user, dict):
+        user_dict = user.__dict__  # funciona para dataclasses
+    else:
+        user_dict = user
+
+    # Renderiza o template garantindo que user sempre exista
     return templates.TemplateResponse(
         "contratante/home_contratante.html",
         {
             "request": request,
-            "mensagem": mensagem,
-            "user": usuario  # passa para o template
+            "mensagem": mensagem or "",
+            "user": user_dict
         }
     )
-
 
 
 # ======================

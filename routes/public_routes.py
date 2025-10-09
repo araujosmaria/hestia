@@ -2,6 +2,9 @@ from datetime import datetime
 from fastapi import APIRouter, File, Form, Request, UploadFile, status
 from fastapi.templating import Jinja2Templates
 from starlette.status import HTTP_302_FOUND
+from data import cuidador
+from data import cliente
+from data.cliente import cliente_repo
 from data.cliente.cliente_model import Cliente
 from data.cuidador import cuidador_repo
 import sqlite3 
@@ -312,7 +315,8 @@ async def cadastro_cuidador_post(
     experiencia: str = Form(...),
     escolaridade: str = Form(...),
     apresentacao: str = Form(...),
-    termos: bool = Form(...),
+    cursos: bool = Form(...),
+    data_cadastro: str = Form(...),
     fotoPerfil: UploadFile | None = File(None)
 ):
     # 1. Criar hash da senha
@@ -326,12 +330,12 @@ async def cadastro_cuidador_post(
 
     # 3. Inserir usuário no banco
     usuario = Usuario(
+        id=0,
         nome=nome,
         dataNascimento=dataNascimento,
         email=email,
         telefone=telefone,
         cpf=cpf,
-        perfil="cuidador",
         senha=senha_hash,
         foto=foto_path,
         cep=cep,
@@ -340,18 +344,19 @@ async def cadastro_cuidador_post(
         bairro=bairro,
         cidade=cidade,
         estado=estado,
+        perfil="cuidador",
         experiencia=experiencia,
         escolaridade=escolaridade,
         apresentacao=apresentacao,
-        ativo=True,
-        data_cadastro=datetime.now().isoformat()
+        cursos=cursos,
+        data_cadastro=data_cadastro
     )
-    usuario_id = usuario_repo.inserir(usuario)
-    usuario.id = usuario_id
+    usuario_id = cuidador_repo.inserir(cuidador)
+    cuidador.id = usuario_id
 
     # 4. Criar sessão automaticamente
     usuario_dict = {
-        "id": usuario.id,
+        "id": cuidador.id,
         "nome": usuario.nome,
         "email": usuario.email,
         "perfil": usuario.perfil,
@@ -363,6 +368,62 @@ async def cadastro_cuidador_post(
     return RedirectResponse("/cuidador/home_cuidador", status_code=303)
 
 
+# @router.post("/cadastro_contratante")
+# async def post_cadastro_contratante(
+#     request: Request,
+#     nome: str = Form(...),
+#     dataNascimento: str = Form(...),
+#     email: str = Form(...),
+#     telefone: str = Form(...),
+#     cpf: str = Form(...),
+#     senha: str = Form(...),
+#     cep: str = Form(...),
+#     logradouro: str = Form(...),
+#     numero: str = Form(...),
+#     bairro: str = Form(...),
+#     cidade: str = Form(...),
+#     estado: str = Form(...),
+#     parentesco_paciente: str = Form(...),
+#     fotoPerfil: UploadFile | None = None
+# ):
+#     senha_hash = criar_hash_senha(senha)
+
+#     foto_path = None
+#     if fotoPerfil:
+#         conteudo_foto = await fotoPerfil.read()
+#         foto_path = salvar_foto(conteudo_foto, fotoPerfil.filename)
+
+#     usuario = Usuario(
+#         id=0,
+#         nome=nome,
+#         dataNascimento=dataNascimento,
+#         email=email,
+#         telefone=telefone,
+#         cpf=cpf,
+#         senha=senha_hash,
+#         cep=cep,
+#         logradouro=logradouro,
+#         numero=numero,
+#         bairro=bairro,
+#         cidade=cidade,
+#         estado=estado,
+#         perfil="contratante",
+#         parentesco_paciente=parentesco_paciente,
+#         foto=foto_path
+#     )
+
+#     usuario_id = cliente_repo.inserir(cliente)
+#     usuario.id = usuario_id
+
+#     criar_sessao(request, {
+#         "id": cliente.id,
+#         "nome": usuario.nome,
+#         "email": usuario.email,
+#         "perfil": usuario.perfil,
+#         "foto": usuario.foto
+#     })
+
+#     return RedirectResponse("/contratante/home_contratante", status_code=303)
 @router.post("/cadastro_contratante")
 async def post_cadastro_contratante(
     request: Request,
@@ -371,40 +432,58 @@ async def post_cadastro_contratante(
     email: str = Form(...),
     telefone: str = Form(...),
     cpf: str = Form(...),
-    parentesco_paciente: str = Form(...),
     senha: str = Form(...),
+    cep: str = Form(...),
+    logradouro: str = Form(...),
+    numero: str = Form(...),
+    bairro: str = Form(...),
+    cidade: str = Form(...),
+    estado: str = Form(...),
+    parentesco_paciente: str = Form(...),
     fotoPerfil: UploadFile | None = None
 ):
+    # Cria hash da senha
     senha_hash = criar_hash_senha(senha)
 
+    # Salva foto se houver
     foto_path = None
     if fotoPerfil:
         conteudo_foto = await fotoPerfil.read()
         foto_path = salvar_foto(conteudo_foto, fotoPerfil.filename)
 
-    usuario = Usuario(
-        id_usuario=0,
+    # Cria o objeto Cliente
+    cliente = Cliente(
         nome=nome,
         dataNascimento=dataNascimento,
         email=email,
         telefone=telefone,
         cpf=cpf,
+        senha=senha_hash,
+        cep=cep,
+        logradouro=logradouro,
+        numero=numero,
+        bairro=bairro,
+        cidade=cidade,
+        estado=estado,
         perfil="contratante",
-        senha=criar_hash_senha(senha),
+        parentesco_paciente=parentesco_paciente,
         foto=foto_path
     )
 
-    usuario_id = usuario_repo.inserir(usuario)
-    usuario.id = usuario_id
+    # Insere no banco e atualiza o ID
+    usuario_id = cliente_repo.inserir(cliente)
+    cliente.id = usuario_id
 
+    # Cria sessão
     criar_sessao(request, {
-        "id": usuario.id,
-        "nome": usuario.nome,
-        "email": usuario.email,
-        "perfil": usuario.perfil,
-        "foto": usuario.foto
+        "id": cliente.id,
+        "nome": cliente.nome,
+        "email": cliente.email,
+        "perfil": cliente.perfil,
+        "foto": cliente.foto
     })
 
+    # Redireciona
     return RedirectResponse("/contratante/home_contratante", status_code=303)
 
 

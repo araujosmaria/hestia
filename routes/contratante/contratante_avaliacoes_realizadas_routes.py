@@ -5,17 +5,6 @@ from fastapi.responses import RedirectResponse
 router = APIRouter()
 templates = Jinja2Templates(directory="templates")
 
-# ======================
-# HOME CONTRATANTE
-# ======================
-@router.get("/contratante/home_contratante")
-async def get_home_contratante(request: Request):
-    mensagem = None
-    return templates.TemplateResponse(
-        "contratante/home_contratante.html",
-        {"request": request, "mensagem": mensagem}
-    )
-
 # ==========================
 # LISTAR AVALIAÇÕES REALIZADAS
 # ==========================

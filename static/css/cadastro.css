@@ -1,4 +1,4 @@
-/* Reset básico */
+/* 
 * {
   margin: 0;
   padding: 0;
@@ -20,22 +20,12 @@ body, html {
   justify-content: center;
 }
 
-/* Efeito escuro no fundo */
-/* .overlay {
-  position: absolute;
-  bottom: 0;
-  left: 0;
-  width: 100%;
-  height: 40%;
-  background: linear-gradient(to top, rgba(0, 0, 0, 0.7), transparent);
-} */
 
-/* Card central */
 .card {
   position: relative;
   display: flex;
-  width: 800px;   /* antes era 600px → aumentei */
-  height: 450px;  /* novo: define altura fixa maior */
+  width: 800px;   
+  height: 450px;  
   border-radius: 20px;
   background: white;
   overflow: hidden;
@@ -49,8 +39,8 @@ body, html {
   background: #5acca4;
   display: flex;
   flex-direction: column;
-  justify-content: center;   /* centraliza verticalmente */
-  align-items: center;       /* centraliza horizontalmente */
+  justify-content: center;   
+  align-items: center;       
   text-align: center;
   padding: 40px;
   border-top-left-radius: 20px;
@@ -58,8 +48,8 @@ body, html {
 }
 
 .left-panel h1 {
-  font-family: 'Georgia', serif; /* pode trocar por outra fonte */
-  font-size: 60px;               /* aumentei o tamanho */
+  font-family: 'Georgia', serif; 
+  font-size: 60px;               
   font-weight: bold;
   margin-bottom: 15px;
   color: #ffffff;
@@ -85,9 +75,9 @@ body, html {
   flex: 1;
   display: flex;
   flex-direction: column;
-  justify-content: center; /* centraliza verticalmente */
-  align-items: center;     /* centraliza horizontalmente */
-  gap: 20px;               /* espaço entre os botões */
+  justify-content: center; 
+  align-items: center;     
+  gap: 20px;               
   background: #fff;
   padding: 40px;
   border-top-right-radius: 20px;
@@ -101,8 +91,8 @@ body, html {
   padding: 12px;
   font-size: 16px;
   font-weight: bold;
-  text-decoration: none;       /* tira o sublinhado do link */
-  color: #2b8c6a;                 /* cor do texto */
+  text-decoration: none;       
+  color: #2b8c6a;                 
   background: transparent;
   border: 1px solid #2b8c6a;
   border-radius: 6px;
@@ -113,4 +103,219 @@ body, html {
 .btn:hover {
   background: #B8E6C1;
   color: #ffffff;
+} */
+/* Variáveis de Cores */
+:root {
+    --primary-color: #2a6b4c; /* Verde principal */
+    --secondary-color: #2a6b4c; /* Um tom de verde um pouco mais escuro */
+    --background-color: #ffffff; /* Fundo branco */
+    --text-color: #333333; /* Texto escuro */
+    --light-text-color: #666666; /* Texto secundário */
+    --border-color: #D5DBDB; /* Borda clara */
+    --light-green-bg: #EAF9F1; /* Verde muito claro para formas de fundo */
+}
+
+/* Reset básico e fonte */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Poppins', sans-serif;
+    background-color: var(--background-color);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    color: var(--text-color);
+    position: relative;
+    overflow: hidden; /* Para garantir que as formas de fundo não causem barra de rolagem */
+}
+
+/* Container principal (o "cartão" central) */
+.cadastro-container {
+    background-color: var(--background-color);
+    padding: 40px 30px;
+    border-radius: 15px;
+    text-align: center;
+    width: 100%;
+    max-width: 400px; /* Largura ideal para um formulário de mobile/web */
+    position: relative;
+    z-index: 10; /* Garante que fique acima das formas de fundo */
+}
+
+/* Ícone da logo (casa) */
+.logo-icon {
+    background-color: var(--primary-color);
+    color: var(--background-color);
+    width: 60px;
+    height: 60px;
+    border-radius: 15px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 28px;
+    margin: 0 auto 20px;
+}
+
+/* Título Hestia */
+h1 {
+    font-size: 32px;
+    font-weight: 700;
+    margin-bottom: 5px;
+}
+
+/* Subtítulo "Cadastrar-se como:" */
+.subtitle {
+    font-size: 16px;
+    color: var(--light-text-color);
+    margin-bottom: 30px;
+}
+
+/* Estilo para os cartões de opção */
+.option-card {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px;
+    margin-bottom: 15px;
+    border-radius: 12px;
+    text-decoration: none;
+    transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.option-card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+}
+
+/* Opção Cuidador (o cartão principal, verde) */
+.option-card.primary {
+    background-color: var(--primary-color);
+    color: var(--background-color);
+    box-shadow: 0 8px 15px rgba(46, 204, 113, 0.4);
+}
+
+.option-card.primary .icon-text h2, 
+.option-card.primary .icon-text p {
+    color: var(--background-color);
+}
+
+/* Opção Contratante (o cartão secundário, com borda verde) */
+.option-card.secondary {
+    background-color: var(--background-color);
+    border: 2px solid var(--primary-color);
+    color: var(--text-color);
+}
+
+.option-card.secondary .icon-text i {
+    color: var(--primary-color); /* Ícone em verde */
+}
+
+.option-card.secondary .arrow {
+    color: var(--primary-color); /* Seta em verde */
+}
+
+/* Ícone e texto dentro do cartão */
+.icon-text {
+    display: flex;
+    align-items: center;
+    text-align: left;
+}
+
+.icon-text i {
+    font-size: 28px;
+    margin-right: 15px;
+    /* Cor padrao, ajustada nas classes primary/secondary */
+}
+
+.icon-text h2 {
+    font-size: 18px;
+    font-weight: 600;
+    margin-bottom: 2px;
+}
+
+.icon-text p {
+    font-size: 13px;
+    font-weight: 400;
+    margin: 0;
+    opacity: 0.8;
+}
+
+/* Seta de navegação */
+.arrow {
+    font-size: 20px;
+}
+
+/* Link de Login na parte inferior */
+.login-prompt {
+    font-size: 14px;
+    margin-top: 25px;
+    color: var(--light-text-color);
+}
+
+.login-link {
+    color: var(--primary-color);
+    font-weight: 600;
+    text-decoration: none;
+    transition: color 0.2s;
+}
+
+.login-link:hover {
+    color: var(--secondary-color);
+}
+
+/* --- Estilização do Fundo Decorativo --- */
+
+.background-shape {
+    position: absolute;
+    width: 250px;
+    height: 250px;
+    background-color: var(--light-green-bg);
+    opacity: 0.6;
+    z-index: 1; /* Deve ficar atrás do .cadastro-container */
+    border-radius: 30%;
+    filter: blur(50px); /* Suaviza as bordas */
+}
+
+.top-left {
+    top: -100px;
+    left: -100px;
+    transform: rotate(45deg);
+}
+
+.bottom-left {
+    bottom: -150px;
+    right: -100px;
+    transform: rotate(15deg);
+    width: 300px;
+    height: 300px;
+}
+
+/* Ajustes para telas menores */
+@media (max-width: 480px) {
+    .cadastro-container {
+        padding: 30px 20px;
+    }
+
+    h1 {
+        font-size: 28px;
+    }
+
+    .logo-icon {
+        width: 50px;
+        height: 50px;
+        font-size: 24px;
+        margin-bottom: 15px;
+    }
+
+    .option-card {
+        padding: 15px;
+    }
+
+    .icon-text i {
+        font-size: 24px;
+    }
 }

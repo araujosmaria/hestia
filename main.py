@@ -18,6 +18,9 @@ from data.solicitacao import solicitacao_repo
 from data.usuario import usuario_repo
 from routes.public_routes import router as public_routes
 from routes import perfil_routes
+from routes.perfil_routes import router as perfil_dados_router
+from routes.perfil_routes import perfil_router
+
 from routes.admin import (
     admin_administradores_routes,
     admin_avaliacoes_routes,
@@ -97,8 +100,8 @@ app.include_router(cuidador_contratacoes_recebidas_routes.router)
 app.include_router(cuidador_cuidador_routes.router)
 app.include_router(cuidador_especializacoes_routes.router)
 app.include_router(cuidador_solicitacoes_routes.router)
-app.include_router(perfil_routes.router, prefix="/perfil", tags=["perfil"])
-
+app.include_router(perfil_router)        # para upload de foto
+app.include_router(perfil_dados_router)
 
 if __name__ == "__main__":
     uvicorn.run(app="main:app", host="127.0.0.1", port=8082, reload=True)
