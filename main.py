@@ -16,7 +16,7 @@ from data.especialidade import especialidade_repo
 from data.especialidade_cuidador import especialidade_cuidador_repo
 from data.solicitacao import solicitacao_repo
 from data.usuario import usuario_repo
-from routes import public_routes
+from routes.public_routes import router as public_routes
 from routes import perfil_routes
 from routes.admin import (
     admin_administradores_routes,
@@ -52,14 +52,16 @@ app.mount("/static", StaticFiles(directory="static"), name="static")
 # Gerar chave secreta (em produção, use variável de ambiente!)
 SECRET_KEY = secrets.token_urlsafe(32)
 
-# Adicionar middleware de sessão
-app.add_middleware(
-    SessionMiddleware, 
-    secret_key=SECRET_KEY,
-    max_age=3600,  # Sessão expira em 1 hora
-    same_site="lax",
-    https_only=False  # Em produção, mude para True com HTTPS
-)
+# # Adicionar middleware de sessão
+# app.add_middleware(
+#     SessionMiddleware, 
+#     secret_key=SECRET_KEY,
+#     max_age=3600,  # Sessão expira em 1 hora
+#     same_site="lax",
+#     https_only=False  # Em produção, mude para True com HTTPS
+# )
+
+app.add_middleware(SessionMiddleware, secret_key="sua_chave_secreta")
 
 administrador_repo.criar_tabela()
 agenda_repo.criar_tabela()
@@ -75,7 +77,7 @@ especialidade_cuidador_repo.criar_tabela()
 solicitacao_repo.criar_tabela()
 usuario_repo.criar_tabela()
 
-app.include_router(public_routes.router)
+app.include_router(public_routes)
 app.include_router(admin_administradores_routes.router)
 app.include_router(admin_avaliacoes_routes.router)
 app.include_router(admin_chamados_routes.router)

@@ -1,21 +1,24 @@
 from datetime import datetime
 from fastapi import APIRouter, File, Form, Request, UploadFile, status
-from fastapi.responses import RedirectResponse
 from fastapi.templating import Jinja2Templates
 from starlette.status import HTTP_302_FOUND
 from data.cliente.cliente_model import Cliente
-from data.cliente import cliente_repo
-from data.cuidador.cuidador_model import Cuidador
 from data.cuidador import cuidador_repo
-from data.usuario.usuario_model import *
+import sqlite3 
 from data.usuario import usuario_repo
-from util.security import criar_hash_senha, verificar_senha
+from util.security import criar_hash_senha, salvar_foto, verificar_senha
 from util.auth_decorator import criar_sessao, obter_usuario_logado, esta_logado
 from util.template_util import criar_templates
 from dtos.login_dto import LoginDTO  
 import json
 import os
 import uuid
+from fastapi.responses import RedirectResponse, HTMLResponse
+from data.usuario.usuario_model import Usuario
+from data.usuario.usuario_repo import inserir as inserir_usuario, obter_por_cpf
+from data.cliente.cliente_repo import inserir as inserir_cliente
+from passlib.context import CryptContext
+from util.auth_decorator import criar_sessao
 
 router = APIRouter() 
 templates = criar_templates("templates/auth")
@@ -37,62 +40,316 @@ async def salvar_imagem(foto: UploadFile):
     return nome_arquivo
 
 
-@router.get("/")
-async def get_login(request: Request): 
+# @router.get("/")
+# async def get_login(request: Request): 
+#     return templates.TemplateResponse("index.html", {"request": request})
+@router.get("/", response_class=HTMLResponse)
+async def get_index(request: Request):
     return templates.TemplateResponse("index.html", {"request": request})
-
 
 @router.get("/login")
 async def get_login(request: Request, redirect: str = None):
-    # Se já está logado, redireciona conforme o perfil
+    # Se já está logado, redireciona conforme perfil
     if esta_logado(request):
         usuario = obter_usuario_logado(request)
         if usuario["perfil"] == "cuidador":
-            return RedirectResponse("/cuidador/home_cuidador", status.HTTP_303_SEE_OTHER)
+            return RedirectResponse("/cuidador/home_cuidador", status_code=303)
         elif usuario["perfil"] == "contratante":
-            return RedirectResponse("/contratante/home_contratante", status.HTTP_303_SEE_OTHER)
+            return RedirectResponse("/contratante/home_contratante", status_code=303)
         else:
-            return RedirectResponse("/", status.HTTP_303_SEE_OTHER)
+            return RedirectResponse("/", status_code=303)
     
     return templates.TemplateResponse(
-        "login.html", 
+        "login.html",
         {"request": request, "redirect": redirect}
     )
 
 
+# ======================
+# POST LOGIN
+# ======================
+
 @router.post("/login")
-async def post_login(
+async def post_login(request: Request, email: str = Form(...), senha: str = Form(...)):
+    usuario = usuario_repo.obter_por_email(email)  # retorna objeto com .id, .nome, .perfil, .email
+    if not usuario or not verificar_senha(senha, usuario.senha):
+        return templates.TemplateResponse("login.html", {"request": request, "erro": "Usuário ou senha incorretos"})
+    
+    usuario_dict = {
+        "id": usuario.id,
+        "nome": usuario.nome,
+        "email": usuario.email,
+        "perfil": usuario.perfil
+    }
+    criar_sessao(request, usuario_dict)  # isso salva na sessão
+    if usuario.perfil == "contratante":
+        return RedirectResponse("/contratante/home_contratante", status_code=303)
+    else:
+        return RedirectResponse("/cuidador/home_cuidador", status_code=303)
+
+# @router.get("/cadastro")
+# async def get_cadastro(request: Request):
+#     return templates.TemplateResponse("cadastro.html", {"request": request})
+
+# # -----------------------------
+# # CADASTRO CUIDADOR
+# # -----------------------------
+
+# @router.get("/cadastro_cuidador")
+# async def get_cadastro_cuidador(request: Request):
+#     return templates.TemplateResponse("cadastro_cuidador.html", {"request": request})
+
+# @router.post("/cadastro_cuidador")
+# async def post_cadastro_cuidador(
+#     request: Request,
+#     nome: str = Form(...),
+#     dataNascimento: str = Form(...),
+#     email: str = Form(...),
+#     telefone: str = Form(...),
+#     cpf: str = Form(...),
+#     fotoPerfil: UploadFile = File(None),
+#     senha: str = Form(...),
+#     cep: str = Form(...),
+#     logradouro: str = Form(...),
+#     numero: str = Form(...),
+#     complemento: str = Form(None),
+#     bairro: str = Form(...),
+#     cidade: str = Form(...),
+#     estado: str = Form(...),
+#     experiencia: str = Form(...),
+#     valorHora: float = Form(...),
+#     escolaridade: str = Form(...),
+#     apresentacao: str = Form(...),
+#     cursos: str = Form(None),
+#     confirmarSenha: str = Form(...),
+#     termos: bool = Form(...),
+#     verificacao: bool = Form(False),
+#     comunicacoes: bool = Form(False),
+# ):
+#     try:
+#         if usuario_repo.obter_por_email(email):
+#             return templates.TemplateResponse(
+#                 "cadastro_cuidador.html",
+#                 {"request": request, "erro": "Email já cadastrado"}
+#             )
+
+#         senha_hash = criar_hash_senha(senha)
+
+#         nome_arquivo_foto = await salvar_imagem(fotoPerfil)
+
+#         cuidador = Cuidador(
+#             id=0,
+#             nome=nome,
+#             dataNascimento=dataNascimento,
+#             email=email,
+#             telefone=telefone,
+#             cpf=cpf,
+#             senha=senha_hash,
+#             perfil="cuidador",
+#             foto=nome_arquivo_foto,
+#             token_redefinicao=None,
+#             data_token=None,
+#             data_cadastro=datetime.now().isoformat(),
+#             cep=cep,
+#             logradouro=logradouro,
+#             numero=numero,
+#             complemento=complemento,
+#             bairro=bairro,
+#             cidade=cidade,
+#             estado=estado,
+#             ativo=True,
+#             experiencia=experiencia,
+#             valorHora=valorHora,
+#             escolaridade=escolaridade,
+#             apresentacao=apresentacao,
+#             cursos=cursos,
+#             confirmarSenha=confirmarSenha,
+#             termos=termos,
+#             verificacao=verificacao,
+#             comunicacoes=comunicacoes
+#         )
+
+#         usuario_id = cuidador_repo.inserir(cuidador)
+        
+#         if not usuario_id:
+#             return templates.TemplateResponse(
+#                 "cadastro_cuidador.html",
+#                 {"request": request, "erro": "Erro ao cadastrar usuário. Tente novamente."}
+#             )
+
+#         print(f"Cuidador cadastrado com sucesso! ID: {usuario_id}")
+#         return RedirectResponse("/login", status_code=303)
+        
+#     except Exception as e:
+#         print(f"Erro ao cadastrar cuidador: {e}")
+#         return templates.TemplateResponse(
+#             "cadastro_cuidador.html",
+#             {"request": request, "erro": "Erro interno ao cadastrar. Tente novamente."}
+#         )
+
+# # -----------------------------
+# # CADASTRO CONTRATANTE
+# # -----------------------------
+
+# @router.get("/cadastro_contratante")
+# async def get_cadastro_contratante(request: Request):
+#     return templates.TemplateResponse("cadastro_contratante.html", {"request": request})
+
+# @router.post("/cadastro_contratante")
+# async def post_cadastro_contratante(
+#     request: Request,
+#     nome: str = Form(...),
+#     dataNascimento: str = Form(...),
+#     email: str = Form(...),
+#     telefone: str = Form(...),
+#     cpf: str = Form(...),
+#     senha: str = Form(...),
+#     cep: str = Form(...),
+#     logradouro: str = Form(...),
+#     numero: str = Form(...),
+#     complemento: str = Form(None),
+#     bairro: str = Form(...),
+#     cidade: str = Form(...),
+#     estado: str = Form(...),
+#     parentesco_paciente: str = Form(...),
+#     fotoPerfil: UploadFile = File(None),
+#     confirmarSenha: str = Form(...),
+#     termos: bool = Form(...),
+#     verificacao: bool = Form(False),
+#     comunicacoes: bool = Form(False),
+# ):
+#     try:
+#         if usuario_repo.obter_por_email(email):
+#             return templates.TemplateResponse(
+#                 "cadastro_contratante.html",
+#                 {"request": request, "erro": "Email já cadastrado"}
+#             )
+
+#         senha_hash = criar_hash_senha(senha)
+
+#         nome_arquivo_foto = await salvar_imagem(fotoPerfil)
+
+#         cliente = Cliente(
+#             id=0,
+#             nome=nome,
+#             dataNascimento=dataNascimento,
+#             email=email,
+#             telefone=telefone,
+#             cpf=cpf,
+#             senha=senha_hash,
+#             perfil="contratante",
+#             foto=nome_arquivo_foto,
+#             token_redefinicao=None,
+#             data_token=None,
+#             data_cadastro=datetime.now().isoformat(),
+#             cep=cep,
+#             logradouro=logradouro,
+#             numero=numero,
+#             complemento=complemento,
+#             bairro=bairro,
+#             cidade=cidade,
+#             estado=estado,
+#             ativo=True,
+#             parentesco_paciente=parentesco_paciente,
+#             termos=termos,
+#             verificacao=verificacao,
+#             comunicacoes=comunicacoes
+#         )
+
+#         print(f"Tentando cadastrar cliente com perfil: {cliente.perfil}")
+
+#         usuario_id = cliente_repo.inserir(cliente)
+
+#         if not usuario_id:
+#             return templates.TemplateResponse(
+#                 "cadastro_contratante.html",
+#                 {"request": request, "erro": "Erro ao cadastrar contratante. Tente novamente."}
+#             )
+
+#         print(f"Contratante cadastrado com sucesso! ID: {usuario_id}")
+
+#         return RedirectResponse("/login", status_code=303)
+
+#     except Exception as e:
+#         print(f"Erro ao cadastrar contratante: {e}")
+#         return templates.TemplateResponse(
+#             "cadastro_contratante.html",
+#             {"request": request, "erro": "Erro interno ao cadastrar. Tente novamente."}
+#         )
+
+
+@router.get("/cadastro", response_class=HTMLResponse)
+async def escolher_tipo_usuario(request: Request):
+    # Renderiza página para escolher cuidador ou contratante
+    return templates.TemplateResponse("cadastro.html", {"request": request})
+
+
+@router.get("/cadastro_cuidador", response_class=HTMLResponse)
+async def cadastro_cuidador_form(request: Request):
+    return templates.TemplateResponse("cadastro_cuidador.html", {"request": request})
+
+
+@router.get("/cadastro_contratante", response_class=HTMLResponse)
+async def cadastro_contratante_form(request: Request):
+    return templates.TemplateResponse("cadastro_contratante.html", {"request": request})
+
+
+@router.post("/cadastro_cuidador")
+async def cadastro_cuidador_post(
     request: Request,
+    nome: str = Form(...),
+    dataNascimento: str = Form(...),
     email: str = Form(...),
+    telefone: str = Form(...),
+    cpf: str = Form(...),
     senha: str = Form(...),
-    redirect: str = Form(None)
+    cep: str = Form(...),
+    logradouro: str = Form(...),
+    numero: str = Form(...),
+    bairro: str = Form(...),
+    cidade: str = Form(...),
+    estado: str = Form(...),
+    experiencia: str = Form(...),
+    escolaridade: str = Form(...),
+    apresentacao: str = Form(...),
+    termos: bool = Form(...),
+    fotoPerfil: UploadFile | None = File(None)
 ):
-    # Validação via DTO LoginDTO
-    try:
-        login_dto = LoginDTO(email=email, senha=senha)
-    except Exception as e:
-        return templates.TemplateResponse(
-            "login.html",
-            {
-                "request": request,
-                "erro": str(e),
-                "email": email,
-                "redirect": redirect
-            }
-        )
+    # 1. Criar hash da senha
+    senha_hash = criar_hash_senha(senha)
 
-    usuario = usuario_repo.obter_por_email(login_dto.email)
-    if not usuario or not verificar_senha(login_dto.senha, usuario.senha):
-        return templates.TemplateResponse(
-            "login.html",
-            {
-                "request": request,
-                "erro": "Email ou senha inválidos",
-                "email": email,
-                "redirect": redirect
-            }
-        )
+    # 2. Salvar foto via função helper (se houver)
+    foto_path = None
+    if fotoPerfil:
+        conteudo_foto = await fotoPerfil.read()
+        foto_path = salvar_foto(conteudo_foto, fotoPerfil.filename)  # retorna o path salvo
 
+    # 3. Inserir usuário no banco
+    usuario = Usuario(
+        nome=nome,
+        dataNascimento=dataNascimento,
+        email=email,
+        telefone=telefone,
+        cpf=cpf,
+        perfil="cuidador",
+        senha=senha_hash,
+        foto=foto_path,
+        cep=cep,
+        logradouro=logradouro,
+        numero=numero,
+        bairro=bairro,
+        cidade=cidade,
+        estado=estado,
+        experiencia=experiencia,
+        escolaridade=escolaridade,
+        apresentacao=apresentacao,
+        ativo=True,
+        data_cadastro=datetime.now().isoformat()
+    )
+    usuario_id = usuario_repo.inserir(usuario)
+    usuario.id = usuario_id
+
+    # 4. Criar sessão automaticamente
     usuario_dict = {
         "id": usuario.id,
         "nome": usuario.nome,
@@ -102,124 +359,9 @@ async def post_login(
     }
     criar_sessao(request, usuario_dict)
 
-    if redirect:
-        return RedirectResponse(redirect, status.HTTP_303_SEE_OTHER)
+    # 5. Redirecionar direto para home do cuidador
+    return RedirectResponse("/cuidador/home_cuidador", status_code=303)
 
-    if usuario.perfil == "cuidador":
-        return RedirectResponse("/cuidador/home_cuidador", status.HTTP_303_SEE_OTHER)
-    elif usuario.perfil == "contratante":
-        return RedirectResponse("/contratante/home_contratante", status.HTTP_303_SEE_OTHER)
-    else:
-        return RedirectResponse("/", status.HTTP_303_SEE_OTHER)
-
-
-@router.get("/cadastro")
-async def get_cadastro(request: Request):
-    return templates.TemplateResponse("cadastro.html", {"request": request})
-
-# -----------------------------
-# CADASTRO CUIDADOR
-# -----------------------------
-
-@router.get("/cadastro_cuidador")
-async def get_cadastro_cuidador(request: Request):
-    return templates.TemplateResponse("cadastro_cuidador.html", {"request": request})
-
-@router.post("/cadastro_cuidador")
-async def post_cadastro_cuidador(
-    request: Request,
-    nome: str = Form(...),
-    dataNascimento: str = Form(...),
-    email: str = Form(...),
-    telefone: str = Form(...),
-    cpf: str = Form(...),
-    fotoPerfil: UploadFile = File(None),
-    senha: str = Form(...),
-    cep: str = Form(...),
-    logradouro: str = Form(...),
-    numero: str = Form(...),
-    complemento: str = Form(None),
-    bairro: str = Form(...),
-    cidade: str = Form(...),
-    estado: str = Form(...),
-    experiencia: str = Form(...),
-    valorHora: float = Form(...),
-    escolaridade: str = Form(...),
-    apresentacao: str = Form(...),
-    cursos: str = Form(None),
-    confirmarSenha: str = Form(...),
-    termos: bool = Form(...),
-    verificacao: bool = Form(False),
-    comunicacoes: bool = Form(False),
-):
-    try:
-        if usuario_repo.obter_por_email(email):
-            return templates.TemplateResponse(
-                "cadastro_cuidador.html",
-                {"request": request, "erro": "Email já cadastrado"}
-            )
-
-        senha_hash = criar_hash_senha(senha)
-
-        nome_arquivo_foto = await salvar_imagem(fotoPerfil)
-
-        cuidador = Cuidador(
-            id=0,
-            nome=nome,
-            dataNascimento=dataNascimento,
-            email=email,
-            telefone=telefone,
-            cpf=cpf,
-            senha=senha_hash,
-            perfil="cuidador",
-            foto=nome_arquivo_foto,
-            token_redefinicao=None,
-            data_token=None,
-            data_cadastro=datetime.now().isoformat(),
-            cep=cep,
-            logradouro=logradouro,
-            numero=numero,
-            complemento=complemento,
-            bairro=bairro,
-            cidade=cidade,
-            estado=estado,
-            ativo=True,
-            experiencia=experiencia,
-            valorHora=valorHora,
-            escolaridade=escolaridade,
-            apresentacao=apresentacao,
-            cursos=cursos,
-            confirmarSenha=confirmarSenha,
-            termos=termos,
-            verificacao=verificacao,
-            comunicacoes=comunicacoes
-        )
-
-        usuario_id = cuidador_repo.inserir(cuidador)
-        
-        if not usuario_id:
-            return templates.TemplateResponse(
-                "cadastro_cuidador.html",
-                {"request": request, "erro": "Erro ao cadastrar usuário. Tente novamente."}
-            )
-
-        print(f"Cuidador cadastrado com sucesso! ID: {usuario_id}")
-        return RedirectResponse("/login", status_code=303)
-        
-    except Exception as e:
-        print(f"Erro ao cadastrar cuidador: {e}")
-        return templates.TemplateResponse(
-            "cadastro_cuidador.html",
-            {"request": request, "erro": "Erro interno ao cadastrar. Tente novamente."}
-        )
-
-# -----------------------------
-# CADASTRO CONTRATANTE
-# -----------------------------
-
-@router.get("/cadastro_contratante")
-async def get_cadastro_contratante(request: Request):
-    return templates.TemplateResponse("cadastro_contratante.html", {"request": request})
 
 @router.post("/cadastro_contratante")
 async def post_cadastro_contratante(
@@ -229,79 +371,41 @@ async def post_cadastro_contratante(
     email: str = Form(...),
     telefone: str = Form(...),
     cpf: str = Form(...),
-    senha: str = Form(...),
-    cep: str = Form(...),
-    logradouro: str = Form(...),
-    numero: str = Form(...),
-    complemento: str = Form(None),
-    bairro: str = Form(...),
-    cidade: str = Form(...),
-    estado: str = Form(...),
     parentesco_paciente: str = Form(...),
-    fotoPerfil: UploadFile = File(None),
-    confirmarSenha: str = Form(...),
-    termos: bool = Form(...),
-    verificacao: bool = Form(False),
-    comunicacoes: bool = Form(False),
+    senha: str = Form(...),
+    fotoPerfil: UploadFile | None = None
 ):
-    try:
-        if usuario_repo.obter_por_email(email):
-            return templates.TemplateResponse(
-                "cadastro_contratante.html",
-                {"request": request, "erro": "Email já cadastrado"}
-            )
+    senha_hash = criar_hash_senha(senha)
 
-        senha_hash = criar_hash_senha(senha)
+    foto_path = None
+    if fotoPerfil:
+        conteudo_foto = await fotoPerfil.read()
+        foto_path = salvar_foto(conteudo_foto, fotoPerfil.filename)
 
-        nome_arquivo_foto = await salvar_imagem(fotoPerfil)
+    usuario = Usuario(
+        id_usuario=0,
+        nome=nome,
+        dataNascimento=dataNascimento,
+        email=email,
+        telefone=telefone,
+        cpf=cpf,
+        perfil="contratante",
+        senha=criar_hash_senha(senha),
+        foto=foto_path
+    )
 
-        cliente = Cliente(
-            id=0,
-            nome=nome,
-            dataNascimento=dataNascimento,
-            email=email,
-            telefone=telefone,
-            cpf=cpf,
-            senha=senha_hash,
-            perfil="contratante",
-            foto=nome_arquivo_foto,
-            token_redefinicao=None,
-            data_token=None,
-            data_cadastro=datetime.now().isoformat(),
-            cep=cep,
-            logradouro=logradouro,
-            numero=numero,
-            complemento=complemento,
-            bairro=bairro,
-            cidade=cidade,
-            estado=estado,
-            ativo=True,
-            parentesco_paciente=parentesco_paciente,
-            termos=termos,
-            verificacao=verificacao,
-            comunicacoes=comunicacoes
-        )
+    usuario_id = usuario_repo.inserir(usuario)
+    usuario.id = usuario_id
 
-        print(f"Tentando cadastrar cliente com perfil: {cliente.perfil}")
+    criar_sessao(request, {
+        "id": usuario.id,
+        "nome": usuario.nome,
+        "email": usuario.email,
+        "perfil": usuario.perfil,
+        "foto": usuario.foto
+    })
 
-        usuario_id = cliente_repo.inserir(cliente)
-
-        if not usuario_id:
-            return templates.TemplateResponse(
-                "cadastro_contratante.html",
-                {"request": request, "erro": "Erro ao cadastrar contratante. Tente novamente."}
-            )
-
-        print(f"Contratante cadastrado com sucesso! ID: {usuario_id}")
-
-        return RedirectResponse("/login", status_code=303)
-
-    except Exception as e:
-        print(f"Erro ao cadastrar contratante: {e}")
-        return templates.TemplateResponse(
-            "cadastro_contratante.html",
-            {"request": request, "erro": "Erro interno ao cadastrar. Tente novamente."}
-        )
+    return RedirectResponse("/contratante/home_contratante", status_code=303)
 
 
 @router.get("/redefinicao_senha")

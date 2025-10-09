@@ -1,3 +1,4 @@
+
 """
 Decorator para proteger rotas com autenticação e autorização
 """
@@ -5,6 +6,26 @@ from functools import wraps
 from typing import List, Optional
 from fastapi import Request, HTTPException, status
 from fastapi.responses import RedirectResponse
+import asyncio
+
+
+# ======================
+# SESSÃO
+# ======================
+
+def criar_sessao(request: Request, usuario: dict) -> None:
+    """
+    Cria uma sessão para o usuário após login
+    
+    Args:
+        request: Objeto Request do FastAPI
+        usuario: Dicionário com dados do usuário
+    """
+    if hasattr(request, 'session'):
+        # Remove senha da sessão por segurança
+        usuario_sessao = usuario.copy()
+        usuario_sessao.pop('senha', None)
+        request.session['usuario'] = usuario_sessao
 
 
 def obter_usuario_logado(request: Request) -> Optional[dict]:
@@ -35,21 +56,6 @@ def esta_logado(request: Request) -> bool:
     return obter_usuario_logado(request) is not None
 
 
-def criar_sessao(request: Request, usuario: dict) -> None:
-    """
-    Cria uma sessão para o usuário após login
-    
-    Args:
-        request: Objeto Request do FastAPI
-        usuario: Dicionário com dados do usuário
-    """
-    if hasattr(request, 'session'):
-        # Remove senha da sessão por segurança
-        usuario_sessao = usuario.copy()
-        usuario_sessao.pop('senha', None)
-        request.session['usuario'] = usuario_sessao
-
-
 def destruir_sessao(request: Request) -> None:
     """
     Destrói a sessão do usuário (logout)
@@ -60,6 +66,10 @@ def destruir_sessao(request: Request) -> None:
     if hasattr(request, 'session'):
         request.session.clear()
 
+
+# ======================
+# DECORATOR DE AUTENTICAÇÃO
+# ======================
 
 def requer_autenticacao(perfis_autorizados: List[str] = None):
     """
@@ -130,7 +140,3 @@ def requer_autenticacao(perfis_autorizados: List[str] = None):
         
         return wrapper
     return decorator
-
-
-# Importação necessária para funções assíncronas
-import asyncio

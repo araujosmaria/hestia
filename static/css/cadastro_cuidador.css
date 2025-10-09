@@ -36,11 +36,10 @@
 .cadastro-container {
     background-color: rgba(255, 255, 255, 0.95);
     max-width: 900px;
-    margin: 0 auto;
+    margin: 40px auto 0;
     border-radius: 15px;
     box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
     overflow: hidden;
-    margin-top: 40px;
 }
 
 .header-cadastro {
@@ -48,11 +47,6 @@
     padding: 40px 40px 20px;
     background: linear-gradient(135deg, #f1f7f5 0%, #e8f5f0 100%);
     border-bottom: 1px solid rgba(43, 140, 106, 0.2);
-}
-
-.logo-cadastro {
-    height: 50px;
-    margin-bottom: 15px;
 }
 
 .header-cadastro h1 {
@@ -140,47 +134,27 @@
     margin-bottom: 0;
 }
 
-/* Upload de Foto */
+/* Foto de Perfil e Preview */
 .foto-upload {
     margin-top: 20px;
 }
 
-.upload-area {
-    border: 2px dashed #2b8c6a;
-    border-radius: 12px;
-    padding: 30px;
-    text-align: center;
-    cursor: pointer;
-    transition: all 0.3s ease;
-    background-color: #f8fffe;
-    position: relative;
-}
-
-.upload-area:hover {
-    border-color: #245f4a;
-    background-color: #f1f7f5;
-}
-
-.upload-area i {
-    font-size: 32px;
-    color: #2b8c6a;
+.foto-upload input[type="file"] {
     display: block;
-    margin-bottom: 10px;
+    margin-top: 10px;
+    font-size: 14px;
 }
 
-.upload-area span {
-    color: #083f2e;
-    font-weight: 500;
+#preview-foto-container {
+    margin-top: 15px;
 }
 
-.upload-area input[type="file"] {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    opacity: 0;
-    cursor: pointer;
+#preview-foto {
+    width: 150px;
+    height: 150px;
+    object-fit: cover;
+    border-radius: 50%;
+    border: 2px solid #2b8c6a;
 }
 
 /* Disponibilidade Grid */
@@ -231,11 +205,6 @@
     color: #2b8c6a;
 }
 
-.periodo-item input[type="checkbox"]:checked ~ {
-    background-color: #f1f7f5;
-    border-color: #2b8c6a;
-}
-
 /* Especialidades Grid */
 .especialidades-grid {
     display: grid;
@@ -282,25 +251,6 @@
 
 .especialidade-item input[type="checkbox"]:checked + label i {
     color: #2b8c6a;
-}
-
-/* Upload Documentos */
-.upload-documentos {
-    margin-top: 20px;
-}
-
-.upload-documentos .upload-area {
-    border-color: #6c757d;
-    background-color: #f8f9fa;
-}
-
-.upload-documentos .upload-area:hover {
-    border-color: #495057;
-    background-color: #e9ecef;
-}
-
-.upload-documentos .upload-area i {
-    color: #6c757d;
 }
 
 /* Termos */
@@ -391,19 +341,19 @@
         margin: 20px;
         border-radius: 10px;
     }
-    
+
     .header-cadastro, .cadastro-form {
         padding: 20px;
     }
-    
+
     .header-cadastro h1 {
         font-size: 24px;
     }
-    
+
     .disponibilidade-grid, .especialidades-grid {
         grid-template-columns: 1fr;
     }
-    
+
     .voltar {
         top: 15px;
         left: 15px;
@@ -411,11 +361,11 @@
         height: 40px;
         font-size: 24px;
     }
-    
+
     .section-title {
         font-size: 18px;
     }
-    
+
     .section-title i {
         font-size: 20px;
     }
@@ -426,64 +376,17 @@
         margin: 10px;
         margin-top: 60px;
     }
-    
+
     .header-cadastro, .cadastro-form {
         padding: 15px;
     }
-    
+
     .header-cadastro h1 {
         font-size: 22px;
     }
-    
+
     .btn-criar-conta {
         width: 100%;
         padding: 12px 20px;
     }
-}
-
-/* Estados dos checkboxes */
-.periodo-item input[type="checkbox"]:checked,
-.especialidade-item input[type="checkbox"]:checked {
-    background-color: #2b8c6a;
-    border-color: #2b8c6a;
-}
-
-.periodo-item:has(input[type="checkbox"]:checked),
-.especialidade-item:has(input[type="checkbox"]:checked) {
-    background-color: #f1f7f5;
-    border-color: #2b8c6a;
-    box-shadow: 0 2px 8px rgba(43, 140, 106, 0.15);
-}
-
-/* Animações suaves */
-.form-section, .periodo-item, .especialidade-item, .upload-area {
-    transition: all 0.3s ease;
-}
-
-/* Melhorias de acessibilidade */
-.form-control:focus-visible,
-.form-select:focus-visible,
-.form-check-input:focus-visible {
-    outline: 2px solid #2b8c6a;
-    outline-offset: 2px;
-}
-
-/* Contador de caracteres */
-.char-counter {
-    float: right;
-    font-size: 11px;
-    color: #6c757d;
-}
-
-/* Validação de campos */
-.form-label:after {
-    content: "";
-}
-
-.form-label:has(~ input[required]):after,
-.form-label:has(~ select[required]):after,
-.form-label:has(~ textarea[required]):after {
-    content: " *";
-    color: #dc3545;
-    margin-left: 2px;
 }

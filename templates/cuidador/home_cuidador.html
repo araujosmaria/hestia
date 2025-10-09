@@ -1,64 +1,62 @@
-<!DOCTYPE html>
-<html lang="pt-BR">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Panel do Cuidador</title>
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="/static/css/home_cuidador.css">
-</head>
-<body>
-    <nav class="navbar navbar-light bg-light" style="height: 80px;">
-        <div class="container-fluid justify-content-end">
-            <img src="https://via.placeholder.com/55x55/2b8c6a/ffffff?text=MS" alt="Foto de Perfil" class="rounded-circle" style="width:55px; height:55px; border:3px solid #2b8c6a;">
-        </div>
-    </nav>
+{% extends "base_privada.html" %}
 
-    <main class="main-content">
-        <section class="py-5" style="background: #f1f7f5;">
-            <div class="container text-center">
-                <h1 style="color: #2c7a5f; font-weight: bold;">Olá, {{ user.first_name|default:user.username }}! 👋</h1>
-                <p style="font-size: 1.2rem; color: #6c757d;">
-                    Você tem <strong style="color: #2b8c6a;">{{ oportunidades_novas|default:"0" }}</strong> novas oportunidades de trabalho esperando por você.
-                </p>
+{% block conteudo %}
+<section class="py-5 bg-light" id="home_cuidador">
+    <div class="container">
+        <div class="text-center">
+            <h1 class="mb-4">Painel do Cuidador</h1>
+
+            <h2 class="mb-3" style="color: #2c7a5f; font-weight: bold;">
+                Bem-vindo, {{ user.nome }}!
+            </h2>
+
+            {% if request.query_params.get('mensagem') %}
+            <div class="alert alert-success text-center">
+                {{ request.query_params.get('mensagem') }}
             </div>
-        </section>
+            {% endif %}
 
-        <div class="container my-4">
-            <div class="row text-center">
-                <div class="col">
-                    <div class="p-3 bg-white rounded shadow-sm mb-3">
-                        <div style="font-size:2rem; color:#2c7a5f;">5</div>
+            <p class="lead">
+                Você tem <strong style="color: #2b8c6a;">{{ oportunidades_novas|default:"0" }}</strong> novas oportunidades de trabalho esperando por você.
+            </p>
+
+            <!-- Cards de resumo -->
+            <div class="row text-center my-4">
+                <div class="col-md-3 mb-3">
+                    <div class="p-3 bg-white rounded shadow-sm">
+                        <div style="font-size:2rem; color:#2c7a5f;">{{ solicitacoes_pendentes|default:"0" }}</div>
                         <div style="color:#6c757d;">Solicitações Pendentes</div>
                     </div>
                 </div>
-                <div class="col">
-                    <div class="p-3 bg-white rounded shadow-sm mb-3">
-                        <div style="font-size:2rem; color:#2c7a5f;">4.9</div>
+                <div class="col-md-3 mb-3">
+                    <div class="p-3 bg-white rounded shadow-sm">
+                        <div style="font-size:2rem; color:#2c7a5f;">{{ avaliacao_media|default:"0.0" }}</div>
                         <div style="color:#6c757d;">Avaliação Média</div>
                     </div>
                 </div>
-                <div class="col">
-                    <div class="p-3 bg-white rounded shadow-sm mb-3">
-                        <div style="font-size:2rem; color:#2c7a5f;">23</div>
+                <div class="col-md-3 mb-3">
+                    <div class="p-3 bg-white rounded shadow-sm">
+                        <div style="font-size:2rem; color:#2c7a5f;">{{ trabalhos_concluidos|default:"0" }}</div>
                         <div style="color:#6c757d;">Trabalhos Concluídos</div>
                     </div>
                 </div>
-                <div class="col">
-                    <div class="p-3 bg-white rounded shadow-sm mb-3">
-                        <div style="font-size:2rem; color:#2c7a5f;">R$ 2.340</div>
+                <div class="col-md-3 mb-3">
+                    <div class="p-3 bg-white rounded shadow-sm">
+                        <div style="font-size:2rem; color:#2c7a5f;">R$ {{ ganhos_mes|default:"0,00" }}</div>
                         <div style="color:#6c757d;">Ganhos do Mês</div>
                     </div>
                 </div>
             </div>
 
-            <div class="d-flex justify-content-center gap-3 flex-wrap my-4">
+            <!-- Botões de navegação -->
+            <div class="d-flex justify-content-center gap-3 mt-4 flex-wrap">
                 <a href="/cuidador/agenda" class="btn btn-outline-success">Atualizar Agenda</a>
                 <a href="/perfil/dados" class="btn btn-outline-primary">Editar Perfil</a>
-                <a href="/cuidador/avaliacoes_recebidas" class="btn btn-outline-info">Ver Relatórios</a>
+                <a href="/cuidador/avaliacoes_recebidas" class="btn btn-outline-info">Relatórios</a>
                 <a href="/cuidador/chat_geral" class="btn btn-outline-secondary">Mensagens</a>
+                <a href="/login" class="btn btn-outline-danger">Sair</a>
             </div>
         </div>
-    </main>
-</body>
-</html>
+    </div>
+</section>
+{% endblock %}

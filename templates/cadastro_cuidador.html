@@ -12,6 +12,12 @@
             <p class="subtitle">Complete as informações para criar sua conta profissional</p>
         </div>
 
+        {% if mensagem %}
+        <div class="alert alert-danger" role="alert">
+            {{ mensagem }}
+        </div>
+        {% endif %}
+
         <form id="formCuidador" class="cadastro-form" method="post" enctype="multipart/form-data">
 
             <!-- Dados Pessoais -->
@@ -51,22 +57,24 @@
                 </div>
 
                 <!-- Foto de Perfil -->
-                <div class="foto-upload">
-                    <label class="form-label">Foto de Perfil (Opcional)</label>
-                    <div class="upload-area">
+                <div class="form-section">
+                    <h3 class="section-title">
                         <i class="bi bi-camera-fill"></i>
-                        <span>Clique para adicionar uma foto</span>
-                        <input type="file" id="fotoPerfil" accept="image/*" name="fotoPerfil">
-                    </div>
+                        Foto de Perfil (Opcional)
+                    </h3>
+                    <div class="foto-upload">
+                            <i class="bi bi-camera-fill"></i>
+                            <span>Clique para adicionar uma foto</span>
+                            <input type="file" id="fotoPerfil" accept="image/*" name="fotoPerfil">
+                        </div>
 
-                    <!-- Preview da foto selecionada -->
-                    <div id="preview-foto-container" style="display: none; margin-top: 15px;">
-                        <h5>Preview da Foto:</h5>
-                        <img id="preview-foto" src="" class="rounded-circle"
-                            style="width: 150px; height: 150px; object-fit: cover;">
+                        <!-- Preview da foto selecionada -->
+                        <div id="preview-foto-container" style="display: none; margin-top: 15px;">
+                            <h3>Preview da Foto:</h3>
+                            <img id="preview-foto" src="" class="rounded-circle" style="width: 150px; height: 150px; object-fit: cover;">
+                        </div>
                     </div>
                 </div>
-            </div>
 
             <!-- Endereço -->
             <div class="form-section">
@@ -214,25 +222,42 @@
 <link rel="stylesheet" href="/static/css/cadastro_cuidador.css">
 
 <script>
-// Função para exibir o preview da foto de perfil
-document.getElementById('fotoPerfil').addEventListener('change', function (event) {
-    const file = event.target.files[0];
+document.addEventListener('DOMContentLoaded', () => {
+    const fotoPerfil = document.getElementById('fotoPerfil');
     const previewContainer = document.getElementById('preview-foto-container');
     const previewFoto = document.getElementById('preview-foto');
+    const form = document.getElementById('formCuidador');
 
-    if (file) {
-        const reader = new FileReader();
+    // Preview da foto de perfil
+    fotoPerfil.addEventListener('change', (event) => {
+        const file = event.target.files[0];
+        if (file) {
+            const reader = new FileReader();
+            reader.onload = (e) => {
+                previewFoto.src = e.target.result;
+                previewContainer.style.display = 'block';
+            };
+            reader.readAsDataURL(file);
+        } else {
+            previewContainer.style.display = 'none';
+        }
+    });
 
-        reader.onload = function (e) {
-            previewFoto.src = e.target.result;
-            previewContainer.style.display = 'block';
-        };
+    // Validação de senha
+    form.addEventListener('submit', (e) => {
+        const senha = document.getElementById('senha').value;
+        const confirmarSenha = document.getElementById('confirmarSenha').value;
 
-        reader.readAsDataURL(file);
-    } else {
-        previewContainer.style.display = 'none';
-    }
+        if (senha.length < 8) {
+            e.preventDefault();
+            alert('A senha deve ter pelo menos 8 caracteres.');
+            return;
+        }
+        if (senha !== confirmarSenha) {
+            e.preventDefault();
+            alert('As senhas não coincidem!');
+        }
+    });
 });
 </script>
-
 {% endblock %}

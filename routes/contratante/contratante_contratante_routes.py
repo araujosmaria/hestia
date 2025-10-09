@@ -7,19 +7,36 @@ import os
 import secrets
 from io import BytesIO
 from PIL import Image, ImageDraw
+from util.auth_decorator import criar_sessao, requer_autenticacao, obter_usuario_logado
+
 
 
 router = APIRouter()
 templates = Jinja2Templates(directory="templates")
 
-@router.get("/contratante/home_contratante")
-async def get_home_contratante(request: Request):
-    id_usuario = 1
-    return RedirectResponse(
-        url=f"/contratante/home_contratante?mensagem=Senha+alterada+com+sucesso",
-        status_code=303
-)
 
+
+# ======================
+# HOME CONTRATANTE
+# ======================
+@router.get("/contratante/home_contratante")
+async def get_home_contratante(request: Request, mensagem: str = None):
+    usuario = obter_usuario_logado(request) 
+    print("Sessão atual:", request.session)  # 🔹 debug
+    print("Usuário logado:", usuario) # pega usuário da sessão
+
+    if not usuario:
+        # redireciona se não estiver logado
+        return RedirectResponse("/login", status_code=303)
+
+    return templates.TemplateResponse(
+        "contratante/home_contratante.html",
+        {
+            "request": request,
+            "mensagem": mensagem,
+            "user": usuario  # passa para o template
+        }
+    )
 
 
 

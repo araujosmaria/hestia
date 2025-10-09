@@ -1,10 +1,10 @@
 CRIAR_TABELA_ADMINISTRADOR = """
-CREATE TABLE IF NOT EXISTS administrador (
-id INTEGER PRIMARY KEY AUTOINCREMENT,
-nome TEXT NOT NULL,
-email TEXT NOT NULL,
-senha TEXT NOT NULL,
-telefone TEXT NOT NULL,
+CREATE TABLE IF NOT EXISTS administrador  (
+    id INTEGER PRIMARY KEY,
+    nome TEXT,
+    email TEXT,
+    senha TEXT,
+    telefone TEXT
 );
 """
 
