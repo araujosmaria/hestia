@@ -10,28 +10,27 @@ from util.validacoes_dto import (
 )
 
 class CadastroCuidadorDTO(BaseDTO):
-    nome: str = Field(..., description="Nome completo")
-    data_nascimento: date = Field(..., alias="dataNascimento")
-    email: str = Field(..., description="Email do usuário")
-    telefone: str = Field(..., description="Telefone ou WhatsApp")
-    cpf: str = Field(..., description="CPF do usuário")
-    foto_perfil: str | None = Field(None, alias="fotoPerfil", description="Foto de perfil (opcional)")
-    cep: str = Field(..., description="CEP")
-    logradouro: str = Field(..., description="Logradouro")
-    numero: str = Field(..., description="Número")
-    bairro: str = Field(..., description="Bairro")
-    cidade: str = Field(..., description="Cidade")
-    estado: str = Field(..., description="Estado")
-    experiencia: str = Field(..., description="Tempo de experiência")
-    escolaridade: str = Field(..., description="Nível de escolaridade")
-    apresentacao: str = Field(..., max_length=500, description="Apresentação pessoal")
-    cursos: str | None = Field(None, description="Cursos e certificações")
-    senha: str = Field(..., min_length=8)
-    confirmar_senha: str = Field(..., alias="confirmarSenha")
-    termos: bool = Field(..., description="Aceitou os termos de uso?")
-    verificacao: bool = Field(..., description="Autorizou verificação de antecedentes?")
-    comunicacoes: bool = Field(default=False)
-
+    nome: str 
+    data_nascimento: date 
+    email: str 
+    telefone: str 
+    cpf: str 
+    foto_perfil: str 
+    cep: str 
+    logradouro: str 
+    numero: str 
+    bairro: str 
+    cidade: str 
+    estado: str 
+    experiencia: str 
+    escolaridade: str 
+    apresentacao: str
+    cursos: str 
+    senha: str
+    confirmar_senha: str 
+    termos: bool 
+    verificacao: bool 
+    comunicacoes: bool 
     @field_validator("nome")
     def validar_nome(cls, valor):
         return validar_nome_pessoa(valor)

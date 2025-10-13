@@ -5,6 +5,7 @@ jinja2
 Babel
 python-multipart
 itsdangerous
+Pillow
 
 pytest
 pytest-asyncio
