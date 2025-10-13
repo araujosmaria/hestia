@@ -1,0 +1,101 @@
+
+
+:root {
+  --primary-color: #2a6b4c;
+  --background-color: #ffffff;
+  --light-bg-color: #EAF9F1;
+  --text-color: #333333;
+  --input-bg-color: #f7f9fb;
+  --border-color: #e0e0e0;
+}
+
+/* Reset */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: 'Poppins', sans-serif;
+  background-color: var(--light-bg-color);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  color: var(--text-color);
+}
+
+/* Container central */
+.login-container {
+  background-color: var(--background-color);
+  padding: 40px 30px;
+  border-radius: 12px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+  text-align: center;
+  max-width: 400px;
+  width: 100%;
+}
+
+/* Título e texto */
+.login-container h1 {
+  font-size: 24px;
+  font-weight: 700;
+  color: var(--primary-color);
+  margin-bottom: 10px;
+}
+
+.login-container p {
+  font-size: 14px;
+  color: #666;
+  margin-bottom: 25px;
+}
+
+/* Labels e inputs */
+.login-container label {
+  display: block;
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--text-color);
+  text-align: left;
+  margin-bottom: 8px;
+}
+
+.login-container input {
+  width: 100%;
+  padding: 12px 15px;
+  border: 1px solid var(--border-color);
+  border-radius: 8px;
+  background-color: var(--input-bg-color);
+  font-size: 15px;
+  outline: none;
+  margin-bottom: 20px;
+}
+
+.login-container input:focus {
+  border-color: var(--primary-color);
+  background-color: #fff;
+  box-shadow: 0 0 0 2px rgba(42, 107, 76, 0.1);
+}
+
+/* Botão */
+.btn-login {
+  display: block;
+  width: 100%;
+  padding: 12px;
+  text-align: center;
+  border-radius: 8px;
+  font-weight: 600;
+  font-size: 16px;
+  text-decoration: none;
+  transition: background-color 0.2s;
+}
+
+.btn-green {
+  background-color: var(--primary-color);
+  color: #fff;
+}
+
+.btn-green:hover {
+  background-color: #21563f;
+}

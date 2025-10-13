@@ -1,14 +1,6 @@
-<!DOCTYPE html>
-<html lang="pt-BR">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Redefinir Senha</title>
-    <link rel="stylesheet" href="/static/css/redefinicao_senha.css">
-</head>
-<body class="login-page">
+{% extends "base_senha.html" %}
 
-    <a href="index.html" class="voltar">×</a>
+{% block conteudo %}
 
     <div class="login-container">
         <h1>Redefinir Senha</h1>
@@ -19,6 +11,4 @@
 
         <a href="/confirmar_redefinir_senha" class="btn-login btn-green">Confirmar</a>
     </div>
-
-</body>
-</html>
+{% endblock %}
