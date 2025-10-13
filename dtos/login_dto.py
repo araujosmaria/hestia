@@ -3,8 +3,8 @@ from dtos.base_dto import BaseDTO
 from util.validacoes_dto import validar_texto_obrigatorio, validar_email
 
 class LoginDTO(BaseDTO):
-    email: str = Field(..., description="Email do usuário")
-    senha: str = Field(..., description="Senha do usuário")
+    email: str 
+    senha: str 
 
     @field_validator("email")
     def validar_email_usuario(cls, valor):
