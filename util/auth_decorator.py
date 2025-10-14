@@ -8,6 +8,10 @@ from fastapi import Request, HTTPException, status
 from fastapi.responses import RedirectResponse
 import asyncio
 
+from pytest import Session
+
+from data.usuario.usuario_model import Usuario
+
 
 # ======================
 # SESSÃO
@@ -27,20 +31,26 @@ def criar_sessao(request: Request, usuario: dict) -> None:
         usuario_sessao.pop('senha', None)
         request.session['usuario'] = usuario_sessao
 
-
-def obter_usuario_logado(request: Request ) -> Optional[dict]:
+def get_usuario_por_id(user_id: int, db: Session) -> Usuario | None:
     """
-    Obtém os dados do usuário logado da sessão
+    Busca um usuário no banco pelo ID.
     
     Args:
-        request: Objeto Request do FastAPI
+        user_id (int): ID do usuário.
+        db (Session): Sessão do SQLAlchemy.
     
     Returns:
-        Dicionário com dados do usuário ou None se não estiver logado
+        Usuario | None: Retorna o objeto Usuario se encontrado, senão None.
     """
-    if not hasattr(request, 'session'):
-        return None
-    return request.session.get('usuario')
+    return db.query(Usuario).filter(Usuario.id == user_id).first()
+
+
+def obter_usuario_logado(request: Request):
+    user_id = request.session.get('user_id')  # tenta pegar o ID do usuário da sessão
+    if not user_id:                           # se não houver usuário logado
+        return None                           # retorna None
+    # busca usuário no banco pelo ID
+    return get_usuario_por_id(user_id) 
 
 
 def esta_logado(request: Request) -> bool:

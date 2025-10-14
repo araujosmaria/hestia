@@ -1,0 +1,256 @@
+body {
+    background-color: #f0f2f5;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    margin: 0;
+    padding: 20px; /* adiciona espaço igual em todos os lados */
+    box-sizing: border-box; /* garante que o padding seja considerado dentro do tamanho */
+}
+
+.cadastro-container {
+    background-color: #ffffff;
+    border-radius: 12px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+    padding: 40px;
+    max-width: 900px; /* Aumentado para acomodar 3 colunas de input */
+    width: 100%;
+    margin: 30px auto;
+}
+
+.header-cadastro {
+    text-align: center;
+    margin-bottom: 30px;
+}
+
+.header-cadastro h1 {
+    color:#2b8c6a;;
+    font-size: 2.2em;
+    margin-bottom: 10px;
+}
+
+.header-cadastro .subtitle {
+    color: #666;
+    font-size: 1.1em;
+}
+
+.form-section {
+    background-color: #2b8c6a2f;; /* Fundo verde bem claro */
+    border: 1px solid #d4edda; /* Borda sutil */
+    border-radius: 8px;
+    padding: 25px;
+    margin-bottom: 30px;
+}
+
+.section-title {
+    color: #2b8c6a; /* Verde da imagem */
+    font-size: 1.4em;
+    margin-bottom: 20px;
+    display: flex;
+    align-items: center;
+}
+
+.section-title i {
+    margin-right: 10px;
+    font-size: 1.5em;
+}
+
+.form-label {
+    font-weight: 600;
+    color: #444;
+    margin-bottom: 5px;
+}
+
+.form-control, .form-select {
+    border-radius: 8px;
+    border: 1px solid #ddd;
+    padding: 10px 15px;
+    box-shadow: none;
+}
+
+.form-control:focus, .form-select:focus {
+    border-color: #2b8c6a;
+    box-shadow: 0 0 0 0.25rem rgba(43, 140, 106, 0.25);
+}
+
+.row {
+    margin-bottom: 15px;
+}
+
+/* Foto de Perfil */
+.foto-upload-area {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    margin-top: 15px;
+}
+
+.upload-box {
+    border: 2px dashed #a8e6cf; /* Borda tracejada verde clara */
+    border-radius: 10px;
+    padding: 20px;
+    text-align: center;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    width: 200px;
+    height: 120px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+    background-color: #ffffff;
+}
+
+.upload-box:hover {
+    border-color: #2b8c6a;
+    background-color: #d4f0e4;
+}
+
+.upload-box i {
+    font-size: 2.5em;
+    color: #2b8c6a;
+    margin-bottom: 10px;
+}
+
+.upload-box span {
+    color: #2b8c6a;
+    font-weight: 500;
+}
+
+.upload-box input[type="file"] {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    opacity: 0;
+    cursor: pointer;
+}
+
+.preview-foto-container {
+    display: flex; /* Para centralizar a imagem */
+    justify-content: center;
+    align-items: center;
+    width: 150px;
+    height: 150px;
+    border: 2px solid #2b8c6a;
+    border-radius: 50%;
+    overflow: hidden;
+    flex-shrink: 0;
+}
+
+.preview-foto-container img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+
+/* Termos */
+.termos-area {
+    
+    padding-bottom: center;
+}
+
+.form-check-input:checked {
+    background-color: #ffffff;
+    border-color: #ffffff;
+}
+
+.form-check-label {
+    color: #555;
+    font-size: 0.95em;
+}
+
+.link-termos {
+    color: #00000085;
+    text-decoration: none;
+    font-weight: 600;
+}
+
+.link-termos:hover {
+    text-decoration: underline;
+}
+
+/* Botão de Ações */
+.form-actions {
+    text-align: center;
+    margin-top: 40px;
+}
+
+.btn-criar-conta {
+    background-color: #2b8c6a;
+    color: #fff;
+    border: none;
+    border-radius: 10px;
+    padding: 12px 30px;
+    font-size: 1.1em;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.btn-criar-conta:hover {
+    background-color: #227055;
+    transform: translateY(-2px);
+}
+
+.btn-criar-conta i {
+    font-size: 1.2em;
+}
+
+.login-link {
+    margin-top: 20px;
+    color: #666;
+    font-size: 1em;
+}
+
+.login-link a {
+    color: #2b8c6a;
+    text-decoration: none;
+    font-weight: 600;
+}
+
+.login-link a:hover {
+    text-decoration: underline;
+}
+
+.form-text {
+    color: #777;
+    font-size: 0.85em;
+    margin-top: 5px;
+    display: block;
+}
+
+/* Responsividade */
+@media (max-width: 768px) {
+    .cadastro-container {
+        padding: 25px;
+        margin: 20px;
+    }
+
+    .header-cadastro h1 {
+        font-size: 1.8em;
+    }
+
+    .section-title {
+        font-size: 1.2em;
+    }
+
+    .foto-upload-area {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .upload-box {
+        width: 100%;
+        height: auto;
+        padding: 15px;
+    }
+}

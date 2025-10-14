@@ -51,8 +51,7 @@ from routes.cuidador import (
 
 app = FastAPI()
 app.mount("/static", StaticFiles(directory="static"), name="static")
-
-# Gerar chave secreta (em produção, use variável de ambiente!)
+app.add_middleware(SessionMiddleware, secret_key="uma_chave_secreta_aleatoria")
 SECRET_KEY = secrets.token_urlsafe(32)
 
 # # Adicionar middleware de sessão
@@ -63,8 +62,6 @@ SECRET_KEY = secrets.token_urlsafe(32)
 #     same_site="lax",
 #     https_only=False  # Em produção, mude para True com HTTPS
 # )
-
-app.add_middleware(SessionMiddleware, secret_key="sua_chave_secreta")
 
 administrador_repo.criar_tabela()
 agenda_repo.criar_tabela()
