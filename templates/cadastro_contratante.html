@@ -1,18 +1,18 @@
 {% extends "base_simples.html" %}
 
 {% block conteudo %}
-        <div class="container cadastro-container">
-        <div class="header-cadastro hidden-on-scroll">
-            <h1>Cadastro Contratante</h1>
-            <p class="subtitle">Insira as informações para criar a sua conta</p>
-        </div>
+<div class="container cadastro-container">
+    <div class="header-cadastro">
+        <h1>Cadastro Contratante</h1>
+        <p class="subtitle">Insira as informações para criar a sua conta</p>
+    </div>
 
-        {% if mensagem %}
-        <div class="alert alert-danger" role="alert">
-            {{ mensagem }}
-        </div>
-        {% endif %}
-     
+    {% if mensagem %}
+    <div class="alert alert-success text-center">
+        {{ mensagem }}
+    </div>
+    {% endif %}
+
 
     <form id="formCliente" class="cadastro-form" method="post" enctype="multipart/form-data">
         <div class="form-section">
@@ -39,11 +39,11 @@
                 </div>
                 <div class="col-md-3">
                     <label for="telefone" class="form-label">Telefone/WhatsApp</label>
-                    <input type="tel" class="form-control" id="telefone" name="telefone" placeholder="(00) 00000-0000" required>
+                    <input type="tel" class="form-control" id="telefone" name="telefone"  required>
                 </div>
                 <div class="col-md-3">
                     <label for="cpf" class="form-label">CPF</label>
-                    <input type="text" class="form-control" id="cpf" name="cpf" placeholder="000.000.000-00" required>
+                    <input type="text" class="form-control" id="cpf" name="cpf"  required>
                 </div>
             </div>
 
@@ -65,28 +65,23 @@
             </div>
         </div>
 
-        <!-- Foto de Perfil -->
         <div class="form-section">
             <h3 class="section-title">
                 <i class="bi bi-camera-fill"></i>
                 Foto de Perfil (Opcional)
             </h3>
-            <div class="foto-upload">
-                <div class="upload-area">
-                    <i class="bi bi-camera-fill"></i>
+            <div class="foto-upload-area">
+                <div class="upload-box">
                     <span>Clique para adicionar uma foto</span>
                     <input type="file" id="fotoPerfil" accept="image/*" name="fotoPerfil">
                 </div>
 
-                <!-- Preview da foto selecionada -->
-                <div id="preview-foto-container" style="display: none; margin-top: 15px;">
-                    <h3>Preview da Foto:</h3>
-                    <img id="preview-foto" src="" class="rounded-circle" style="width: 150px; height: 150px; object-fit: cover;">
+                <div id="preview-foto-container" class="preview-foto-container" style="display: none;">
+                    <img id="preview-foto" src="" class="rounded-circle">
                 </div>
             </div>
         </div>
 
-        <!-- Endereço -->
         <div class="form-section">
             <h3 class="section-title">
                 <i class="bi bi-geo-alt-fill"></i>
@@ -96,7 +91,7 @@
             <div class="row">
                 <div class="col-md-3">
                     <label for="cep" class="form-label">CEP</label>
-                    <input type="text" class="form-control" id="cep" name="cep" placeholder="00000-000" required>
+                    <input type="text" class="form-control" id="cep" name="cep"  required>
                 </div>
                 <div class="col-md-6">
                     <label for="endereco" class="form-label">Endereço</label>
@@ -124,7 +119,6 @@
             </div>
         </div>
 
-        <!-- Segurança da Conta -->
         <div class="form-section">
             <h3 class="section-title">
                 <i class="bi bi-lock-fill"></i>
@@ -144,7 +138,6 @@
             </div>
         </div>
 
-        <!-- Termos -->
         <div class="form-section">
             <div class="termos-area">
                 <div class="form-check">
@@ -157,7 +150,6 @@
             </div>
         </div>
 
-        <!-- Ações -->
         <div class="form-actions">
             <button type="submit" class="btn-criar-conta">
                 <i class="bi bi-check-circle"></i>
@@ -168,48 +160,109 @@
             </p>
         </div>
     </form>
+</div>
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-
 <script>
-document.addEventListener('DOMContentLoaded', () => {
-    const fotoPerfil = document.getElementById('fotoPerfil');
-    const previewContainer = document.getElementById('preview-foto-container');
-    const previewFoto = document.getElementById('preview-foto');
-    const form = document.getElementById('formCuidador');
+    document.addEventListener('DOMContentLoaded', () => {
+        const fotoPerfil = document.getElementById('fotoPerfil');
+        const previewContainer = document.getElementById('preview-foto-container');
+        const previewFoto = document.getElementById('preview-foto');
+        const form = document.getElementById('formCliente'); // Corrigido para formCliente
 
-    // Preview da foto de perfil
-    fotoPerfil.addEventListener('change', (event) => {
-        const file = event.target.files[0];
-        if (file) {
-            const reader = new FileReader();
-            reader.onload = (e) => {
-                previewFoto.src = e.target.result;
-                previewContainer.style.display = 'block';
-            };
-            reader.readAsDataURL(file);
-        } else {
-            previewContainer.style.display = 'none';
-        }
+        // Preview da foto de perfil
+        fotoPerfil.addEventListener('change', (event) => {
+            const file = event.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = (e) => {
+                    previewFoto.src = e.target.result;
+                    previewContainer.style.display = 'flex'; // Usar flex para centralizar
+                };
+                reader.readAsDataURL(file);
+            } else {
+                previewContainer.style.display = 'none';
+            }
+        });
+
+        // Validação de senha
+        form.addEventListener('submit', (e) => {
+            const senha = document.getElementById('senha').value;
+            const confirmarSenha = document.getElementById('confirmarSenha').value;
+
+            if (senha.length < 8) {
+                e.preventDefault();
+                alert('A senha deve ter pelo menos 8 caracteres.');
+                return;
+            }
+            if (senha !== confirmarSenha) {
+                e.preventDefault();
+                alert('As senhas não coincidem!');
+            }
+        });
+
+        // Máscaras de input (opcional, pode ser adicionado com bibliotecas como JQuery Mask)
+        const telefoneInput = document.getElementById('telefone');
+        telefoneInput.addEventListener('input', (e) => {
+            let value = e.target.value.replace(/\D/g, ''); // Remove tudo que não é dígito
+            if (value.length > 10) {
+                value = value.replace(/^(\d{2})(\d{5})(\d{4}).*/, '($1) $2-$3');
+            } else if (value.length > 6) {
+                value = value.replace(/^(\d{2})(\d{4})(\d{0,4}).*/, '($1) $2-$3');
+            } else if (value.length > 2) {
+                value = value.replace(/^(\d{2})(\d{0,5}).*/, '($1) $2');
+            } else {
+                value = value.replace(/^(\d*)/, '($1');
+            }
+            e.target.value = value;
+        });
+
+        const cpfInput = document.getElementById('cpf');
+        cpfInput.addEventListener('input', (e) => {
+            let value = e.target.value.replace(/\D/g, ''); // Remove tudo que não é dígito
+            if (value.length > 9) {
+                value = value.replace(/^(\d{3})(\d{3})(\d{3})(\d{0,2}).*/, '$1.$2.$3-$4');
+            } else if (value.length > 6) {
+                value = value.replace(/^(\d{3})(\d{3})(\d{0,3}).*/, '$1.$2.$3');
+            } else if (value.length > 3) {
+                value = value.replace(/^(\d{3})(\d{0,3}).*/, '$1.$2');
+            }
+            e.target.value = value;
+        });
+
+        const cepInput = document.getElementById('cep');
+        cepInput.addEventListener('input', (e) => {
+            let value = e.target.value.replace(/\D/g, ''); // Remove tudo que não é dígito
+            if (value.length > 5) {
+                value = value.replace(/^(\d{5})(\d{0,3}).*/, '$1-$2');
+            }
+            e.target.value = value;
+        });
+
+        // Função para preencher endereço automaticamente pelo CEP (exemplo de integração com ViaCEP)
+        cepInput.addEventListener('blur', async () => {
+            const cep = cepInput.value.replace(/\D/g, '');
+            if (cep.length === 8) {
+                try {
+                    const response = await fetch(`https://viacep.com.br/ws/${cep}/json/`);
+                    const data = await response.json();
+                    if (!data.erro) {
+                        document.getElementById('endereco').value = data.logradouro;
+                        document.getElementById('bairro').value = data.bairro;
+                        document.getElementById('cidade').value = data.localidade;
+                        document.getElementById('estado').value = data.uf;
+                    } else {
+                        alert('CEP não encontrado.');
+                    }
+                } catch (error) {
+                    console.error('Erro ao buscar CEP:', error);
+                    alert('Erro ao buscar CEP. Tente novamente.');
+                }
+            }
+        });
     });
-
-    // Validação de senha
-    form.addEventListener('submit', (e) => {
-        const senha = document.getElementById('senha').value;
-        const confirmarSenha = document.getElementById('confirmarSenha').value;
-
-        if (senha.length < 8) {
-            e.preventDefault();
-            alert('A senha deve ter pelo menos 8 caracteres.');
-            return;
-        }
-        if (senha !== confirmarSenha) {
-            e.preventDefault();
-            alert('As senhas não coincidem!');
-        }
-    });
-});
 </script>
 
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.2/font/bootstrap-icons.css">
 <link rel="stylesheet" href="/static/css/cadastro_contratante.css">
 {% endblock %}
