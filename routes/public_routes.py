@@ -486,6 +486,38 @@ async def post_cadastro_contratante(
     # Redireciona
     return RedirectResponse("/contratante/home_contratante", status_code=303)
 
+@router.get("/cuidador/home_cuidador")
+async def get_home_cuidador(request: Request, mensagem: str = None):
+    print("=" * 50)
+    print("ACESSANDO HOME_CUIDADOR")
+    
+    user = obter_usuario_logado(request)
+    print(f"Usuário logado: {user}")
+    
+    if not user:
+        print("Usuário não encontrado, redirecionando...")
+        return RedirectResponse("/login", status_code=303)
+    
+    print(f"Perfil do usuário: {user.get('perfil')}")
+    
+    if user.get("perfil") != "cuidador":
+        print("Perfil não é cuidador, redirecionando...")
+        return RedirectResponse("/login", status_code=303)
+    
+    print("Renderizando template...")
+    return templates.TemplateResponse(
+        "cuidador/home_cuidador.html",
+        {
+            "request": request,
+            "mensagem": mensagem,
+            "user": user,
+            "oportunidades_novas": 0,
+            "solicitacoes_pendentes": 0,
+            "avaliacao_media": 0.0,
+            "trabalhos_concluidos": 0,
+            "ganhos_mes": "0,00"
+        }
+    )
 
 @router.get("/redefinicao_senha")
 async def get_redefinicao_senha(request: Request):

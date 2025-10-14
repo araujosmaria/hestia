@@ -10,11 +10,12 @@
                 Bem-vindo, {{ user.nome if user else "Visitante" }}!
             </h2>
 
-            {% if request.query_params.get('mensagem') %}
+            {% if mensagem %}
             <div class="alert alert-success text-center">
-                {{ request.query_params.get('mensagem') }}
+                {{ mensagem }}
             </div>
             {% endif %}
+
 
             <p class="lead">
                 Você tem <strong style="color: #2b8c6a;">{{ oportunidades_novas|default:"0" }}</strong> novas oportunidades de trabalho esperando por você.

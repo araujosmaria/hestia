@@ -16,22 +16,32 @@ templates = Jinja2Templates(directory="templates")
 
 @router.get("/cuidador/home_cuidador")
 async def get_home_cuidador(request: Request, mensagem: str = None):
-    user = obter_usuario_logado(request) 
-    print("Sessão atual:", request.session)  # 🔹 debug
-    print("Usuário logado:", user) # pega usuário da sessão
-
+    # Obter usuário logado
+    user = obter_usuario_logado(request)
+    
+    # Se não houver usuário logado, redirecionar para login
     if not user:
-        # redireciona se não estiver logado
+        return RedirectResponse("/login", status_code=303)
+    
+    # Verificar se o perfil é realmente de cuidador (opcional, mas recomendado)
+    if user.get("perfil") != "cuidador":
         return RedirectResponse("/login", status_code=303)
 
+    # Renderizar template com dados
     return templates.TemplateResponse(
         "cuidador/home_cuidador.html",
         {
             "request": request,
             "mensagem": mensagem,
-            "user": user # passa para o template
+            "user": user,
+            "oportunidades_novas": 0,
+            "solicitacoes_pendentes": 0,
+            "avaliacao_media": 0.0,
+            "trabalhos_concluidos": 0,
+            "ganhos_mes": "0,00"
         }
     )
+
 
 # ======================
 # ALTERAR SENHA (GET)
