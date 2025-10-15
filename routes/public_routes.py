@@ -1,4 +1,5 @@
 from datetime import datetime
+from urllib import request
 from fastapi import APIRouter, File, Form, Request, UploadFile, status
 from fastapi.templating import Jinja2Templates
 from starlette.status import HTTP_302_FOUND
@@ -26,21 +27,19 @@ from util.auth_decorator import criar_sessao
 router = APIRouter() 
 templates = criar_templates("templates/auth")
 
+# async def salvar_imagem(foto: UploadFile):
+#     if foto is None:
+#         return None
 
+#     ext = foto.filename.split(".")[-1]
+#     nome_arquivo = f"{uuid.uuid4()}.{ext}"
+#     caminho = f"static/img/perfil/{nome_arquivo}"
+#     os.makedirs(os.path.dirname(caminho), exist_ok=True)
 
-async def salvar_imagem(foto: UploadFile):
-    if foto is None:
-        return None
+#     with open(caminho, "wb") as buffer:
+#         buffer.write(await foto.read())
 
-    ext = foto.filename.split(".")[-1]
-    nome_arquivo = f"{uuid.uuid4()}.{ext}"
-    caminho = f"static/img/perfil/{nome_arquivo}"
-    os.makedirs(os.path.dirname(caminho), exist_ok=True)
-
-    with open(caminho, "wb") as buffer:
-        buffer.write(await foto.read())
-
-    return nome_arquivo
+#     return nome_arquivo
 
 
 @router.get("/", response_class=HTMLResponse)
@@ -63,11 +62,6 @@ async def get_login(request: Request, redirect: str = None):
         "login.html",
         {"request": request, "redirect": redirect}
     )
-
-
-# ======================
-# POST LOGIN
-# ======================
 
 @router.post("/login")
 async def post_login(request: Request, email: str = Form(...), senha: str = Form(...)):
@@ -99,12 +93,6 @@ async def escolher_tipo_usuario(request: Request):
 async def cadastro_cuidador_form(request: Request):
     return templates.TemplateResponse("cadastro_cuidador.html", {"request": request})
 
-
-@router.get("/cadastro_contratante", response_class=HTMLResponse)
-async def cadastro_contratante_form(request: Request):
-    return templates.TemplateResponse("cadastro_contratante.html", {"request": request})
-
-
 @router.post("/cadastro_cuidador")
 async def cadastro_cuidador_post(
     request: Request,
@@ -127,16 +115,15 @@ async def cadastro_cuidador_post(
     data_cadastro: str = Form(...),
     fotoPerfil: UploadFile | None = File(None)
 ):
-    # 1. Criar hash da senha
+
     senha_hash = criar_hash_senha(senha)
 
-    # 2. Salvar foto via função helper (se houver)
-    foto_path = None
-    if fotoPerfil:
+    if fotoPerfil and fotoPerfil.filename:
         conteudo_foto = await fotoPerfil.read()
-        foto_path = salvar_foto(conteudo_foto, fotoPerfil.filename)  # retorna o path salvo
+        foto_path = salvar_foto(conteudo_foto, fotoPerfil.filename)
+    else:
+        foto_path = None
 
-    # 3. Inserir usuário no banco
     usuario = Usuario(
         id=0,
         nome=nome,
@@ -144,8 +131,8 @@ async def cadastro_cuidador_post(
         email=email,
         telefone=telefone,
         cpf=cpf,
-        senha=senha_hash,
-        foto=foto_path,
+        senha=senha_hash,      
+        foto=foto_path,        
         cep=cep,
         logradouro=logradouro,
         numero=numero,
@@ -159,79 +146,25 @@ async def cadastro_cuidador_post(
         cursos=cursos,
         data_cadastro=data_cadastro
     )
-    usuario_id = cuidador_repo.inserir(cuidador)
-    cuidador.id = usuario_id
 
-    # 4. Criar sessão automaticamente
+    usuario_id = cuidador_repo.inserir(cuidador)  
+    usuario.id = usuario_id
+
     usuario_dict = {
-        "id": cuidador.id,
+        "id": usuario.id,
         "nome": usuario.nome,
         "email": usuario.email,
         "perfil": usuario.perfil,
         "foto": usuario.foto
     }
-    criar_sessao(request, usuario_dict)
 
-    # 5. Redirecionar direto para home do cuidador
     return RedirectResponse("/cuidador/home_cuidador", status_code=303)
 
 
-# @router.post("/cadastro_contratante")
-# async def post_cadastro_contratante(
-#     request: Request,
-#     nome: str = Form(...),
-#     dataNascimento: str = Form(...),
-#     email: str = Form(...),
-#     telefone: str = Form(...),
-#     cpf: str = Form(...),
-#     senha: str = Form(...),
-#     cep: str = Form(...),
-#     logradouro: str = Form(...),
-#     numero: str = Form(...),
-#     bairro: str = Form(...),
-#     cidade: str = Form(...),
-#     estado: str = Form(...),
-#     parentesco_paciente: str = Form(...),
-#     fotoPerfil: UploadFile | None = None
-# ):
-#     senha_hash = criar_hash_senha(senha)
+@router.get("/cadastro_contratante", response_class=HTMLResponse)
+async def cadastro_contratante_form(request: Request):
+    return templates.TemplateResponse("cadastro_contratante.html", {"request": request})
 
-#     foto_path = None
-#     if fotoPerfil:
-#         conteudo_foto = await fotoPerfil.read()
-#         foto_path = salvar_foto(conteudo_foto, fotoPerfil.filename)
-
-#     usuario = Usuario(
-#         id=0,
-#         nome=nome,
-#         dataNascimento=dataNascimento,
-#         email=email,
-#         telefone=telefone,
-#         cpf=cpf,
-#         senha=senha_hash,
-#         cep=cep,
-#         logradouro=logradouro,
-#         numero=numero,
-#         bairro=bairro,
-#         cidade=cidade,
-#         estado=estado,
-#         perfil="contratante",
-#         parentesco_paciente=parentesco_paciente,
-#         foto=foto_path
-#     )
-
-#     usuario_id = cliente_repo.inserir(cliente)
-#     usuario.id = usuario_id
-
-#     criar_sessao(request, {
-#         "id": cliente.id,
-#         "nome": usuario.nome,
-#         "email": usuario.email,
-#         "perfil": usuario.perfil,
-#         "foto": usuario.foto
-#     })
-
-#     return RedirectResponse("/contratante/home_contratante", status_code=303)
 @router.post("/cadastro_contratante")
 async def post_cadastro_contratante(
     request: Request,
@@ -248,19 +181,19 @@ async def post_cadastro_contratante(
     cidade: str = Form(...),
     estado: str = Form(...),
     parentesco_paciente: str = Form(...),
-    fotoPerfil: UploadFile | None = None
+    fotoPerfil: UploadFile | None = File(None)
 ):
     # Cria hash da senha
     senha_hash = criar_hash_senha(senha)
 
-    # Salva foto se houver
-    foto_path = None
-    if fotoPerfil:
+    if fotoPerfil and fotoPerfil.filename:
         conteudo_foto = await fotoPerfil.read()
         foto_path = salvar_foto(conteudo_foto, fotoPerfil.filename)
-
-    # Cria o objeto Cliente
-    cliente = Cliente(
+    else:
+        foto_path = None
+    
+    cliente_obj = Cliente(
+        id=0,
         nome=nome,
         dataNascimento=dataNascimento,
         email=email,
@@ -276,56 +209,24 @@ async def post_cadastro_contratante(
         perfil="contratante",
         parentesco_paciente=parentesco_paciente,
         foto=foto_path
-    )
+        )
 
     # Insere no banco e atualiza o ID
-    usuario_id = cliente_repo.inserir(cliente)
-    cliente.id = usuario_id
+    usuario_id = cliente_repo.inserir(cliente_obj)
+    cliente_obj.id = usuario_id
 
     # Cria sessão
     criar_sessao(request, {
-        "id": cliente.id,
-        "nome": cliente.nome,
-        "email": cliente.email,
-        "perfil": cliente.perfil,
-        "foto": cliente.foto
+        "id": cliente_obj.id,
+        "nome": cliente_obj.nome,
+        "email": cliente_obj.email,
+        "perfil": cliente_obj.perfil,
+        "foto":cliente_obj.foto
     })
 
     # Redireciona
     return RedirectResponse("/contratante/home_contratante", status_code=303)
 
-@router.get("/cuidador/home_cuidador")
-async def get_home_cuidador(request: Request, mensagem: str = None):
-    print("=" * 50)
-    print("ACESSANDO HOME_CUIDADOR")
-    
-    user = obter_usuario_logado(request)
-    print(f"Usuário logado: {user}")
-    
-    if not user:
-        print("Usuário não encontrado, redirecionando...")
-        return RedirectResponse("/login", status_code=303)
-    
-    print(f"Perfil do usuário: {user.get('perfil')}")
-    
-    if user.get("perfil") != "cuidador":
-        print("Perfil não é cuidador, redirecionando...")
-        return RedirectResponse("/login", status_code=303)
-    
-    print("Renderizando template...")
-    return templates.TemplateResponse(
-        "cuidador/home_cuidador.html",
-        {
-            "request": request,
-            "mensagem": mensagem,
-            "user": user,
-            "oportunidades_novas": 0,
-            "solicitacoes_pendentes": 0,
-            "avaliacao_media": 0.0,
-            "trabalhos_concluidos": 0,
-            "ganhos_mes": "0,00"
-        }
-    )
 
 @router.get("/redefinicao_senha")
 async def get_redefinicao_senha(request: Request):

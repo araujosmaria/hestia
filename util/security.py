@@ -107,19 +107,13 @@ def gerar_senha_aleatoria(tamanho: int = 8) -> str:
     senha = ''.join(secrets.choice(caracteres) for _ in range(tamanho))
     return senha
 
-def salvar_foto(conteudo_foto: bytes, filename: str) -> str:
-    """
-    Salva a foto no diretório static/uploads e retorna o caminho relativo.
-    
-    Args:
-        conteudo_foto: Conteúdo binário da imagem
-        filename: Nome do arquivo (ex: foto.jpg)
-    
-    Returns:
-        Caminho relativo da foto salva
-    """
-    caminho = f"static/uploads/{filename}"
-    os.makedirs(os.path.dirname(caminho), exist_ok=True)
+def salvar_foto(conteudo_foto, nome_arquivo):
+    diretorio = "static/uploads"
+    if not os.path.exists(diretorio):
+        os.makedirs(diretorio)
+
+    caminho = os.path.join(diretorio, nome_arquivo)
     with open(caminho, "wb") as f:
         f.write(conteudo_foto)
+
     return caminho

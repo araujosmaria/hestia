@@ -2,12 +2,11 @@ from fastapi import APIRouter, Request, UploadFile, File, status, Form
 from fastapi.templating import Jinja2Templates
 from fastapi.responses import HTMLResponse, RedirectResponse
 from data.cliente import cliente_repo
-from util.auth_decorator import criar_sessao, requer_autenticacao
 import os
 import secrets
 from io import BytesIO
 from PIL import Image, ImageDraw
-from util.auth_decorator import criar_sessao, requer_autenticacao, obter_usuario_logado
+from util.auth_decorator import obter_usuario_logado
 from fastapi.requests import Request
 
 
@@ -21,7 +20,7 @@ async def get_home_contratante(request: Request, mensagem: str | None = None):
     # Pega o usuário da sessão
     user = obter_usuario_logado(request)
     print("Sessão atual:", request.session)  # debug
-    print("Usuário logado:", user)           # debug
+    print("Usuário logado:", user.id)           # debug
 
     # Se não tiver usuário logado, redireciona para login
     if not user:

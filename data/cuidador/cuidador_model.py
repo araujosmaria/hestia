@@ -13,5 +13,5 @@ class Cuidador(Usuario):
    termos: bool = False
    verificacao: bool = False
    comunicacoes: bool = False
-   perfil: str = 'cuidador'  # sobrescreve o valor herdado para garantir o perfil correto
+   # perfil: str = 'cuidador'  
 

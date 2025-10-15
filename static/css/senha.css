@@ -1,9 +1,7 @@
-
-
 :root {
-  --primary-color: #2a6b4c;
+  --primary-color: hsl(151, 44%, 29%);
   --background-color: #ffffff;
-  --light-bg-color: #EAF9F1;
+  --light-bg-color: #ffffff;
   --text-color: #333333;
   --input-bg-color: #f7f9fb;
   --border-color: #e0e0e0;

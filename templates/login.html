@@ -6,6 +6,10 @@
 
     <h1>Faça seu Login</h1>
 
+    {% if erro %}
+    <div class="alert alert-danger text-center">{{ erro }}</div>
+    {% endif %}
+
     <button class="google-login-card" type="button">
         <div class="icon-text">
             <span class="google-logo">G</span>

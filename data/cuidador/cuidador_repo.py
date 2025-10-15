@@ -308,56 +308,6 @@ def inserir(cuidador: Cuidador) -> Optional[int]:
         conn.commit()
         return id_usuario
 
-
-# def inserir(cuidador: Cuidador) -> Optional[int]:
-#     """Insere um novo cuidador (e o respectivo usuário)."""
-#     with get_connection() as conn:
-#         cursor = conn.cursor()
-
-#         # Cria o usuário primeiro
-#         usuario = Usuario(
-#             id_usuario=0,
-#             nome=cuidador.nome,
-#             dataNascimento=cuidador.dataNascimento,
-#             email=cuidador.email,
-#             telefone=cuidador.telefone,
-#             cpf=cuidador.cpf,
-#             senha=cuidador.senha,
-#             perfil=cuidador.perfil,
-#             foto=cuidador.foto,
-#             token_redefinicao=cuidador.token_redefinicao,
-#             data_token=cuidador.data_token,
-#             data_cadastro=cuidador.data_cadastro,
-#             cep=cuidador.cep,
-#             logradouro=cuidador.logradouro,
-#             numero=cuidador.numero,
-#             complemento=cuidador.complemento,
-#             bairro=cuidador.bairro,
-#             cidade=cuidador.cidade,
-#             estado=cuidador.estado,
-#             ativo=cuidador.ativo
-#         )
-#         id_usuario = usuario_repo.inserir(usuario, cursor)
-
-#         # Insere os dados específicos do cuidador
-#         cursor.execute(INSERIR_CUIDADOR, (
-#             id_usuario,
-#             cuidador.experiencia,
-#             cuidador.valorHora,
-#             cuidador.escolaridade,
-#             cuidador.apresentacao,
-#             cuidador.cursos,
-#             cuidador.inicio_profissional,
-#             cuidador.confirmarSenha,
-#             cuidador.termos,
-#             cuidador.verificacao,
-#             cuidador.comunicacoes
-#         ))
-
-#         conn.commit()
-#         return id_usuario
-
-
 def atualizar(cuidador: Cuidador) -> bool:
     """Atualiza informações do cuidador e do usuário associado."""
     with get_connection() as conn:

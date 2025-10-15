@@ -37,7 +37,7 @@ body {
 }
 
 .form-section {
-    background-color: #2b8c6a2f;; /* Fundo verde bem claro */
+    background-color: #2b8c6a2f; /* Fundo verde bem claro */
     border: 1px solid #d4edda; /* Borda sutil */
     border-radius: 8px;
     padding: 25px;
@@ -155,10 +155,10 @@ body {
     padding-bottom: center;
 }
 
-.form-check-input:checked {
+/* .form-check-input:checked {
     background-color: #ffffff;
     border-color: #ffffff;
-}
+} */
 
 .form-check-label {
     color: #555;
