@@ -2,8 +2,6 @@ CRIAR_TABELA_CUIDADOR = """
 CREATE TABLE IF NOT EXISTS cuidador (
     id INTEGER PRIMARY KEY,  -- recebe o id do usuário
     experiencia TEXT NOT NULL,
-    valorHora REAL NOT NULL,
-    escolaridade TEXT NOT NULL,
     apresentacao TEXT NOT NULL,
     cursos TEXT,
     inicio_profissional TEXT,
@@ -19,16 +17,12 @@ INSERIR_CUIDADOR = """
 INSERT INTO cuidador (
     id,
     experiencia,
-    valorHora,
-    escolaridade,
-    apresentacao,
-    cursos,
     inicio_profissional,
     confirmarSenha,
     termos,
     verificacao,
     comunicacoes
-) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);
+) VALUES (?, ?, ?, ?, ?, ?, ?, ?);
 """
 
 OBTER_CUIDADOR_POR_ID = """
@@ -54,10 +48,6 @@ SELECT
     u.estado,
     u.ativo,
     cu.experiencia,
-    cu.valorHora,
-    cu.escolaridade,
-    cu.apresentacao,
-    cu.cursos,
     cu.inicio_profissional,
     cu.confirmarSenha,
     cu.termos,
@@ -91,10 +81,6 @@ SELECT
     u.estado,
     u.ativo,
     cu.experiencia,
-    cu.valorHora,
-    cu.escolaridade,
-    cu.apresentacao,
-    cu.cursos,
     cu.inicio_profissional,
     cu.confirmarSenha,
     cu.termos,
@@ -109,10 +95,7 @@ ATUALIZAR_CUIDADOR = """
 UPDATE cuidador
 SET
     experiencia = ?,
-    valorHora = ?,
-    escolaridade = ?,
     apresentacao = ?,
-    cursos = ?,
     confirmarSenha = ?,
     termos = ?,
     verificacao = ?,

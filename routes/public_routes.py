@@ -121,9 +121,6 @@ async def cadastro_cuidador_post(
     cidade: str = Form(...),
     estado: str = Form(...),
     experiencia: str = Form(...),
-    escolaridade: str = Form(...),
-    apresentacao: str = Form(...),
-    cursos: bool = Form(...),
     data_cadastro: str = Form(...),
     fotoPerfil: UploadFile | None = File(None)
 ):
@@ -154,9 +151,6 @@ async def cadastro_cuidador_post(
         estado=estado,
         perfil="cuidador",
         experiencia=experiencia,
-        escolaridade=escolaridade,
-        apresentacao=apresentacao,
-        cursos=cursos,
         data_cadastro=data_cadastro
     )
     usuario_id = cuidador_repo.inserir(cuidador)

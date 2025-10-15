@@ -23,9 +23,7 @@ class CadastroCuidadorDTO(BaseDTO):
     cidade: str 
     estado: str 
     experiencia: str 
-    escolaridade: str 
     apresentacao: str
-    cursos: str 
     senha: str
     confirmar_senha: str 
     termos: bool 
