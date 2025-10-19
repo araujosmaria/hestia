@@ -1,4 +1,4 @@
-{% extends "base_privada.html" %}
+{% extends "base_hcontratante.html" %}
 
 {% block conteudo %}
 <section class="py-5 bg-light" id="home_contratante">
@@ -7,7 +7,7 @@
             <h1 class="mb-4">Painel do Contratante</h1>
 
             <h2 class="mb-3" style="color: #2c7a5f; font-weight: bold;">
-                Bem-vindo, {{ user.nome if user else "Visitante"}}!
+                Bem-vindo(a), {{ user.nome if user else "Visitante"}}!
             </h2>
 
             {% if request.query_params.get('mensagem') %}
@@ -18,19 +18,28 @@
 
             <p class="lead">Utilize o menu abaixo para acessar suas funcionalidades como contratante:</p>
 
-            <!-- Botões de atalho -->
-            <div class="d-flex justify-content-center gap-3 mt-4 flex-wrap">
-                <a href="/contratante/cuidadores" class="btn btn-outline-primary"> Procurar Cuidadores</a>
-                <a href="/contratante/solicitar_verificacao/1" class="btn btn-outline-secondary">Minhas Verificações</a>
-                <a href="/contratante/contratacoes_realizadas" class="btn btn-outline-secondary"> Minhas Contratações</a>
-                <a href="/perfil/dados" class="btn btn-outline-warning"> Editar Perfil</a>
-                <a href="/contratante/alterar_senha/1" class="btn btn-outline-danger">Alterar Senha</a>
-                <a href="/contratante/avaliacoes_realizadas" class="btn btn-outline-warning">Avaliações Realizadas</a>
-                <a href="/contratante/avaliacoes_recebidas" class="btn btn-outline-warning"> Avaliações Recebidas</a>
-                <a href="/contratante/chamados" class="btn btn-outline-primary"> Chamados </a>
-                <a href="/contratante/chat_geral" class="btn btn-outline-primary"> Chats </a>
-                <a href="/login" class="btn btn-outline-danger"> Sair</a>
-            </div>
+            <!-- Menu sanduíche de ações -->
+            <!-- <div class="d-flex justify-content-center mt-4">
+                <div class="dropdown">
+                    <button class="btn btn-outline-success dropdown-toggle" type="button" id="menuAcoes" data-bs-toggle="dropdown" aria-expanded="false">
+                        Ações
+                    </button>
+                    <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="menuAcoes">
+                        <li><a class="dropdown-item" href="/contratante/cuidadores">Procurar Cuidadores</a></li>
+                        <li><a class="dropdown-item" href="/contratante/solicitar_verificacao/1">Minhas Verificações</a></li>
+                        <li><a class="dropdown-item" href="/contratante/contratacoes_realizadas">Minhas Contratações</a></li>
+                        <li><a class="dropdown-item" href="/perfil/dados">Editar Perfil</a></li>
+                        <li><a class="dropdown-item" href="/contratante/alterar_senha/1">Alterar Senha</a></li>
+                        <li><a class="dropdown-item" href="/contratante/avaliacoes_realizadas">Avaliações Realizadas</a></li>
+                        <li><a class="dropdown-item" href="/contratante/avaliacoes_recebidas">Avaliações Recebidas</a></li>
+                        <li><a class="dropdown-item" href="/contratante/chamados">Chamados</a></li>
+                        <li><a class="dropdown-item" href="/contratante/chat_geral">Chats</a></li>
+                        <li><hr class="dropdown-divider"></li>
+                        <li><a class="dropdown-item text-danger" href="/logout">Sair</a></li>
+                    </ul>
+                </div>
+            </div> -->
+
         </div>
     </div>
 </section>

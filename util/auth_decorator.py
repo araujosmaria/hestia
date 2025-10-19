@@ -7,10 +7,10 @@ from typing import List, Optional
 from fastapi import Request, HTTPException, status
 from fastapi.responses import RedirectResponse
 import asyncio
-
 from pytest import Session
-
 from data.usuario.usuario_model import Usuario
+from data.util import open_connection
+
 
 
 # ======================
@@ -45,12 +45,22 @@ def get_usuario_por_id(user_id: int, db: Session) -> Usuario | None:
     return db.query(Usuario).filter(Usuario.id == user_id).first()
 
 
+# def obter_usuario_logado(request: Request):
+#     user_id = request.session.get('user_id')  # tenta pegar o ID do usuário da sessão
+#     if not user_id:                           # se não houver usuário logado
+#         return None                           # retorna None
+#     # busca usuário no banco pelo ID
+#     return get_usuario_por_id(user_id) 
+
 def obter_usuario_logado(request: Request):
-    user_id = request.session.get('user_id')  # tenta pegar o ID do usuário da sessão
-    if not user_id:                           # se não houver usuário logado
-        return None                           # retorna None
-    # busca usuário no banco pelo ID
-    return get_usuario_por_id(user_id) 
+    usuario_dict = request.session.get("usuario")
+    if not usuario_dict:
+        return None
+
+    # Se quiser transformar de volta em objeto Usuario:
+    from data.usuario.usuario_model import Usuario
+    usuario = Usuario(**usuario_dict)
+    return usuario
 
 
 def esta_logado(request: Request) -> bool:

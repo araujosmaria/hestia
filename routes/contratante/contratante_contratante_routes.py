@@ -1,6 +1,7 @@
-from fastapi import APIRouter, Request, UploadFile, File, status, Form
+from fastapi import APIRouter, Depends, Request, UploadFile, File, status, Form
 from fastapi.templating import Jinja2Templates
 from fastapi.responses import HTMLResponse, RedirectResponse
+from pytest import Session
 from data.cliente import cliente_repo
 import os
 import secrets
@@ -15,32 +16,48 @@ router = APIRouter()
 
 templates = Jinja2Templates(directory="templates")
 
+# @router.get("/contratante/home_contratante")
+# async def get_home_contratante(request: Request, mensagem: str | None = None):
+#     # Pega o usuário da sessão
+#     user = obter_usuario_logado(request)
+#     print("Sessão atual:", request.session)  # debug
+#     print("Usuário logado:", user.id)           # debug
+
+#     # Se não tiver usuário logado, redireciona para login
+#     if not user:
+#         return RedirectResponse("/login", status_code=303)
+
+#     # Converte dataclass/objeto para dict caso necessário
+#     if not isinstance(user, dict):
+#         user_dict = user.__dict__  # funciona para dataclasses
+#     else:
+#         user_dict = user
+
+#     # Renderiza o template garantindo que user sempre exista
+#     return templates.TemplateResponse(
+#         "contratante/home_contratante.html",
+#         {
+#             "request": request,
+#             "mensagem": mensagem or "",
+#             "user": user_dict
+#         }
+#     )
+
 @router.get("/contratante/home_contratante")
 async def get_home_contratante(request: Request, mensagem: str | None = None):
-    # Pega o usuário da sessão
     user = obter_usuario_logado(request)
-    print("Sessão atual:", request.session)  # debug
-    print("Usuário logado:", user.id)           # debug
+    print("Sessão atual:", request.session)
+    print("Usuário logado:", user.id if user else "Nenhum")
 
-    # Se não tiver usuário logado, redireciona para login
     if not user:
         return RedirectResponse("/login", status_code=303)
 
-    # Converte dataclass/objeto para dict caso necessário
-    if not isinstance(user, dict):
-        user_dict = user.__dict__  # funciona para dataclasses
-    else:
-        user_dict = user
-
-    # Renderiza o template garantindo que user sempre exista
+    user_dict = user.__dict__ if not isinstance(user, dict) else user
     return templates.TemplateResponse(
         "contratante/home_contratante.html",
-        {
-            "request": request,
-            "mensagem": mensagem or "",
-            "user": user_dict
-        }
+        {"request": request, "mensagem": mensagem or "", "user": user_dict}
     )
+
 
 
 # ======================

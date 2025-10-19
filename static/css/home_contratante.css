@@ -1,0 +1,177 @@
+/* ==========================
+   Estilos gerais da página
+   ========================== */
+body {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh; /* altura mínima da tela */
+    margin: 0;
+}
+
+h3 {
+  font-weight: bold;
+  font-size: 1.75rem;
+  color: #000;
+}
+
+main {
+    flex: 1;
+}
+
+/* ==========================
+   Navbar
+   ========================== */
+.navbar {
+  background-color: #2b8c6a !important; /* Força a cor verde */
+  padding: 16px 0;
+}
+
+.navbar-brand img {
+  height: 60px;
+}
+
+.navbar .nav-link {
+  color: #ffffff !important;
+  font-weight: 500;
+}
+
+.navbar .nav-link:hover {
+  color: #d4f2e1 !important;
+}
+
+.navbar-nav .nav-link.active {
+  text-decoration: underline;
+  text-underline-offset: 6px;
+  font-weight: 600;
+  color: #ffffff !important;
+}
+
+/* ==========================
+   Barra de pesquisa da navbar
+   ========================== */
+.navbar form[role="search"] {
+  width: 600px;
+  max-width: 100%;
+}
+
+.navbar .form-control {
+  border-radius: 20px 0 0 20px;
+  border-color: #2a8b6c;
+  background-color: #ffffff; /* fundo branco */
+  color: #000000;            /* texto preto */
+}
+
+.navbar .btn-outline-secondary {
+  border-radius: 0 20px 20px 0;
+  background-color: #ffffff; /* botão branco */
+  color: #2b8c6a;           /* ícone verde */
+  border: 1px solid #2b8c6a; 
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.navbar .btn-outline-secondary i {
+  color: #2b8c6a; /* ícone da lupa verde */
+  font-size: 1.1rem; /* tamanho ajustável */
+}
+
+.navbar .btn-outline-secondary:hover {
+  background-color: #ffffff; /* botão continua branco */
+  color: #2b8c6a;            /* ícone continua verde */
+}
+
+.navbar .btn-outline-secondary:hover i {
+  color: #2b8c6a; /* garante ícone verde no hover */
+}
+
+/* ==========================
+   Menu sanduíche de ações
+   ========================== */
+.dropdown .btn {
+  background-color: #ffffff; /* botão do menu branco */
+  color: #2b8c6a;            /* texto verde */
+  border: 1px solid #2b8c6a;
+}
+
+.dropdown .btn:hover {
+  background-color: #ffffff; /* mantém branco no hover */
+  color: #2b8c6a;
+}
+
+.dropdown-menu {
+  background-color: #ffffff; /* fundo branco do menu */
+  border: 1px solid #2b8c6a;
+}
+
+.dropdown-item {
+  color: #2b8c6a; /* itens verdes */
+}
+
+.dropdown-item:hover {
+  background-color: #e6f2ed; /* leve destaque ao passar o mouse */
+  color: #2b8c6a;
+}
+
+.dropdown-divider {
+  border-top: 1px solid #2b8c6a;
+}
+
+/* ==========================
+   Hero section
+   ========================== */
+.hero-section {
+  padding: 60px 0;
+}
+
+.hero-section h1 {
+  font-weight: bold;
+}
+
+/* ==========================
+   Cards de features
+   ========================== */
+.features.card {
+  background-color: #f1f7f5;
+  border: 1px solid #083f2e;
+  border-radius: 12px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.03);
+}
+
+/* ==========================
+   Botões
+   ========================== */
+.btn-green {
+  background-color: #2b8c6a;
+  color: #fff;
+}
+
+.btn-green:hover {
+  background-color: #2b8c6a;
+}
+
+.btn-cadastrar {
+  padding: 14px 24px;
+  font-size: 1.1rem;
+}
+
+/* ==========================
+   Footer
+   ========================== */
+footer {
+    background-color: #2b8c6a;
+    color: #ffffff;
+    padding: 20px 0;
+    font-size: 0.9rem;
+    text-align: center; /* centraliza o texto */
+    margin-top: auto;   /* força o footer a ficar no final da página */
+}
+
+footer a {
+  color: #ffffff;
+  text-decoration: underline;
+}
+
+footer a:hover {
+  color: #d4f2e1;
+}

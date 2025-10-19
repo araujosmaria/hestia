@@ -9,6 +9,7 @@ from data.cliente import cliente_repo
 from data.cliente.cliente_model import Cliente
 from data.cuidador import cuidador_repo
 import sqlite3 
+from data.cuidador.cuidador_model import Cuidador
 from data.usuario import usuario_repo
 from util.security import criar_hash_senha, salvar_foto, verificar_senha
 from util.auth_decorator import criar_sessao, obter_usuario_logado, esta_logado
@@ -22,7 +23,7 @@ from data.usuario.usuario_model import Usuario
 from data.usuario.usuario_repo import inserir as inserir_usuario, obter_por_cpf
 from data.cliente.cliente_repo import inserir as inserir_cliente
 from passlib.context import CryptContext
-from util.auth_decorator import criar_sessao
+from util.auth_decorator import criar_sessao, destruir_sessao 
 
 router = APIRouter() 
 templates = criar_templates("templates/auth")
@@ -51,9 +52,9 @@ async def get_login(request: Request, redirect: str = None):
    
     if esta_logado(request):
         usuario = obter_usuario_logado(request)
-        if usuario["perfil"] == "cuidador":
+        if usuario.perfil == "cuidador":
             return RedirectResponse("/cuidador/home_cuidador", status_code=303)
-        elif usuario["perfil"] == "contratante":
+        elif usuario.perfil == "contratante":
             return RedirectResponse("/contratante/home_contratante", status_code=303)
         else:
             return RedirectResponse("/", status_code=303)
@@ -80,8 +81,12 @@ async def post_login(request: Request, email: str = Form(...), senha: str = Form
         return RedirectResponse("/contratante/home_contratante", status_code=303)
     else:
         return RedirectResponse("/cuidador/home_cuidador", status_code=303)
+ # ou o nome da tua função para encerrar a sessão
 
-
+@router.get("/logout")
+async def logout(request: Request):
+    destruir_sessao(request)  # limpa a sessão
+    return RedirectResponse("/login", status_code=303)
 
 @router.get("/cadastro", response_class=HTMLResponse)
 async def escolher_tipo_usuario(request: Request):
@@ -124,7 +129,7 @@ async def cadastro_cuidador_post(
     else:
         foto_path = None
 
-    usuario = Usuario(
+    cuidador_obj = Cuidador(
         id=0,
         nome=nome,
         dataNascimento=dataNascimento,
@@ -148,14 +153,14 @@ async def cadastro_cuidador_post(
     )
 
     usuario_id = cuidador_repo.inserir(cuidador)  
-    usuario.id = usuario_id
+    cuidador_obj.id = usuario_id
 
     usuario_dict = {
-        "id": usuario.id,
-        "nome": usuario.nome,
-        "email": usuario.email,
-        "perfil": usuario.perfil,
-        "foto": usuario.foto
+        "id": cuidador_obj.id,
+        "nome": cuidador_obj.nome,
+        "email": cuidador_obj.email,
+        "perfil": cuidador_obj.perfil,
+        "foto": cuidador_obj.foto
     }
 
     return RedirectResponse("/cuidador/home_cuidador", status_code=303)
