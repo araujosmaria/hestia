@@ -26,6 +26,12 @@ DELETE FROM contratacoes
 WHERE id = ?
 """
 
+OBTER_TODOS = """
+SELECT id, cuidador_id, nome_contratante, data_inicio, data_fim, observacoes, status
+FROM contratacoes
+ORDER BY data_inicio DESC
+"""
+
 OBTER_CONTRATACAO_POR_ID = """
 SELECT id, cuidador_id, nome_contratante, data_inicio, data_fim, observacoes, status
 FROM contratacoes

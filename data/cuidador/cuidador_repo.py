@@ -315,7 +315,7 @@ def atualizar(cuidador: Cuidador) -> bool:
 
         # Atualiza o usuário vinculado
         usuario = Usuario(
-            id_usuario=cuidador.id,
+            id=cuidador.id,
             nome=cuidador.nome,
             dataNascimento=cuidador.dataNascimento,
             email=cuidador.email,
@@ -336,7 +336,7 @@ def atualizar(cuidador: Cuidador) -> bool:
             estado=cuidador.estado,
             ativo=cuidador.ativo
         )
-        usuario_repo.atualizar(usuario, cursor)
+        usuario_repo.alterar(usuario, cursor)
 
         # Atualiza os dados específicos do cuidador
         cursor.execute(ATUALIZAR_CUIDADOR, (

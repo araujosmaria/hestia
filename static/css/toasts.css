@@ -1,0 +1,75 @@
+/* Sistema de Toasts - Hestia */
+
+/* Toast container offset (ajuste para não sobrepor footer) */
+.toast-offset {
+    margin-bottom: 60px;
+}
+
+/* Customizações para toasts */
+.toast {
+    min-width: 250px;
+    max-width: 350px;
+    box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15);
+}
+
+.toast-body {
+    font-size: 0.95rem;
+    display: flex;
+    align-items: center;
+}
+
+/* Animação suave de entrada */
+@keyframes slideInRight {
+    from {
+        transform: translateX(100%);
+        opacity: 0;
+    }
+    to {
+        transform: translateX(0);
+        opacity: 1;
+    }
+}
+
+.toast.showing,
+.toast.show {
+    animation: slideInRight 0.3s ease-out;
+}
+
+/* Animação suave de saída */
+@keyframes slideOutRight {
+    from {
+        transform: translateX(0);
+        opacity: 1;
+    }
+    to {
+        transform: translateX(100%);
+        opacity: 0;
+    }
+}
+
+.toast.hide {
+    animation: slideOutRight 0.3s ease-in;
+}
+
+/* Garantir z-index adequado */
+.toast-container {
+    z-index: 9999;
+}
+
+/* Espaçamento entre múltiplos toasts */
+.toast-container > .toast + .toast {
+    margin-top: 0.75rem;
+}
+
+/* Responsividade para mobile */
+@media (max-width: 576px) {
+    .toast {
+        min-width: 200px;
+        max-width: calc(100vw - 2rem);
+    }
+
+    .toast-container {
+        width: 100%;
+        padding: 0.5rem !important;
+    }
+}

@@ -3,3 +3,15 @@ __pycache__
 *.pyc
 *.pyo
 *.pyd
+.claude
+.mypy_cache
+.pytest_cache
+.coverage
+htmlcov/
+dist/
+build/
+*.egg-info/
+.env
+prompt*
+codebase*
+temp*

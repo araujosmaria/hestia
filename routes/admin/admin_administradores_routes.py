@@ -1,10 +1,15 @@
+from typing import Any
 from fastapi import APIRouter, Request, Form
-from fastapi.templating import Jinja2Templates
+# Flash messages (preparado para uso futuro)
+# from util.flash_messages import informar_sucesso, informar_erro
+# Logger (preparado para uso futuro)
+# from util.logger_config import logger
+from util.template_util import criar_templates
 
 router = APIRouter()
-templates = Jinja2Templates(directory="templates")
+templates = criar_templates("templates")
 
-administradores = [
+administradores: list[dict[str, Any]] = [
     {"id": 1, "nome": "João", "email": "joao@email.com"},
     {"id": 2, "nome": "Maria", "email": "maria@email.com"}
 ]
@@ -46,7 +51,7 @@ async def post_cadastrar_administrador(
     email: str = Form(...),
     senha: str = Form(...)
 ):
-    novo_id = max([a["id"] for a in administradores], default=0) + 1
+    novo_id = max([int(a["id"]) for a in administradores], default=0) + 1
     administradores.append({"id": novo_id, "nome": nome, "email": email})
     return templates.TemplateResponse(
         "administrador/administradores.html",

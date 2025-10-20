@@ -1,14 +1,19 @@
+from typing import Optional
 from fastapi import APIRouter, Request, Form
-from fastapi.templating import Jinja2Templates
+# Flash messages (preparado para uso futuro)
+# from util.flash_messages import informar_sucesso, informar_erro
+# Logger (preparado para uso futuro)
+# from util.logger_config import logger
+from util.template_util import criar_templates
 
 router = APIRouter()
-templates = Jinja2Templates(directory="templates")
+templates = criar_templates("templates")
 
 # ======================
 # SOLICITAR CONTRATAÇÃO (GET)
 # ======================
 @router.get("/contratante/solicitar-contratacao")
-async def get_solicitar_contratacao(request: Request, cuidador_id: int = None):
+async def get_solicitar_contratacao(request: Request, cuidador_id: Optional[int] = None):
     return templates.TemplateResponse(
         "contratante/solicitar_contratacao.html",
         {"request": request, "cuidador_id": cuidador_id}

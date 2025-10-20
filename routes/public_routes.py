@@ -1,8 +1,9 @@
 from datetime import datetime
 from urllib import request
+from typing import Optional
 from fastapi import APIRouter, File, Form, Request, UploadFile, status
-from fastapi.templating import Jinja2Templates
 from starlette.status import HTTP_302_FOUND
+from util.template_util import criar_templates
 from data import cuidador
 from data import cliente
 from data.cliente import cliente_repo
@@ -19,13 +20,17 @@ import json
 import os
 import uuid
 from fastapi.responses import RedirectResponse, HTMLResponse
+# Flash messages (preparado para uso futuro)
+# from util.flash_messages import informar_sucesso, informar_erro
+# Logger (preparado para uso futuro)
+# from util.logger_config import logger
 from data.usuario.usuario_model import Usuario
 from data.usuario.usuario_repo import inserir as inserir_usuario, obter_por_cpf
 from data.cliente.cliente_repo import inserir as inserir_cliente
 from passlib.context import CryptContext
 from util.auth_decorator import criar_sessao, destruir_sessao 
 
-router = APIRouter() 
+router = APIRouter()
 templates = criar_templates("templates/auth")
 
 # async def salvar_imagem(foto: UploadFile):
@@ -48,7 +53,7 @@ async def get_index(request: Request):
     return templates.TemplateResponse("index.html", {"request": request})
 
 @router.get("/login")
-async def get_login(request: Request, redirect: str = None):
+async def get_login(request: Request, redirect: Optional[str] = None):
    
     if esta_logado(request):
         usuario = obter_usuario_logado(request)
@@ -116,7 +121,7 @@ async def cadastro_cuidador_post(
     experiencia: str = Form(...),
     escolaridade: str = Form(...),
     apresentacao: str = Form(...),
-    cursos: bool = Form(...),
+    cursos: str = Form(...),
     data_cadastro: str = Form(...),
     fotoPerfil: UploadFile | None = File(None)
 ):
@@ -149,10 +154,10 @@ async def cadastro_cuidador_post(
         escolaridade=escolaridade,
         apresentacao=apresentacao,
         cursos=cursos,
-        data_cadastro=data_cadastro
+        data_cadastro=datetime.strptime(data_cadastro, "%Y-%m-%d") if isinstance(data_cadastro, str) else data_cadastro
     )
 
-    usuario_id = cuidador_repo.inserir(cuidador)  
+    usuario_id = cuidador_repo.inserir(cuidador_obj)  
     cuidador_obj.id = usuario_id
 
     usuario_dict = {

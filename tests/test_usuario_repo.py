@@ -6,7 +6,7 @@ import sqlite3
 
 from data.usuario.usuario_repo import (
     criar_tabela, inserir, obter_por_cpf, obter_por_id,
-    obter_todos, atualizar, excluir, atualizar_foto
+    obter_todos, alterar, excluir, atualizar_foto
 )
 from data.usuario.usuario_model import Usuario
 
@@ -83,6 +83,7 @@ class TestUsuarioRepo:
     def test_obter_por_id(self):
         usuario_teste = self.criar_usuario_fake()
         id_usuario_inserido = inserir(usuario_teste)
+        assert id_usuario_inserido is not None
 
         usuario_db = obter_por_id(id_usuario_inserido)
         assert usuario_db is not None
@@ -92,7 +93,9 @@ class TestUsuarioRepo:
     def test_atualizar(self):
         usuario_teste = self.criar_usuario_fake()
         id_usuario_inserido = inserir(usuario_teste)
+        assert id_usuario_inserido is not None
         usuario_inserido = obter_por_id(id_usuario_inserido)
+        assert usuario_inserido is not None
 
         usuario_inserido.nome = "Usuario Atualizado"
         usuario_inserido.email = "atualizado@test.com"
@@ -101,10 +104,11 @@ class TestUsuarioRepo:
         usuario_inserido.cidade = "Cidade Nova"
         usuario_inserido.foto = "nova_foto.png"
 
-        resultado = atualizar(usuario_inserido)
+        resultado = alterar(usuario_inserido)
         assert resultado is True
 
         usuario_db = obter_por_id(id_usuario_inserido)
+        assert usuario_db is not None
         assert usuario_db.nome == "Usuario Atualizado"
         assert usuario_db.email == "atualizado@test.com"
         assert usuario_db.senha == "NovaSenha"
@@ -115,17 +119,20 @@ class TestUsuarioRepo:
     def test_atualizar_foto(self):
         usuario_teste = self.criar_usuario_fake()
         id_usuario = inserir(usuario_teste)
+        assert id_usuario is not None
 
         nova_foto = "foto_atualizada.png"
         resultado = atualizar_foto(id_usuario, nova_foto)
 
         assert resultado is True
         usuario_db = obter_por_id(id_usuario)
+        assert usuario_db is not None
         assert usuario_db.foto == nova_foto
 
     def test_excluir_usuario(self):
         usuario_teste = self.criar_usuario_fake()
         id_usuario_inserido = inserir(usuario_teste)
+        assert id_usuario_inserido is not None
 
         resultado = excluir(id_usuario_inserido)
         assert resultado is True

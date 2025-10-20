@@ -274,7 +274,7 @@ def atualizar(cliente: Cliente) -> bool:
         cursor = conn.cursor()
 
         usuario = Usuario(
-            id_usuario=cliente.id,
+            id=cliente.id,
             nome=cliente.nome,
             dataNascimento=cliente.dataNascimento,
             email=cliente.email,
@@ -295,7 +295,7 @@ def atualizar(cliente: Cliente) -> bool:
             estado=cliente.estado,
             ativo=cliente.ativo
         )
-        usuario_repo.atualizar(usuario, cursor)
+        usuario_repo.alterar(usuario, cursor)
 
         cursor.execute(ATUALIZAR_CLIENTE, (
             cliente.parentesco_paciente,

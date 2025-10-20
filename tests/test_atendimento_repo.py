@@ -18,8 +18,8 @@ def reset_db():
     if os.path.exists(TEST_DB):
         os.remove(TEST_DB)
     # Criar tabelas necessárias
-    cliente_repo.criar_tabela(db_path=TEST_DB)
-    cuidador_repo.criar_tabela(db_path=TEST_DB)
+    cliente_repo.criar_tabela()
+    cuidador_repo.criar_tabela()
     atendimento_repo.criar_tabela(db_path=TEST_DB)
     yield
     # Cleanup
@@ -39,7 +39,7 @@ def criar_cliente_fake() -> Cliente:
         perfil="cliente",
         token_redefinicao=None,
         data_token=None,
-        data_cadastro=datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
+        data_cadastro=datetime.now(),
         cep="12345678",
         logradouro="Rua Teste",
         numero="100",
@@ -68,7 +68,7 @@ def criar_cuidador_fake() -> Cuidador:
         perfil="cuidador",
         token_redefinicao=None,
         data_token=None,
-        data_cadastro=datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
+        data_cadastro=datetime.now(),
         cep="12345678",
         logradouro="Rua Cuidador",
         numero="200",
@@ -95,18 +95,18 @@ class TestAtendimentoRepo:
     def test_inserir_e_obter_por_id(self):
         # Insere cliente e cuidador no banco de teste
         cliente = criar_cliente_fake()
-        id_cliente = cliente_repo.inserir(cliente, db_path=TEST_DB)
+        id_cliente = cliente_repo.inserir(cliente)
         assert id_cliente is not None
 
         cuidador = criar_cuidador_fake()
-        id_cuidador = cuidador_repo.inserir(cuidador, db_path=TEST_DB)
+        id_cuidador = cuidador_repo.inserir(cuidador)
         assert id_cuidador is not None
 
         # Cria um atendimento
         inicio = datetime.now()
         fim = inicio + timedelta(hours=1)
         atendimento = Atendimento(
-            id=None,
+            id=0,
             dataInicio=inicio,
             dataFim=fim,
             id_cliente=id_cliente,
@@ -126,15 +126,17 @@ class TestAtendimentoRepo:
     def test_obter_todos(self):
         # Insere cliente e cuidador
         cliente = criar_cliente_fake()
-        id_cliente = cliente_repo.inserir(cliente, db_path=TEST_DB)
+        id_cliente = cliente_repo.inserir(cliente)
+        assert id_cliente is not None
         cuidador = criar_cuidador_fake()
-        id_cuidador = cuidador_repo.inserir(cuidador, db_path=TEST_DB)
+        id_cuidador = cuidador_repo.inserir(cuidador)
+        assert id_cuidador is not None
 
         # Insere múltiplos atendimentos
         now = datetime.now()
         for i in range(3):
             atendimento = Atendimento(
-                id=None,
+                id=0,
                 dataInicio=now + timedelta(hours=i),
                 dataFim=now + timedelta(hours=i+1),
                 id_cliente=id_cliente,
@@ -148,21 +150,24 @@ class TestAtendimentoRepo:
     def test_atualizar(self):
         # Insere cliente e cuidador
         cliente = criar_cliente_fake()
-        id_cliente = cliente_repo.inserir(cliente, db_path=TEST_DB)
+        id_cliente = cliente_repo.inserir(cliente)
+        assert id_cliente is not None
         cuidador = criar_cuidador_fake()
-        id_cuidador = cuidador_repo.inserir(cuidador, db_path=TEST_DB)
+        id_cuidador = cuidador_repo.inserir(cuidador)
+        assert id_cuidador is not None
 
         # Insere atendimento
         inicio = datetime.now()
         fim = inicio + timedelta(hours=2)
         atendimento = Atendimento(
-            id=None,
+            id=0,
             dataInicio=inicio,
             dataFim=fim,
             id_cliente=id_cliente,
             id_cuidador=id_cuidador
         )
         id_at = atendimento_repo.inserir(atendimento, db_path=TEST_DB)
+        assert id_at is not None
         atendimento.id = id_at
 
         # Atualiza as datas
@@ -175,27 +180,31 @@ class TestAtendimentoRepo:
         assert atualizado
 
         at_db = atendimento_repo.obter_por_id(id_at, db_path=TEST_DB)
+        assert at_db is not None
         assert at_db.dataInicio == novo_inicio
         assert at_db.dataFim == novo_fim
 
     def test_excluir(self):
         # Insere cliente e cuidador
         cliente = criar_cliente_fake()
-        id_cliente = cliente_repo.inserir(cliente, db_path=TEST_DB)
+        id_cliente = cliente_repo.inserir(cliente)
+        assert id_cliente is not None
         cuidador = criar_cuidador_fake()
-        id_cuidador = cuidador_repo.inserir(cuidador, db_path=TEST_DB)
+        id_cuidador = cuidador_repo.inserir(cuidador)
+        assert id_cuidador is not None
 
         # Insere atendimento
         inicio = datetime.now()
         fim = inicio + timedelta(hours=1)
         atendimento = Atendimento(
-            id=None,
+            id=0,
             dataInicio=inicio,
             dataFim=fim,
             id_cliente=id_cliente,
             id_cuidador=id_cuidador
         )
         id_at = atendimento_repo.inserir(atendimento, db_path=TEST_DB)
+        assert id_at is not None
 
         excluiu = atendimento_repo.excluir(id_at, db_path=TEST_DB)
         assert excluiu

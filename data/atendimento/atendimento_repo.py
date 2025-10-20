@@ -7,7 +7,7 @@ from datetime import datetime
 # Caminho padrão do banco de dados
 DB_PATH = "dados.db"
 
-def criar_tabela(db_path: str = None) -> bool:
+def criar_tabela(db_path: Optional[str] = None) -> bool:
     if db_path is None:
         db_path = DB_PATH
     try:
@@ -20,7 +20,7 @@ def criar_tabela(db_path: str = None) -> bool:
         print(f"Erro ao criar tabela de atendimentos: {e}")
         return False
 
-def inserir(atendimento: Atendimento, db_path: str = None) -> Optional[int]:
+def inserir(atendimento: Atendimento, db_path: Optional[str] = None) -> Optional[int]:
     if db_path is None:
         db_path = DB_PATH
     try:
@@ -38,7 +38,7 @@ def inserir(atendimento: Atendimento, db_path: str = None) -> Optional[int]:
         print(f"Erro ao inserir atendimento: {e}")
         return None
 
-def obter_todos(db_path: str = None) -> List[Atendimento]:
+def obter_todos(db_path: Optional[str] = None) -> List[Atendimento]:
     if db_path is None:
         db_path = DB_PATH
     try:
@@ -61,7 +61,7 @@ def obter_todos(db_path: str = None) -> List[Atendimento]:
         print(f"Erro ao obter atendimentos: {e}")
         return []
 
-def obter_por_id(id_atendimento: int, db_path: str = None) -> Optional[Atendimento]:
+def obter_por_id(id_atendimento: int, db_path: Optional[str] = None) -> Optional[Atendimento]:
     if db_path is None:
         db_path = DB_PATH
     try:
@@ -83,7 +83,7 @@ def obter_por_id(id_atendimento: int, db_path: str = None) -> Optional[Atendimen
         print(f"Erro ao obter atendimento por ID: {e}")
         return None
 
-def atualizar(atendimento: Atendimento, db_path: str = None) -> bool:
+def atualizar(atendimento: Atendimento, db_path: Optional[str] = None) -> bool:
     if db_path is None:
         db_path = DB_PATH
     try:
@@ -100,7 +100,7 @@ def atualizar(atendimento: Atendimento, db_path: str = None) -> bool:
         print(f"Erro ao atualizar atendimento: {e}")
         return False
 
-def excluir(atendimento_id: int, db_path: str = None) -> bool:
+def excluir(atendimento_id: int, db_path: Optional[str] = None) -> bool:
     if db_path is None:
         db_path = DB_PATH
     try:

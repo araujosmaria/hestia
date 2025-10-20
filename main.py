@@ -1,8 +1,8 @@
 from starlette.middleware.sessions import SessionMiddleware
-import secrets 
 from fastapi import FastAPI
 from fastapi.staticfiles import StaticFiles
 import uvicorn
+from util.config import SECRET_KEY, HOST, PORT, RELOAD, APP_NAME, VERSION, IS_DEVELOPMENT
 from data.administrador import administrador_repo
 from data.agenda import agenda_repo
 from data.atendimento import atendimento_repo
@@ -47,21 +47,38 @@ from routes.cuidador import (
     cuidador_solicitacoes_routes
 )
 
+# Rotas de teste (remover em produção)
+from routes import teste_toast_routes
+from routes import teste_errors_routes
+
+# Exception Handlers
+from fastapi.exceptions import RequestValidationError
+from starlette.exceptions import HTTPException as StarletteHTTPException
+from util.exception_handlers import (
+    http_exception_handler,
+    validation_exception_handler,
+    generic_exception_handler
+)
+from util.logger_config import logger
 
 
-app = FastAPI()
+app = FastAPI(title=APP_NAME, version=VERSION)
 app.mount("/static", StaticFiles(directory="static"), name="static")
-app.add_middleware(SessionMiddleware, secret_key="uma_chave_secreta_aleatoria")
-SECRET_KEY = secrets.token_urlsafe(32)
 
-# # Adicionar middleware de sessão
-# app.add_middleware(
-#     SessionMiddleware, 
-#     secret_key=SECRET_KEY,
-#     max_age=3600,  # Sessão expira em 1 hora
-#     same_site="lax",
-#     https_only=False  # Em produção, mude para True com HTTPS
-# )
+# Middleware de sessão com configuração segura
+app.add_middleware(
+    SessionMiddleware,
+    secret_key=SECRET_KEY,
+    max_age=3600,  # Sessão expira em 1 hora
+    same_site="lax",
+    https_only=not IS_DEVELOPMENT  # Em produção usa HTTPS
+)
+
+# Registrar Exception Handlers (ordem importa: do mais específico para o mais genérico)
+app.add_exception_handler(StarletteHTTPException, http_exception_handler)
+app.add_exception_handler(RequestValidationError, validation_exception_handler)
+app.add_exception_handler(Exception, generic_exception_handler)
+logger.info("Exception handlers registrados")
 
 administrador_repo.criar_tabela()
 agenda_repo.criar_tabela()
@@ -100,6 +117,14 @@ app.include_router(cuidador_solicitacoes_routes.router)
 app.include_router(perfil_router)        # para upload de foto
 app.include_router(perfil_dados_router)
 
+# Rotas de teste (remover em produção)
+app.include_router(teste_toast_routes.router)
+app.include_router(teste_errors_routes.router)
+
 if __name__ == "__main__":
-    uvicorn.run(app="main:app", host="127.0.0.1", port=8082, reload=True)
+    print(f"🚀 Iniciando {APP_NAME} v{VERSION}")
+    print(f"📍 Servidor: http://{HOST}:{PORT}")
+    print(f"🔧 Modo: {'Desenvolvimento' if IS_DEVELOPMENT else 'Produção'}")
+    print(f"🔄 Reload: {'Ativado' if RELOAD else 'Desativado'}")
+    uvicorn.run(app="main:app", host=HOST, port=PORT, reload=RELOAD)
 

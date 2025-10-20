@@ -20,12 +20,33 @@ SET anos_experiencia = ?
 WHERE id_cuidador = ? AND id_especialidade = ?
 """
 
-OBTER_ESPECIALIDADES_POR_CUIDADOR = """
-SELECT 
-    id_cuidador,    
+OBTER_TODOS = """
+SELECT
+    id_cuidador,
     id_especialidade,
     anos_experiencia
-FROM 
+FROM
+    especialidade_cuidador
+ORDER BY id_cuidador, id_especialidade;
+"""
+
+OBTER_POR_ID = """
+SELECT
+    id_cuidador,
+    id_especialidade,
+    anos_experiencia
+FROM
+    especialidade_cuidador
+WHERE
+    id_cuidador = ? AND id_especialidade = ?;
+"""
+
+OBTER_ESPECIALIDADES_POR_CUIDADOR = """
+SELECT
+    id_cuidador,
+    id_especialidade,
+    anos_experiencia
+FROM
     especialidade_cuidador
 WHERE
     id_cuidador = ?;

@@ -1,0 +1,228 @@
+/*
+ * Estilos para Páginas de Erro - Hestia
+ * Usado em 404.html e 500.html
+ */
+
+/* Container principal de erro */
+.error-container {
+    padding: 3rem 1rem;
+    min-height: 60vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+/* Código do erro (404, 500, etc) */
+.error-code {
+    font-size: 8rem;
+    font-weight: 700;
+    line-height: 1;
+    margin-bottom: 0.5rem;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    text-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.error-code.text-danger {
+    background: linear-gradient(135deg, #dc3545 0%, #c82333 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+
+/* Título do erro */
+.error-heading {
+    font-size: 2rem;
+    font-weight: 600;
+    color: #333;
+    margin-bottom: 1rem;
+}
+
+/* Detalhes/descrição */
+.error-details {
+    font-size: 1.1rem;
+    color: #6c757d;
+}
+
+.error-details .lead {
+    font-size: 1.25rem;
+    font-weight: 400;
+}
+
+/* Ações (botões) */
+.error-actions {
+    margin-top: 2rem;
+    display: flex;
+    gap: 0.75rem;
+    justify-content: center;
+    flex-wrap: wrap;
+}
+
+.error-actions .btn {
+    min-width: 180px;
+    padding: 0.75rem 1.5rem;
+    font-size: 1.05rem;
+    transition: all 0.3s ease;
+}
+
+.error-actions .btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+/* Detalhes técnicos (apenas desenvolvimento) */
+.error-technical-details {
+    text-align: left;
+    margin-top: 3rem;
+}
+
+.error-technical-details .alert {
+    border-radius: 0.5rem;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.error-technical-details pre {
+    font-size: 0.875rem;
+    margin: 0;
+    border-radius: 0.375rem;
+    max-height: 400px;
+    overflow-y: auto;
+}
+
+.error-technical-details code {
+    font-family: 'Courier New', 'Consolas', monospace;
+    white-space: pre-wrap;
+    word-break: break-word;
+    font-size: 0.875rem;
+}
+
+.error-technical-details .fs-small {
+    font-size: 0.8rem;
+}
+
+/* Scrollbar customizada para blocos de código */
+.error-technical-details pre::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+}
+
+.error-technical-details pre::-webkit-scrollbar-track {
+    background: #f1f1f1;
+    border-radius: 10px;
+}
+
+.error-technical-details pre::-webkit-scrollbar-thumb {
+    background: #888;
+    border-radius: 10px;
+}
+
+.error-technical-details pre::-webkit-scrollbar-thumb:hover {
+    background: #555;
+}
+
+/* Ícones de ilustração */
+.error-container .display-1 {
+    font-size: 6rem;
+    opacity: 0.6;
+}
+
+/* Animação suave de entrada */
+.error-container {
+    animation: fadeIn 0.5s ease-in-out;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Links úteis */
+.error-container a.text-decoration-none {
+    color: #667eea;
+    transition: color 0.3s ease;
+}
+
+.error-container a.text-decoration-none:hover {
+    color: #764ba2;
+    text-decoration: underline !important;
+}
+
+/* Responsividade */
+@media (max-width: 768px) {
+    .error-code {
+        font-size: 5rem;
+    }
+
+    .error-heading {
+        font-size: 1.5rem;
+    }
+
+    .error-details {
+        font-size: 1rem;
+    }
+
+    .error-details .lead {
+        font-size: 1.125rem;
+    }
+
+    .error-actions {
+        flex-direction: column;
+        width: 100%;
+    }
+
+    .error-actions .btn {
+        width: 100%;
+        min-width: auto;
+    }
+
+    .error-container .display-1 {
+        font-size: 4rem;
+    }
+
+    .error-technical-details pre {
+        font-size: 0.75rem;
+    }
+
+    .error-technical-details code {
+        font-size: 0.75rem;
+    }
+}
+
+@media (max-width: 576px) {
+    .error-code {
+        font-size: 4rem;
+    }
+
+    .error-heading {
+        font-size: 1.25rem;
+    }
+
+    .error-container {
+        padding: 2rem 0.5rem;
+    }
+
+    .error-container .display-1 {
+        font-size: 3rem;
+    }
+}
+
+/* Print styles */
+@media print {
+    .error-actions,
+    .error-container .display-1 {
+        display: none;
+    }
+
+    .error-code {
+        color: #000 !important;
+        -webkit-text-fill-color: #000;
+    }
+}

@@ -207,6 +207,10 @@ def validar_estado_brasileiro(estado: Optional[str]) -> Optional[str]:
 
 
 def validar_senha(senha: Optional[str], min_chars: int = 6, max_chars: int = 128, obrigatorio: bool = True) -> Optional[str]:
+    """
+    Valida senha básica (apenas comprimento).
+    Para validação completa de força, use validar_senha_forte().
+    """
     if not senha:
         if obrigatorio:
             raise ValidacaoError('Senha é obrigatória')
@@ -217,6 +221,23 @@ def validar_senha(senha: Optional[str], min_chars: int = 6, max_chars: int = 128
 
     if len(senha) > max_chars:
         raise ValidacaoError(f'Senha deve ter no máximo {max_chars} caracteres')
+
+    return senha
+
+
+def validar_senha_forte(senha: Optional[str]) -> Optional[str]:
+    """
+    Valida senha forte com todos os requisitos configurados.
+    Usa util.security.validar_forca_senha() para validação completa.
+    """
+    if not senha:
+        raise ValidacaoError('Senha é obrigatória')
+
+    from util.security import validar_forca_senha
+    valida, mensagem = validar_forca_senha(senha)
+
+    if not valida:
+        raise ValidacaoError(mensagem)
 
     return senha
 
@@ -253,7 +274,7 @@ def validar_enum_valor(valor: Any, enum_class, campo: str = "Campo") -> Any:
 
 class ValidadorWrapper:
     @staticmethod
-    def criar_validador(funcao_validacao, campo_nome: str = None, **kwargs):
+    def criar_validador(funcao_validacao, campo_nome: Optional[str] = None, **kwargs):
         def validador(valor):
             try:
                 if campo_nome:
@@ -265,7 +286,7 @@ class ValidadorWrapper:
         return validador
 
     @staticmethod
-    def criar_validador_opcional(funcao_validacao, campo_nome: str = None, **kwargs):
+    def criar_validador_opcional(funcao_validacao, campo_nome: Optional[str] = None, **kwargs):
         def validador(valor):
             if valor is None or (isinstance(valor, str) and not valor.strip()):
                 return None

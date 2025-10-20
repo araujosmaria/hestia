@@ -31,6 +31,7 @@ class TestAvaliacaoRepo:
             comunicacoes=True
         )
         id_cliente = inserir_cliente(cliente)
+        assert id_cliente is not None
 
         # Cuidador conforme tabela
         cuidador = Cuidador(
@@ -46,6 +47,7 @@ class TestAvaliacaoRepo:
             comunicacoes=True
         )
         id_cuidador = inserir_cuidador(cuidador)
+        assert id_cuidador is not None
 
         # Atendimento
         atendimento = Atendimento(
@@ -89,6 +91,7 @@ class TestAvaliacaoRepo:
         _, _, id_atendimento = self.criar_cliente_cuidador_atendimento()
         avaliacao = Avaliacao(0, 4.0, "Bom", datetime.datetime(2025, 7, 1), id_atendimento)
         id_avaliacao = inserir(avaliacao)
+        assert id_avaliacao is not None
 
         avaliacao_atualizada = Avaliacao(
             id=id_avaliacao,
@@ -104,6 +107,7 @@ class TestAvaliacaoRepo:
         _, _, id_atendimento = self.criar_cliente_cuidador_atendimento()
         avaliacao = Avaliacao(0, 2.5, "Ruim", datetime.datetime.now(), id_atendimento)
         id_avaliacao = inserir(avaliacao)
+        assert id_avaliacao is not None
 
         resultado = excluir(id_avaliacao)
         assert resultado is True, "A exclusão deveria retornar True"

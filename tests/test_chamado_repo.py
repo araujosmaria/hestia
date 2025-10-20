@@ -59,6 +59,7 @@ class TestChamadoRepo:
             id_administrador=1
         )
         id_chamado = inserir(chamado)
+        assert id_chamado is not None
 
         chamado.id = id_chamado
         chamado.titulo = "Erro Corrigido"
@@ -86,6 +87,7 @@ class TestChamadoRepo:
             id_administrador=1
         )
         id_chamado = inserir(chamado)
+        assert id_chamado is not None
 
         resultado = excluir(id_chamado)
         assert resultado is True, "A exclusão do chamado deveria retornar True"

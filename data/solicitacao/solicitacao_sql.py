@@ -24,6 +24,12 @@ DELETE FROM solicitacoes
 WHERE id = ?
 """
 
+OBTER_TODOS = """
+SELECT id, cuidador_id, nome_contratante, descricao, status
+FROM solicitacoes
+ORDER BY id DESC
+"""
+
 OBTER_SOLICITACAO_POR_ID = """
 SELECT id, cuidador_id, nome_contratante, descricao, status
 FROM solicitacoes

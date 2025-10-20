@@ -6,6 +6,7 @@ Babel
 python-multipart
 itsdangerous
 Pillow
+python-dotenv
 
 pytest
 pytest-asyncio
@@ -16,3 +17,6 @@ python-jose[cryptography]
 
 pydantic>=2.0.0
 email-validator>=2.0.0
+
+# Email
+resend>=0.7.0

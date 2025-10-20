@@ -1,6 +1,11 @@
+from typing import Optional
 from fastapi import APIRouter, Request, Form, File, UploadFile, status
-from fastapi.templating import Jinja2Templates
+from util.template_util import criar_templates
 from fastapi.responses import RedirectResponse
+# Flash messages (preparado para uso futuro)
+# from util.flash_messages import informar_sucesso, informar_erro
+# Logger (preparado para uso futuro)
+# from util.logger_config import logger
 import os
 import secrets
 from data.cuidador.cuidador_model import Cuidador
@@ -12,10 +17,10 @@ from PIL import Image, ImageDraw, ImageOps
 
 
 router = APIRouter()
-templates = Jinja2Templates(directory="templates")
+templates = criar_templates("templates")
 
 @router.get("/cuidador/home_cuidador")
-async def get_home_cuidador(request: Request, mensagem: str = None):
+async def get_home_cuidador(request: Request, mensagem: Optional[str] = None):
     # Obter usuário logado
     user = obter_usuario_logado(request)
     
@@ -48,7 +53,7 @@ async def get_home_cuidador(request: Request, mensagem: str = None):
 # ======================
 @router.get("/cuidador/alterar_senha")
 @requer_autenticacao()
-async def get_alterar_senha(request: Request, usuario_logado: dict = None):
+async def get_alterar_senha(request: Request, usuario_logado: Optional[dict] = None):
     return templates.TemplateResponse(
         "cuidador/alterar_senha.html",
         {"request": request}
@@ -64,7 +69,7 @@ async def post_alterar_senha(
     senha_atual: str = Form(...),
     nova_senha: str = Form(...),
     confirmar_senha: str = Form(...),
-    usuario_logado: dict = None
+    usuario_logado: Optional[dict] = None
 ):
     if nova_senha != confirmar_senha:
         mensagem = "As senhas não coincidem!"
@@ -80,7 +85,7 @@ async def post_alterar_senha(
 # ======================
 @router.get("/cuidador/chamados/abrir")
 @requer_autenticacao()
-async def get_abertura_chamados(request: Request, usuario_logado: dict = None):
+async def get_abertura_chamados(request: Request, usuario_logado: Optional[dict] = None):
     return templates.TemplateResponse(
         "abertura_chamados.html",
         {"request": request}
@@ -95,7 +100,7 @@ async def post_abertura_chamados(
     request: Request,
     titulo: str = Form(...),
     descricao: str = Form(...),
-    usuario_logado: dict = None
+    usuario_logado: Optional[dict] = None
 ):
     mensagem = f"Chamado '{titulo}' aberto com sucesso!"
     return templates.TemplateResponse(
@@ -108,7 +113,7 @@ async def post_abertura_chamados(
 # ======================
 @router.get("/cuidador/chamados/abertos")
 @requer_autenticacao()
-async def get_chamados_abertos(request: Request, usuario_logado: dict = None):
+async def get_chamados_abertos(request: Request, usuario_logado: Optional[dict] = None):
     chamados_fake = [
         {"id": 1, "titulo": "Problema no acesso", "status": "Em análise"},
         {"id": 2, "titulo": "Erro ao atualizar perfil", "status": "Aberto"}

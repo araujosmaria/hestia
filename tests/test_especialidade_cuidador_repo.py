@@ -24,15 +24,16 @@ class TestEspecialidadeCuidadorRepo:
         cuidador = Cuidador(
             id=0,
             nome="João",
-            endereco="Rua A, 123",
             email="joao@mail.com",
             telefone="123456789",
             senha="123",
-            experiencia_anos=5
+            experiencia="5 anos"
         )
         id_cuidador = cuidador_repo.inserir(cuidador)
+        assert id_cuidador is not None
         especialidade = Especialidade(id=0, nome="Fisioterapia")
-        id_especialidade = especialidade_repo.inserir(especialidade)        
+        id_especialidade = especialidade_repo.inserir(especialidade)
+        assert id_especialidade is not None
         ec = EspecialidadeCuidador(
             id_cuidador=id_cuidador,
             id_especialidade=id_especialidade,
@@ -56,16 +57,17 @@ class TestEspecialidadeCuidadorRepo:
         cuidador = Cuidador(
             id=0,
             nome="Maria",
-            endereco="Rua B, 456",
             email="maria@mail.com",
             telefone="987654321",
             senha="456",
-            experiencia_anos=3
+            experiencia="3 anos"
         )
         id_cuidador = cuidador_repo.inserir(cuidador)
+        assert id_cuidador is not None
 
         especialidade = Especialidade(0, "Enfermagem")
         id_especialidade = especialidade_repo.inserir(especialidade)
+        assert id_especialidade is not None
 
         ec = EspecialidadeCuidador(id_cuidador, id_especialidade, 3, None, None)
         ec_repo.inserir(ec)
@@ -87,16 +89,17 @@ class TestEspecialidadeCuidadorRepo:
         cuidador = Cuidador(
             id=0,
             nome="Carlos",
-            endereco="Rua C, 789",
             email="carlos@mail.com",
             telefone="000111222",
             senha="789",
-            experiencia_anos=2
+            experiencia="2 anos"
         )
         id_cuidador = cuidador_repo.inserir(cuidador)
+        assert id_cuidador is not None
 
         especialidade = Especialidade(0, "Psicologia")
         id_especialidade = especialidade_repo.inserir(especialidade)
+        assert id_especialidade is not None
 
         ec = EspecialidadeCuidador(id_cuidador, id_especialidade, 2, None, None)
         ec_repo.inserir(ec)
@@ -117,16 +120,17 @@ class TestEspecialidadeCuidadorRepo:
         cuidador = Cuidador(
             id=0,
             nome="Ana",
-            endereco="Rua D, 101",
             email="ana@mail.com",
             telefone="444555666",
             senha="321",
-            experiencia_anos=4
+            experiencia="4 anos"
         )
         id_cuidador = cuidador_repo.inserir(cuidador)
+        assert id_cuidador is not None
 
         especialidade = Especialidade(0, "Terapia Ocupacional")
         id_especialidade = especialidade_repo.inserir(especialidade)
+        assert id_especialidade is not None
 
         ec = EspecialidadeCuidador(id_cuidador, id_especialidade, 4, None, None)
         ec_repo.inserir(ec)

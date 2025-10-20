@@ -14,11 +14,19 @@ VALUES (?, ?, ?, ?)
 """
 
 OBTER_TODOS_CHATS = """
-SELECT 
-    id, conteudo, dataHora, id_remetente, id_destinatario 
+SELECT
+    id, conteudo, dataHora, id_remetente, id_destinatario
 FROM chat
 ORDER BY dataHora
-""" 
+"""
+
+OBTER_POR_ID = """
+SELECT
+    id, conteudo, dataHora, id_remetente, id_destinatario
+FROM chat
+WHERE id = ?
+"""
+
 ATUALIZAR_CHAT = """
 UPDATE chat
 SET conteudo = ?, dataHora = ?

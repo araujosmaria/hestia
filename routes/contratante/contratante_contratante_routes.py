@@ -1,5 +1,5 @@
 from fastapi import APIRouter, Depends, Request, UploadFile, File, status, Form
-from fastapi.templating import Jinja2Templates
+from util.template_util import criar_templates
 from fastapi.responses import HTMLResponse, RedirectResponse
 from pytest import Session
 from data.cliente import cliente_repo
@@ -9,12 +9,16 @@ from io import BytesIO
 from PIL import Image, ImageDraw
 from util.auth_decorator import obter_usuario_logado
 from fastapi.requests import Request
+# Flash messages (preparado para uso futuro)
+# from util.flash_messages import informar_sucesso, informar_erro
+# Logger (preparado para uso futuro)
+# from util.logger_config import logger
 
 
 router = APIRouter()
 # ajuste para sua função real
 
-templates = Jinja2Templates(directory="templates")
+templates = criar_templates("templates")
 
 # @router.get("/contratante/home_contratante")
 # async def get_home_contratante(request: Request, mensagem: str | None = None):

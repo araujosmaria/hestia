@@ -1,10 +1,14 @@
 from fastapi import APIRouter
-from fastapi.templating import Jinja2Templates
+from util.template_util import criar_templates
 from fastapi import Request
 from fastapi import Form
+# Flash messages (preparado para uso futuro)
+# from util.flash_messages import informar_sucesso, informar_erro
+# Logger (preparado para uso futuro)
+# from util.logger_config import logger
 
 router = APIRouter()
-templates = Jinja2Templates(directory="templates")
+templates = criar_templates("templates")
 
 @router.get("/admin/chamados")
 async def get_listar_chamados(request: Request):

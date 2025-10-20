@@ -45,6 +45,7 @@ class TestChatRepo:
         criar_tabela_chat()
         chat = Chat(0, "Mensagem Original", "2025-07-01 13:00:00", 1, 2)
         id_chat = inserir(chat)
+        assert id_chat is not None
         chat_atualizado = Chat(id_chat, "Mensagem Atualizada", "2025-07-01 14:00:00", 1, 2)
         # Act
         resultado = atualizar(chat_atualizado)
@@ -60,6 +61,7 @@ class TestChatRepo:
         criar_tabela_chat()
         chat = Chat(0, "Mensagem a excluir", "2025-07-01 15:00:00", 1, 2)
         id_chat = inserir(chat)
+        assert id_chat is not None
         # Act
         resultado = excluir(id_chat)
         chats = obter_todos()

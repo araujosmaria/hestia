@@ -1,9 +1,14 @@
+from typing import Optional
 from fastapi import APIRouter, Request, Form
-from fastapi.templating import Jinja2Templates
+from util.template_util import criar_templates
 from fastapi.responses import RedirectResponse
+# Flash messages (preparado para uso futuro)
+# from util.flash_messages import informar_sucesso, informar_erro
+# Logger (preparado para uso futuro)
+# from util.logger_config import logger
 
 router = APIRouter()
-templates = Jinja2Templates(directory="templates")
+templates = criar_templates("templates")
 
 # Simula lista de chats disponíveis no chat geral
 chats_geral = [
@@ -28,7 +33,7 @@ mensagens_chat_contratante = {
 
 # Rota para a home do cuidador
 @router.get("/cuidador/home_cuidador")
-async def home_cuidador(request: Request, mensagem: str = None):
+async def home_cuidador(request: Request, mensagem: Optional[str] = None):
     return templates.TemplateResponse("cuidador/home_cuidador.html", {"request": request, "mensagem": mensagem})
 
 # Rota para listar chats disponíveis no chat geral (lista de contatos)

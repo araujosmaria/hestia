@@ -16,7 +16,7 @@ DB_PATH = "dados.db"
 def reset_test_db():
     if os.path.exists(DB_PATH):
         os.remove(DB_PATH)
-    cliente_repo.criar_tabela(db_path=DB_PATH)
+    cliente_repo.criar_tabela()
     yield
     if os.path.exists(DB_PATH):
         os.remove(DB_PATH)
@@ -38,7 +38,7 @@ def criar_cliente_fake() -> Cliente:
         foto=None,
         token_redefinicao=None,
         data_token=None,
-        data_cadastro=datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
+        data_cadastro=datetime.now(),
         cep="12345678",
         logradouro="Rua Teste",
         numero="100",
@@ -60,50 +60,55 @@ def criar_cliente_fake() -> Cliente:
 class TestClienteRepo:
 
     def test_criar_tabela(self):
-        assert cliente_repo.criar_tabela(db_path=DB_PATH)
+        assert cliente_repo.criar_tabela()
 
     def test_inserir(self):
         cliente = criar_cliente_fake()
-        id_cliente = cliente_repo.inserir(cliente, db_path=DB_PATH)
+        id_cliente = cliente_repo.inserir(cliente)
         assert id_cliente is not None
 
     def test_obter_por_id(self):
         cliente = criar_cliente_fake()
-        id_cliente = cliente_repo.inserir(cliente, db_path=DB_PATH)
+        id_cliente = cliente_repo.inserir(cliente)
+        assert id_cliente is not None
         cliente.id = id_cliente
 
-        id_cliente = cliente_repo.inserir(cliente, db_path=DB_PATH)
-        cliente_db = cliente_repo.obter_por_id(id_cliente, db_path=DB_PATH)
+        id_cliente = cliente_repo.inserir(cliente)
+        assert id_cliente is not None
+        cliente_db = cliente_repo.obter_por_id(id_cliente)
         assert cliente_db is not None
         assert cliente_db.id == id_cliente
 
     def test_obter_todos(self):
         cliente1 = criar_cliente_fake()
         cliente2 = criar_cliente_fake()
-        cliente_repo.inserir(cliente1, db_path=DB_PATH)
-        cliente_repo.inserir(cliente2, db_path=DB_PATH)
+        cliente_repo.inserir(cliente1)
+        cliente_repo.inserir(cliente2)
 
-        clientes = cliente_repo.obter_todos(db_path=DB_PATH)
+        clientes = cliente_repo.obter_todos()
         assert len(clientes) >= 2
 
     def test_atualizar(self):
         cliente = criar_cliente_fake()
-        id_cliente = cliente_repo.inserir(cliente, db_path=DB_PATH)
+        id_cliente = cliente_repo.inserir(cliente)
+        assert id_cliente is not None
         cliente.id = id_cliente
         cliente.parentesco_paciente = "Pai"
 
-        atualizado = cliente_repo.atualizar(cliente, db_path=DB_PATH)
+        atualizado = cliente_repo.atualizar(cliente)
         assert atualizado
 
-        cliente_db = cliente_repo.obter_por_id(id_cliente, db_path=DB_PATH)
+        cliente_db = cliente_repo.obter_por_id(id_cliente)
+        assert cliente_db is not None
         assert cliente_db.parentesco_paciente == "Pai"
 
     def test_excluir(self):
         cliente = criar_cliente_fake()
-        id_cliente = cliente_repo.inserir(cliente, db_path=DB_PATH)
+        id_cliente = cliente_repo.inserir(cliente)
+        assert id_cliente is not None
 
-        excluido = cliente_repo.excluir(id_cliente, db_path=DB_PATH)
+        excluido = cliente_repo.excluir(id_cliente)
         assert excluido
 
-        cliente_db = cliente_repo.obter_por_id(id_cliente, db_path=DB_PATH)
+        cliente_db = cliente_repo.obter_por_id(id_cliente)
         assert cliente_db is None

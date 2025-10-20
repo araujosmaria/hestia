@@ -11,12 +11,13 @@ class TestEspecialidadeRepo:
         # Assert
         assert resultado == True, "A criacao da tabela deveria retornar True"
 
-    def test_inserir_especialidade(self, test_db): 
+    def test_inserir_especialidade(self, test_db):
         # Arrange
         criar_tabela()
         especialidade_teste =  Especialidade(0, "Especialidade Teste")
         # Act
         id_especialidade_inserida = inserir(especialidade_teste)
+        assert id_especialidade_inserida is not None
         # Assert
         especialidade_db = obter_por_id (id_especialidade_inserida) 
         assert especialidade_db is not None, "A especialidade inserida não deveria ser None"
@@ -28,13 +29,16 @@ class TestEspecialidadeRepo:
         criar_tabela()
         especialidade_teste = Especialidade(0, "Especialidade Teste")
         id_especialidade_inserida = inserir(especialidade_teste)
+        assert id_especialidade_inserida is not None
         especialidade_inserida = obter_por_id(id_especialidade_inserida)
+        assert especialidade_inserida is not None
         # Act
         especialidade_inserida.nome = "Especialidade Atualizada"
         resultado = atualizar(especialidade_inserida)
         # Assert
         assert resultado == True, "A atualização da especialidade deveria retornar True"
         especialidade_db = obter_por_id(id_especialidade_inserida)
+        assert especialidade_db is not None
         assert especialidade_db.nome == "Especialidade Atualizada", "O nome da categoria atualizada não confere"
 
     def test_excluir_especialidade(self, test_db):
@@ -42,6 +46,7 @@ class TestEspecialidadeRepo:
         criar_tabela()
         especialidade_teste = Especialidade(0, "Especialidade Teste")
         id_especialidade_inserida = inserir(especialidade_teste)
+        assert id_especialidade_inserida is not None
         # Act
         resultado = excluir(id_especialidade_inserida)
         # Assert
@@ -54,6 +59,7 @@ class TestEspecialidadeRepo:
         criar_tabela()
         especialidade_teste = Especialidade(0, "Especialidade Teste")
         id_especialidade_inserida = inserir(especialidade_teste)
+        assert id_especialidade_inserida is not None
         # Act
         especialidade_db = obter_por_id(id_especialidade_inserida)
         # Assert

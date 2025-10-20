@@ -1,8 +1,12 @@
 from fastapi import APIRouter, Request, Form
-from fastapi.templating import Jinja2Templates
+# Flash messages (preparado para uso futuro)
+# from util.flash_messages import informar_sucesso, informar_erro
+# Logger (preparado para uso futuro)
+# from util.logger_config import logger
+from util.template_util import criar_templates
 
 router = APIRouter()
-templates = Jinja2Templates(directory="templates")
+templates = criar_templates("templates")
 
 # ======================
 # LISTAR ESPECIALIZAÇÕES

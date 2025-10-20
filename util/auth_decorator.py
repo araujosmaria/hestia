@@ -7,7 +7,6 @@ from typing import List, Optional
 from fastapi import Request, HTTPException, status
 from fastapi.responses import RedirectResponse
 import asyncio
-from pytest import Session
 from data.usuario.usuario_model import Usuario
 from data.util import open_connection
 
@@ -20,7 +19,7 @@ from data.util import open_connection
 def criar_sessao(request: Request, usuario: dict) -> None:
     """
     Cria uma sessão para o usuário após login
-    
+
     Args:
         request: Objeto Request do FastAPI
         usuario: Dicionário com dados do usuário
@@ -31,18 +30,20 @@ def criar_sessao(request: Request, usuario: dict) -> None:
         usuario_sessao.pop('senha', None)
         request.session['usuario'] = usuario_sessao
 
-def get_usuario_por_id(user_id: int, db: Session) -> Usuario | None:
-    """
-    Busca um usuário no banco pelo ID.
-    
-    Args:
-        user_id (int): ID do usuário.
-        db (Session): Sessão do SQLAlchemy.
-    
-    Returns:
-        Usuario | None: Retorna o objeto Usuario se encontrado, senão None.
-    """
-    return db.query(Usuario).filter(Usuario.id == user_id).first()
+# Função não utilizada - comentada para evitar erros de mypy com SQLAlchemy Session
+# def get_usuario_por_id(user_id: int, db: Session) -> Usuario | None:
+#     """
+#     Busca um usuário no banco pelo ID.
+#
+#     Args:
+#         user_id (int): ID do usuário.
+#         db (Session): Sessão do SQLAlchemy.
+#
+#     Returns:
+#         Usuario | None: Retorna o objeto Usuario se encontrado, senão None.
+#     """
+#     from sqlalchemy.orm import Session
+#     return db.execute(select(Usuario).filter_by(id=user_id)).scalar_one_or_none()
 
 
 # def obter_usuario_logado(request: Request):
@@ -91,7 +92,7 @@ def destruir_sessao(request: Request) -> None:
 # DECORATOR DE AUTENTICAÇÃO
 # ======================
 
-def requer_autenticacao(perfis_autorizados: List[str] = None):
+def requer_autenticacao(perfis_autorizados: Optional[List[str]] = None):
     """
     Decorator para proteger rotas que requerem autenticação
     

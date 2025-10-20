@@ -35,15 +35,15 @@ class CadastroContratanteDTO(BaseDTO):
 
     @field_validator("senha")
     def validar_senha(cls, valor):
-        return validar_texto_obrigatorio(valor, "Senha", min_length=8)
+        return validar_texto_obrigatorio(valor, "Senha", min_chars=8)
 
     @field_validator("confirmar_senha")
     def validar_confirmar_senha(cls, valor):
-        return validar_texto_obrigatorio(valor, "Confirmar Senha", min_length=8)
+        return validar_texto_obrigatorio(valor, "Confirmar Senha", min_chars=8)
 
     @field_validator("cpf")
     def validar_cpf_valido(cls, valor):
-        return validar_cpf(valor, "CPF")
+        return validar_cpf(valor)
     
     @field_validator("telefone")
     def validar_telefone_valido(cls, valor):

@@ -24,8 +24,7 @@ class TestAdministradorRepo:
             nome="Admin Teste",
             email="admin@test.com",
             senha="senha123",
-            telefone="123456789",
-            endereco="Rua Teste"
+            telefone="123456789"
         )
 
         id_inserido = inserir(admin)
@@ -40,8 +39,8 @@ class TestAdministradorRepo:
         # criar_tabela_usuario()
         criar_tabela()
 
-        inserir(Administrador(0, "Admin A", "a@admin.com", "senhaA", "1111", "Rua A"))
-        inserir(Administrador(0, "Admin B", "b@admin.com", "senhaB", "2222", "Rua B"))
+        inserir(Administrador(nome="Admin A", email="a@admin.com", senha="senhaA", telefone="1111", id=None))
+        inserir(Administrador(nome="Admin B", email="b@admin.com", senha="senhaB", telefone="2222", id=None))
 
         lista = obter_todos()
         nomes = [a.nome for a in lista]
@@ -54,8 +53,9 @@ class TestAdministradorRepo:
         # criar_tabela_usuario()
         criar_tabela()
 
-        admin = Administrador(0, "Admin Teste", "teste@admin.com", "123", "123456", "Rua A")
+        admin = Administrador(nome="Admin Teste", email="teste@admin.com", senha="123", telefone="123456", id=None)
         id_admin = inserir(admin)
+        assert id_admin is not None
 
         admin_db = obter_por_id(id_admin)
         assert admin_db is not None
@@ -66,22 +66,23 @@ class TestAdministradorRepo:
         # criar_tabela_usuario()
         criar_tabela()
 
-        admin = Administrador(0, "Admin Antigo", "antigo@admin.com", "senha", "123", "Rua Antiga")
+        admin = Administrador(nome="Admin Antigo", email="antigo@admin.com", senha="senha", telefone="123", id=None)
         id_admin = inserir(admin)
+        assert id_admin is not None
 
         admin_atualizado = Administrador(
             id=id_admin,
             nome="Admin Atualizado",
             email="novo@admin.com",
             senha="nova",
-            telefone="999",
-            endereco="Rua Nova"
+            telefone="999"
         )
 
         resultado = atualizar(admin_atualizado)
         assert resultado == True
 
         atualizado = obter_por_id(id_admin)
+        assert atualizado is not None
         assert atualizado.nome == "Admin Atualizado"
         assert atualizado.email == "novo@admin.com"
 
@@ -89,8 +90,9 @@ class TestAdministradorRepo:
         # criar_tabela_usuario()
         criar_tabela()
 
-        admin = Administrador(0, "Excluir Admin", "del@admin.com", "senha", "000", "Rua Delete")
+        admin = Administrador(nome="Excluir Admin", email="del@admin.com", senha="senha", telefone="000", id=None)
         id_admin = inserir(admin)
+        assert id_admin is not None
 
         resultado = excluir(id_admin)
         assert resultado == True
