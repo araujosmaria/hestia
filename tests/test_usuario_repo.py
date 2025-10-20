@@ -6,7 +6,8 @@ import sqlite3
 
 from data.usuario.usuario_repo import (
     criar_tabela, inserir, obter_por_cpf, obter_por_id,
-    obter_todos, alterar, excluir, atualizar_foto
+    obter_todos, alterar, excluir, atualizar_foto, obter_por_email,
+    ativar_usuario, obter_por_token
 )
 from data.usuario.usuario_model import Usuario
 
@@ -139,3 +140,54 @@ class TestUsuarioRepo:
 
         usuario_db = obter_por_id(id_usuario_inserido)
         assert usuario_db is None
+
+    def test_obter_por_email(self):
+        usuario_teste = self.criar_usuario_fake()
+        inserir(usuario_teste)
+
+        usuario_db = obter_por_email(usuario_teste.email)
+        assert usuario_db is not None
+        assert usuario_db.email == usuario_teste.email
+        assert usuario_db.nome == usuario_teste.nome
+
+        # Testa email inexistente
+        usuario_inexistente = obter_por_email("naoexiste@test.com")
+        assert usuario_inexistente is None
+
+    def test_ativar_usuario(self):
+        usuario_teste = self.criar_usuario_fake()
+        usuario_teste.ativo = False
+        id_usuario = inserir(usuario_teste)
+        assert id_usuario is not None
+
+        # Verifica que está inativo
+        usuario_db = obter_por_id(id_usuario)
+        assert usuario_db is not None
+        assert usuario_db.ativo == False
+
+        # Ativa o usuário
+        resultado = ativar_usuario(id_usuario)
+        assert resultado is True
+
+        # Verifica que está ativo
+        usuario_db = obter_por_id(id_usuario)
+        assert usuario_db is not None
+        assert usuario_db.ativo == True
+
+    def test_obter_por_token(self):
+        usuario_teste = self.criar_usuario_fake()
+        token_teste = "token123abc"
+        usuario_teste.token_redefinicao = token_teste
+        usuario_teste.data_token = datetime.now()
+        id_usuario = inserir(usuario_teste)
+        assert id_usuario is not None
+
+        # Obtém por token
+        usuario_db = obter_por_token(token_teste)
+        assert usuario_db is not None
+        assert usuario_db.id == id_usuario
+        assert usuario_db.token_redefinicao == token_teste
+
+        # Testa token inexistente
+        usuario_inexistente = obter_por_token("tokeninvalido")
+        assert usuario_inexistente is None

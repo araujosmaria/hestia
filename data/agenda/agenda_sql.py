@@ -4,7 +4,7 @@ CREATE TABLE IF NOT EXISTS agenda (
     dataHora DATETIME NOT NULL,
     disponibilidade BOOLEAN NOT NULL,
     id_cuidador INTEGER NOT NULL,
-    FOREIGN KEY (id_cuidador) REFERENCES cuidador(id_cuidador)
+    FOREIGN KEY (id_cuidador) REFERENCES cuidador(id)
 )
 """
 

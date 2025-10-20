@@ -115,3 +115,18 @@ def excluir(avaliacao_id: int) -> bool:
         cursor = conn.cursor()
         cursor.execute(EXCLUIR_AVALIACAO, (avaliacao_id,))
         return cursor.rowcount > 0
+
+def obter_por_id(avaliacao_id: int) -> Optional[Avaliacao]:
+    with open_connection() as conn:
+        cursor = conn.cursor()
+        cursor.execute("SELECT id_avaliacao, nota, comentario, dataAvaliacao, id_atendimento FROM avaliacao WHERE id_avaliacao = ?", (avaliacao_id,))
+        row = cursor.fetchone()
+        if row:
+            return Avaliacao(
+                id=row["id_avaliacao"],
+                nota=row["nota"],
+                comentario=row["comentario"],
+                dataAvaliacao=row["dataAvaliacao"],
+                id_atendimento=row["id_atendimento"]
+            )
+        return None

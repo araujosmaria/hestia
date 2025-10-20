@@ -94,3 +94,11 @@ class TestChamadoRepo:
 
         chamados = obter_todos()
         assert all(c.id != id_chamado for c in chamados), "Chamado excluído ainda está na lista"
+
+    def test_criar_tabela_error_handling(self, test_db):
+        # Test que a função criar_tabela retorna True mesmo quando já existe
+        criar_tabela()
+        resultado1 = criar_tabela()
+        resultado2 = criar_tabela()
+        assert resultado1 is True
+        assert resultado2 is True

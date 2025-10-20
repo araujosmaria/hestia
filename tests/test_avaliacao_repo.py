@@ -2,6 +2,7 @@ import pytest
 import datetime
 from data.avaliacao.avaliacao_repo import *
 from data.avaliacao.avaliacao_model import Avaliacao
+from data.avaliacao.avaliacao_repo import obter_por_id
 from data.atendimento.atendimento_repo import criar_tabela as criar_tabela_atendimento, inserir as inserir_atendimento
 from data.atendimento.atendimento_model import Atendimento
 from data.cliente.cliente_repo import criar_tabela as criar_tabela_cliente, inserir as inserir_cliente
@@ -24,6 +25,25 @@ class TestAvaliacaoRepo:
         # Cliente conforme tabela
         cliente = Cliente(
             id=0,
+            nome="Cliente Teste",
+            dataNascimento="1980-01-01",
+            email="cliente@teste.com",
+            telefone="11999999999",
+            cpf="12345678901",
+            senha="senha123",
+            perfil="cliente",
+            foto=None,
+            token_redefinicao=None,
+            data_token=None,
+            data_cadastro=datetime.datetime.now(),
+            cep="12345678",
+            logradouro="Rua Teste",
+            numero="100",
+            complemento="Apto 1",
+            bairro="Centro",
+            cidade="São Paulo",
+            estado="SP",
+            ativo=True,
             parentesco_paciente="pai",
             confirmarSenha="senha123",
             termos=True,
@@ -36,11 +56,31 @@ class TestAvaliacaoRepo:
         # Cuidador conforme tabela
         cuidador = Cuidador(
             id=0,
+            nome="Cuidador Teste",
+            dataNascimento="1985-05-15",
+            email="cuidador@teste.com",
+            telefone="11988888888",
+            cpf="98765432109",
+            senha="senha123",
+            perfil="cuidador",
+            foto=None,
+            token_redefinicao=None,
+            data_token=None,
+            data_cadastro=datetime.datetime.now(),
+            cep="12345678",
+            logradouro="Rua dos Cuidadores",
+            numero="200",
+            complemento="Casa",
+            bairro="Bairro",
+            cidade="São Paulo",
+            estado="SP",
+            ativo=True,
             experiencia="5 anos de experiência",
             valorHora=45.0,
             escolaridade="Ensino Superior",
             apresentacao="Sou um cuidador dedicado e atencioso.",
             cursos="Curso de primeiros socorros",
+            inicio_profissional="2018-01-01",
             confirmarSenha="senha123",
             termos=True,
             verificacao=True,
@@ -111,3 +151,19 @@ class TestAvaliacaoRepo:
 
         resultado = excluir(id_avaliacao)
         assert resultado is True, "A exclusão deveria retornar True"
+
+    def test_obter_por_id(self, test_db):
+        _, _, id_atendimento = self.criar_cliente_cuidador_atendimento()
+        avaliacao = Avaliacao(0, 4.7, "Excelente", datetime.datetime.now(), id_atendimento)
+        id_avaliacao = inserir(avaliacao)
+        assert id_avaliacao is not None
+
+        # Obter por ID
+        avaliacao_db = obter_por_id(id_avaliacao)
+        assert avaliacao_db is not None
+        assert avaliacao_db.id == id_avaliacao
+        assert avaliacao_db.nota == 4.7
+
+        # Obter por ID inexistente
+        avaliacao_inexistente = obter_por_id(99999)
+        assert avaliacao_inexistente is None

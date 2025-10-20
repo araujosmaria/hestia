@@ -1,25 +1,21 @@
-import os
 import random
 import string
 import pytest
 from datetime import datetime
 from data.cliente.cliente_model import Cliente
 from data.cliente import cliente_repo
+from data.usuario import usuario_repo
 
-
-DB_PATH = "dados.db"
 
 # ===============================
 # FIXTURE DO BANCO DE TESTES
 # ===============================
 @pytest.fixture(autouse=True)
-def reset_test_db():
-    if os.path.exists(DB_PATH):
-        os.remove(DB_PATH)
+def setup_db(test_db):
+    # Cria as tabelas necessárias
+    usuario_repo.criar_tabela()
     cliente_repo.criar_tabela()
     yield
-    if os.path.exists(DB_PATH):
-        os.remove(DB_PATH)
 
 # ===============================
 # FUNÇÃO AUXILIAR PARA CRIAR CLIENTE FAKE
@@ -71,10 +67,7 @@ class TestClienteRepo:
         cliente = criar_cliente_fake()
         id_cliente = cliente_repo.inserir(cliente)
         assert id_cliente is not None
-        cliente.id = id_cliente
 
-        id_cliente = cliente_repo.inserir(cliente)
-        assert id_cliente is not None
         cliente_db = cliente_repo.obter_por_id(id_cliente)
         assert cliente_db is not None
         assert cliente_db.id == id_cliente

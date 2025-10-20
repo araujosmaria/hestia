@@ -78,4 +78,12 @@ class TestEspecialidadeRepo:
         assert len(lista_especialidades) >= 2, "Deveria retornar pelo menos 2 especialidades"
         nomes = [e.nome for e in lista_especialidades]
         assert "Especialidade A" in nomes, "Especialidade A deveria estar na lista"
-        assert "Especialidade B" in nomes, "Especialidade B deveria estar na lista"       
+        assert "Especialidade B" in nomes, "Especialidade B deveria estar na lista"
+
+    def test_criar_tabela_error_handling(self, test_db):
+        # Test que a função criar_tabela retorna True mesmo quando já existe
+        criar_tabela()
+        resultado1 = criar_tabela()
+        resultado2 = criar_tabela()
+        assert resultado1 is True
+        assert resultado2 is True       

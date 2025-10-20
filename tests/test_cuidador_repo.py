@@ -1,24 +1,21 @@
-import os
 import random
 import string
 import pytest
 from datetime import datetime
 from data.cuidador.cuidador_model import Cuidador
 from data.cuidador import cuidador_repo
+from data.usuario import usuario_repo
 
-TEST_DB = "test_dados.db"
 
 # ===============================
 # FIXTURE DO BANCO DE TESTES
 # ===============================
 @pytest.fixture(autouse=True)
-def reset_test_db():
-    if os.path.exists(TEST_DB):
-        os.remove(TEST_DB)
+def setup_db(test_db):
+    # Cria as tabelas necessárias
+    usuario_repo.criar_tabela()
     cuidador_repo.criar_tabela()
     yield
-    if os.path.exists(TEST_DB):
-        os.remove(TEST_DB)
 
 # ===============================
 # FUNÇÃO AUXILIAR PARA CRIAR CUIDADOR FAKE

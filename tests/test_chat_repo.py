@@ -68,3 +68,11 @@ class TestChatRepo:
         # Assert
         assert resultado == True, "A exclusão do chat deveria retornar True"
         assert not any(c.id == id_chat for c in chats), "O chat excluído não deveria estar na lista"
+
+    def test_criar_tabela_error_handling(self, test_db):
+        # Test que a função criar_tabela retorna True mesmo quando já existe
+        criar_tabela_chat()
+        resultado1 = criar_tabela_chat()
+        resultado2 = criar_tabela_chat()
+        assert resultado1 is True
+        assert resultado2 is True

@@ -56,7 +56,7 @@ ORDER BY u.nome
 
 
 OBTER_CLIENTE_POR_ID = """
-SELECT 
+SELECT
     c.id AS id,
     u.nome,
     u.dataNascimento,
@@ -76,6 +76,7 @@ SELECT
     u.bairro,
     u.cidade,
     u.estado,
+    u.ativo,
     c.parentesco_paciente,
     c.confirmarSenha,
     c.termos,
