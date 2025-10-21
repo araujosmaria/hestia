@@ -1,7 +1,28 @@
+"""
+⚠️ DEPRECATED: Este módulo está deprecated.
+
+Use dtos/validators.py para todas as validações.
+Este arquivo será removido em versão futura.
+
+Migração:
+    # ANTES
+    from util.validacoes_dto import validar_email, validar_cpf
+
+    # DEPOIS
+    from dtos.validators import validar_email, validar_cpf
+"""
+import warnings
 import re
 from datetime import datetime, date
 from decimal import Decimal
 from typing import Optional, Any
+
+# Emitir warning ao importar este módulo
+warnings.warn(
+    "util.validacoes_dto está deprecated. Use dtos.validators em vez disso.",
+    DeprecationWarning,
+    stacklevel=2
+)
 
 
 class ValidacaoError(ValueError):

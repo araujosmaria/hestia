@@ -249,7 +249,7 @@ async def teste_error_generic():
 class DadosFormulario(BaseModel):
     nome: str = Field(..., min_length=3, max_length=100)
     idade: int = Field(..., ge=18, le=120)
-    email: str = Field(..., regex=r'^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$')
+    email: str = Field(..., pattern=r'^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$')
 
 
 @router.post("/validation", response_class=HTMLResponse)
