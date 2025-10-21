@@ -1,26 +1,15 @@
 {% extends "base_simples.html" %}
+{% from 'macros/forms.html' import password_change_form %}
+{% from 'macros/navigation.html' import back_button %}
 
 {% block conteudo %}
 <section class="py-5 bg-light" id="alterar-senha">
     <div class="container">
         <h2 class="text-center mb-4">Alterar Senha</h2>
 
-        <form method="post" action="/admin/administradores/alterar_senha">
-            <input type="hidden" name="id" value="{{ id }}">
+        {{ password_change_form('/admin/administradores/alterar_senha', user_id=id) }}
 
-            <div class="mb-3">
-                <label for="senha_atual" class="form-label">Senha atual</label>
-                <input type="password" class="form-control" id="senha_atual" name="senha_atual" required>
-            </div>
-
-            <div class="mb-3">
-                <label for="nova_senha" class="form-label">Nova senha</label>
-                <input type="password" class="form-control" id="nova_senha" name="nova_senha" required>
-            </div>
-            <div class="text-center mt-4">
-            <a href="/admin/administradores/tela_inicial" class="btn btn-success">Alterar Senha</a>
-            </div>
-        </form>
+        {{ back_button('/admin/administradores/tela_inicial', 'Voltar para Tela Inicial', 'btn btn-success') }}
     </div>
 </section>
 {% endblock %}

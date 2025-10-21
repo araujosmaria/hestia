@@ -1,5 +1,6 @@
 {% extends "base_simples.html" %}
 
+{% from 'macros/navigation.html' import back_button %}
 {% block conteudo %}
 <section class="py-5 bg-light" id="avaliacoes">
     <div class="container">
@@ -33,11 +34,7 @@
 
         {% else %}
             <p class="text-center">Nenhuma avaliação encontrada.</p>
-        {% endif %}
-
-        <div class="text-center mt-4">
-            <a href="/admin/administradores/tela_inicial" class="btn btn-success">Voltar para Home</a>
-        </div>
+        {% endif %}{{ back_button('/admin/administradores/tela_inicial', 'Voltar para Home', 'btn btn-success') }}
     </div>
 </section>
 {% endblock %}

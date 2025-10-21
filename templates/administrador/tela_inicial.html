@@ -1,15 +1,11 @@
 {% extends "base_simples.html" %}
+{% from 'macros/alerts.html' import success_message %}
 
 {% block conteudo %}
 <section class="py-5 bg-light" id="tela-inicial-admin">
   <div class="container">
     <h1 class="text-center mb-4">Bem-vindo, Administrador!</h1>
-    {% if mensagem %}
-    <div class="alert alert-success alert-dismissible fade show" role="alert">
-        {{ mensagem }}
-        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Fechar"></button>
-    </div>
-    {% endif %}
+    {{ success_message(mensagem, dismissible=True) }}
 
     <div class="row">
       <div class="col-md-4 mb-3">

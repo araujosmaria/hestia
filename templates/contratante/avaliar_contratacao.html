@@ -1,13 +1,12 @@
 {% extends "base_simples.html" %}
+{% from 'macros/alerts.html' import success_message %}
 
 {% block conteudo %}
 <section class="py-5 bg-light" id="avaliar-contratacao">
     <div class="container">
         <h2 class="text-center mb-4">Avaliar Contratação</h2>
 
-        {% if mensagem %}
-            <div class="alert alert-success text-center">{{ mensagem }}</div>
-        {% endif %}
+        {{ success_message(mensagem) }}
 
         <form method="post" action="/contratante/avaliar_contratacao">
             <input type="hidden" name="id" value="{{ contratacao_id }}">

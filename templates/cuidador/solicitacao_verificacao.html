@@ -1,4 +1,5 @@
 {% extends "base_simples.html" %}
+{% from 'macros/navigation.html' import back_to_home_button %}
 
 {% block conteudo %}
 <section class="py-5 bg-light" id="solicitacao-verificacao">
@@ -11,10 +12,7 @@
                     {{ v.descricao }}
                 </li>
             {% endfor %}
-        </ul>
-        <div class="text-center mt-4">
-            <a href="/cuidador/home_cuidador" class="btn btn-success">Voltar para Home</a>
-        </div>
+        </ul>{{ back_to_home_button('cuidador') }}
     </div>
 </section>
 {% endblock %}

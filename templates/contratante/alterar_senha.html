@@ -1,48 +1,19 @@
 {% extends "base_simples.html" %}
+{% from 'macros/forms.html' import password_change_form %}
+{% from 'macros/alerts.html' import alert_box_positioned %}
+{% from 'macros/navigation.html' import back_to_home_button %}
 
 {% block conteudo %}
 <section class="py-5 bg-light" id="alterar-senha">
     <div class="container position-relative">
         <h2 class="text-center mb-4">Alterar Senha</h2>
 
-        <!-- Balão de mensagem -->
-        {% if mensagem %}
-        <div class="position-absolute top-0 start-50 translate-middle-x mt-0">
-            <div class="alert alert-success rounded-pill text-center px-4 py-2 shadow" role="alert">
-                {{ mensagem }}
-            </div>
-        </div>
-        {% endif %}
+        {{ alert_box_positioned(mensagem, type='success') }}
+        {{ alert_box_positioned(erro, type='danger') }}
 
-        {% if erro %}
-        <div class="position-absolute top-0 start-50 translate-middle-x mt-0">
-            <div class="alert alert-danger rounded-pill text-center px-4 py-2 shadow" role="alert">
-                {{ erro }}
-            </div>
-        </div>
-        {% endif %}
+        {{ password_change_form('/contratante/alterar_senha', user_id=id) }}
 
-        <!-- FORM CORRIGIDO -->
-        <form method="post" action="/contratante/alterar_senha" class="mt-5">
-            <input type="hidden" name="id" value="{{ id }}">
-
-            <div class="mb-3">
-                <label for="senha_atual" class="form-label">Senha Atual</label>
-                <input type="password" class="form-control" id="senha_atual" name="senha_atual" required>
-            </div>
-
-            <div class="mb-3">
-                <label for="nova_senha" class="form-label">Nova Senha</label>
-                <input type="password" class="form-control" id="nova_senha" name="nova_senha" required>
-            </div>
-
-            <div class="mb-3">
-                <label for="confirmar_senha" class="form-label">Confirmar Nova Senha</label>
-                <input type="password" class="form-control" id="confirmar_senha" name="confirmar_senha" required>
-            </div>
-
-            <button type="submit" class="btn btn-primary">Alterar Senha</button>
-        </form>
+        {{ back_to_home_button('contratante') }}
     </div>
 </section>
 {% endblock %}

@@ -1,4 +1,5 @@
 {% extends "base_simples.html" %}
+{% from 'macros/alerts.html' import error_message %}
 
 {% set erros = erros if erros is defined else {} %}
 {% set dados = dados if dados is defined else {} %}
@@ -10,11 +11,7 @@
         <p class="subtitle">Insira as informações para criar a sua conta</p>
     </div>
 
-    {% if mensagem %}
-    <div class="alert alert-danger" role="alert">
-        {{ mensagem }}
-    </div>
-    {% endif %}
+    {{ error_message(mensagem) }}
 
     <form id="formCuidador" class="cadastro-form" method="post" enctype="multipart/form-data">
         <!-- Dados Pessoais -->
@@ -157,7 +154,7 @@
                     <input type="file" id="fotoPerfil" accept="image/*" name="fotoPerfil">
                 </div>
 
-                <div id="preview-foto-container" class="preview-foto-container" style="display: none;">
+                <div id="preview-foto-container" class="preview-foto-container d-none">
                     <img id="preview-foto" src="" class="rounded-circle">
                 </div>
             </div>

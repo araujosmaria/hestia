@@ -1,5 +1,6 @@
 
 {% extends "base_login.html" %}
+{% from 'macros/alerts.html' import error_message %}
 
 {% set erros = erros if erros is defined else {} %}
 {% set dados = dados if dados is defined else {} %}
@@ -9,9 +10,7 @@
 
     <h1>Faça seu Login</h1>
 
-    {% if erro %}
-    <div class="alert alert-danger text-center">{{ erro }}</div>
-    {% endif %}
+    {{ error_message(erro) }}
 
     <button class="google-login-card" type="button">
         <div class="icon-text">

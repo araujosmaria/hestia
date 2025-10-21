@@ -1,4 +1,5 @@
 {% extends "base_simples.html" %}
+{% from 'macros/navigation.html' import back_to_home_button %}
 
 {% block conteudo %}
 <section class="py-5 bg-light" id="chat_geral">
@@ -41,7 +42,7 @@
         {% endif %}
 
         <!-- Mensagem de feedback -->
-        <div id="msg-sucesso" class="alert alert-success text-center" style="display:none;"></div>
+        <div id="msg-sucesso" class="alert alert-success text-center d-none"></div>
 
         <!-- Área para responder -->
         <form id="resposta-form">
@@ -50,11 +51,7 @@
                 <textarea class="form-control" id="resposta" name="resposta" rows="3" placeholder="Clique em responder para começar..."></textarea>
             </div>
             <button type="submit" class="btn btn-primary">Enviar resposta</button>
-        </form>
-
-        <div class="text-center mt-3">
-            <a href="/cuidador/home_cuidador" class="btn btn-success">Voltar para Home</a>
-        </div>
+        </form>{{ back_to_home_button('cuidador') }}
     </div>
 </section>
 

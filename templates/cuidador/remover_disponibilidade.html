@@ -1,4 +1,5 @@
-{% extends "base_privada.html" %}
+{% extends "base_simples.html" %}
+{% from 'macros/alerts.html' import success_message %}
 
 {% block conteudo %}
 <section class="py-5 bg-light" id="remoção-disponibilidade">
@@ -6,9 +7,7 @@
         <h2 class="text-center mb-4">Remover Disponibilidade</h2>
 
         {% if mensagem %}
-            <div class="alert alert-success text-center">
-                {{ mensagem }}
-            </div>
+            {{ success_message(mensagem) }}
         {% else %}
             <div class="card p-4 shadow-sm">
                 <h5>Você realmente deseja remover esta disponibilidade?</h5>

@@ -1,4 +1,5 @@
 {% extends "base_simples.html" %}
+{% from 'macros/navigation.html' import back_to_home_button %}
 
 {% block conteudo %}
 <section class="py-5 bg-light" id="chat-geral">
@@ -7,7 +8,7 @@
 
         <!-- Área de mensagens gerais -->
         <div class="card shadow-sm mb-4">
-            <div class="card-body" style="height: 300px; overflow-y: auto;">
+            <div class="card-body chat-messages">
                 {% if mensagens %}
                     {% for msg in mensagens %}
                         <p><strong>{{ msg.remetente }}:</strong> {{ msg.texto }}</p>
@@ -41,10 +42,7 @@
                 <li class="list-group-item text-muted">Nenhum cuidador disponível para chat privado.</li>
             {% endif %}
         </ul>
-    </div>
-    <div class="text-center mt-4">
-            <a href="/contratante/home_contratante" class="btn btn-success">Voltar para Home</a>
-        </div>
+    </div>{{ back_to_home_button('contratante') }}
     </div><br>
 </section>
 {% endblock %}

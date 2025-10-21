@@ -1,14 +1,12 @@
 {% extends "base_simples.html" %}
+{% from 'macros/alerts.html' import success_message %}
+{% from 'macros/navigation.html' import back_button %}
 
 {% block conteudo %}
 <section class="py-5 bg-light" id="chamados">
     <div class="container">
         <h2 class="text-center mb-4">Chamados</h2>
-        {% if mensagem %}
-        <div class="alert alert-success text-center" role="alert">
-            {{ mensagem }}
-        </div>
-        {% endif %}
+        {{ success_message(mensagem) }}
 
         <table class="table table-striped">
             <thead>
@@ -39,8 +37,6 @@
             </tbody>
         </table>
     </div>
-    <div class="text-center mt-4">
-        <a href="/admin/administradores/tela_inicial" class="btn btn-success">Voltar para Home</a>
-    </div>
 </section>
+{{ back_button('/admin/administradores/tela_inicial', 'Voltar para Home', 'btn btn-success') }}
 {% endblock %}

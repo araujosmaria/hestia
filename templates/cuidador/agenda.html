@@ -1,4 +1,5 @@
 {% extends "base_simples.html" %}
+{% from 'macros/navigation.html' import back_to_home_button %}
 
 {% block conteudo %}
 <section class="py-5 bg-light" id="agenda">
@@ -111,7 +112,7 @@
             <div class="text-center py-5">
                 <div class="card border-0 shadow-sm">
                     <div class="card-body p-5">
-                        <i class="bi bi-calendar-x text-muted mb-4" style="font-size: 5rem;"></i>
+                        <i class="bi bi-calendar-x text-muted mb-4 fs-5rem"></i>
                         <h4 class="text-muted mb-3">Sua agenda está vazia</h4>
                         <p class="text-muted mb-4">
                             Configure seus horários de disponibilidade para começar a receber solicitações de atendimento.
@@ -123,11 +124,7 @@
                     </div>
                 </div>
             </div>
-        {% endif %}
-
-        <div class="text-center mt-0">
-            <a href="/cuidador/home_cuidador" class="btn btn-success">Voltar para Home</a>
-        </div>
+        {% endif %}{{ back_to_home_button('cuidador') }}
     </div>
 </section>
 

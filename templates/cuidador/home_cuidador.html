@@ -1,4 +1,5 @@
-{% extends "base_privada.html" %}
+{% extends "base_simples.html" %}
+{% from 'macros/alerts.html' import success_message %}
 
 {% block conteudo %}
 <section class="py-5 bg-light" id="home_cuidador">
@@ -6,45 +7,41 @@
         <div class="text-center">
             <h1 class="mb-4">Painel do Cuidador</h1>
 
-            <h2 class="mb-3" style="color: #2c7a5f; font-weight: bold;">
+            <h2 class="mb-3 text-hestia-primary fw-bold">
                 Bem-vindo, {{ user.nome if user else "Visitante" }}!
             </h2>
 
-            {% if mensagem %}
-            <div class="alert alert-success text-center">
-                {{ mensagem }}
-            </div>
-            {% endif %}
+            {{ success_message(mensagem) }}
 
 
             <p class="lead">
-                Você tem <strong style="color: #2b8c6a;">{{ oportunidades_novas|default:"0" }}</strong> novas oportunidades de trabalho esperando por você.
+                Você tem <strong class="text-hestia-primary-dark">{{ oportunidades_novas|default:"0" }}</strong> novas oportunidades de trabalho esperando por você.
             </p>
 
             <!-- Cards de resumo -->
             <div class="row text-center my-4">
                 <div class="col-md-3 mb-3">
                     <div class="p-3 bg-white rounded shadow-sm">
-                        <div style="font-size:2rem; color:#2c7a5f;">{{ solicitacoes_pendentes|default:"0" }}</div>
-                        <div style="color:#6c757d;">Solicitações Pendentes</div>
+                        <div class="fs-1 text-hestia-primary">{{ solicitacoes_pendentes|default:"0" }}</div>
+                        <div class="text-muted">Solicitações Pendentes</div>
                     </div>
                 </div>
                 <div class="col-md-3 mb-3">
                     <div class="p-3 bg-white rounded shadow-sm">
-                        <div style="font-size:2rem; color:#2c7a5f;">{{ avaliacao_media|default:"0.0" }}</div>
-                        <div style="color:#6c757d;">Avaliação Média</div>
+                        <div class="fs-1 text-hestia-primary">{{ avaliacao_media|default:"0.0" }}</div>
+                        <div class="text-muted">Avaliação Média</div>
                     </div>
                 </div>
                 <div class="col-md-3 mb-3">
                     <div class="p-3 bg-white rounded shadow-sm">
-                        <div style="font-size:2rem; color:#2c7a5f;">{{ trabalhos_concluidos|default:"0" }}</div>
-                        <div style="color:#6c757d;">Trabalhos Concluídos</div>
+                        <div class="fs-1 text-hestia-primary">{{ trabalhos_concluidos|default:"0" }}</div>
+                        <div class="text-muted">Trabalhos Concluídos</div>
                     </div>
                 </div>
                 <div class="col-md-3 mb-3">
                     <div class="p-3 bg-white rounded shadow-sm">
-                        <div style="font-size:2rem; color:#2c7a5f;">R$ {{ ganhos_mes|default:"0,00" }}</div>
-                        <div style="color:#6c757d;">Ganhos do Mês</div>
+                        <div class="fs-1 text-hestia-primary">R$ {{ ganhos_mes|default:"0,00" }}</div>
+                        <div class="text-muted">Ganhos do Mês</div>
                     </div>
                 </div>
             </div>

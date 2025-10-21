@@ -116,3 +116,5 @@ jinja2.exceptions.UndefinedError: 'obter_mensagens' is undefined
 2025-10-21 14:44:07 - hestia - INFO - Exception handlers registrados
 2025-10-21 14:44:17 - hestia - INFO - Sistema de logging iniciado - Nível: INFO
 2025-10-21 14:44:17 - hestia - INFO - Exception handlers registrados
+2025-10-21 17:38:52 - hestia - INFO - Sistema de logging iniciado - Nível: INFO
+2025-10-21 17:38:52 - hestia - INFO - Exception handlers registrados

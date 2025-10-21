@@ -1,34 +1,18 @@
 {% extends "base_simples.html" %}
+{% from 'macros/forms.html' import password_change_form %}
+{% from 'macros/alerts.html' import alert_box %}
+{% from 'macros/navigation.html' import back_to_home_button %}
 
 {% block conteudo %}
 <section class="py-5 bg-light" id="alterar-senha">
     <div class="container">
         <h2 class="text-center mb-4">Alterar Senha</h2>
 
-        {% if mensagem %}
-            <div class="alert alert-info text-center">{{ mensagem }}</div>
-        {% endif %}
+        {{ alert_box(mensagem, type='info') }}
 
-        <form method="post" action="/cuidador/alterar_senha">
-            <div class="mb-3">
-                <label for="senha_atual" class="form-label">Senha Atual</label>
-                <input type="password" class="form-control" id="senha_atual" name="senha_atual" required>
-            </div>
+        {{ password_change_form('/cuidador/alterar_senha') }}
 
-            <div class="mb-3">
-                <label for="nova_senha" class="form-label">Nova Senha</label>
-                <input type="password" class="form-control" id="nova_senha" name="nova_senha" required>
-            </div>
-
-            <div class="mb-3">
-                <label for="confirmar_senha" class="form-label">Confirmar Nova Senha</label>
-                <input type="password" class="form-control" id="confirmar_senha" name="confirmar_senha" required>
-            </div>
-
-        <div class="text-center mt-4">
-            <a href="/cuidador/home_cuidador" class="btn btn-primary">Alterar senha </a>
-        </div>
-        </form>
+        {{ back_to_home_button('cuidador') }}
     </div>
 </section>
 {% endblock %}

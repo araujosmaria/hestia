@@ -1,11 +1,139 @@
+/* ===== Variáveis CSS Customizadas - Hestia ===== */
+:root {
+  /* Cores Principais */
+  --hestia-primary: #2c7a5f;
+  --hestia-primary-dark: #2b8c6a;
+  --hestia-light-green: #d3e9e3;
+  --hestia-light-mint: #f1f7f5;
+  --hestia-border-green: #083f2e;
+
+  /* Cores de Texto */
+  --hestia-text-dark: #000;
+  --hestia-text-muted: #6c757d;
+
+  /* Background */
+  --hestia-bg-light: #f9f9f9;
+}
+
+/* ===== Classes Utilitárias - Cores Hestia ===== */
+.text-hestia-primary {
+  color: var(--hestia-primary) !important;
+}
+
+.text-hestia-primary-dark {
+  color: var(--hestia-primary-dark) !important;
+}
+
+.bg-hestia-primary {
+  background-color: var(--hestia-primary) !important;
+}
+
+.bg-hestia-primary-dark {
+  background-color: var(--hestia-primary-dark) !important;
+}
+
+.bg-hestia-light-green {
+  background-color: var(--hestia-light-green) !important;
+}
+
+.bg-hestia-light-mint {
+  background-color: var(--hestia-light-mint) !important;
+}
+
+.border-hestia-green {
+  border-color: var(--hestia-border-green) !important;
+}
+
+/* ===== Classes Utilitárias - Dimensões ===== */
+.mw-500 {
+  max-width: 500px !important;
+}
+
+.mw-600 {
+  max-width: 600px !important;
+}
+
+.fs-5rem {
+  font-size: 5rem !important;
+}
+
+.mh-200 {
+  max-height: 200px !important;
+}
+
+.mh-300 {
+  max-height: 300px !important;
+}
+
+.mh-400 {
+  max-height: 400px !important;
+}
+
+.chat-messages {
+  height: 300px;
+  overflow-y: auto;
+}
+
+/* ===== Classes Utilitárias - Imagens de Perfil ===== */
+.profile-img-150 {
+  width: 150px;
+  height: 150px;
+  object-fit: cover;
+}
+
+.profile-img-border-gray {
+  border: 3px solid #dee2e6;
+}
+
+.profile-img-border-success {
+  border: 3px solid #28a745;
+}
+
+/* ===== Classes Utilitárias - Seções e Cards Hestia ===== */
+.section-hestia-light {
+  background-color: var(--hestia-light-green);
+  padding: 80px 20px;
+}
+
+.section-hestia-lighter {
+  background-color: #e2f0ec;
+  padding: 60px 20px;
+}
+
+.card-hestia-light {
+  background-color: var(--hestia-light-mint);
+  border-radius: 20px;
+}
+
+.text-justify {
+  text-align: justify;
+}
+
+.fs-1-5rem {
+  font-size: 1.5rem !important;
+}
+
+.fs-2rem {
+  font-size: 2rem !important;
+}
+
+.mw-360 {
+  max-width: 360px !important;
+}
+
+.list-style-outside {
+  list-style-position: outside;
+}
+
+/* ===== Estilos Globais ===== */
 body {
-  background-color: #f9f9f9;
+  background-color: var(--hestia-bg-light);
 }
 
 h3 {
   font-weight: bold;
   font-size: 1.75rem;
-  color: #000;
+  color: var(--hestia-text-dark);
 }
 
 .navbar-brand img {
@@ -26,19 +154,19 @@ h3 {
 }
 
 .features.card {
-  background-color: #f1f7f5;
-  border: 1px solid #083f2e;
+  background-color: var(--hestia-light-mint);
+  border: 1px solid var(--hestia-border-green);
   border-radius: 12px;
   box-shadow: 0 2px 6px rgba(0, 0, 0, 0.03);
 }
 
 .btn-green {
-  background-color: #2b8c6a;
+  background-color: var(--hestia-primary-dark);
   color: #fff;
 }
 
 .btn-green:hover {
-  background-color: #2b8c6a;
+  background-color: var(--hestia-primary-dark);
 }
 
 .btn-cadastrar {

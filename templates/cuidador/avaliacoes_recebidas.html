@@ -1,4 +1,5 @@
 {% extends "base_simples.html" %} 
+{% from 'macros/navigation.html' import back_to_home_button %}
 
 {% block conteudo %}
 <section class="py-5 bg-light" id="avaliacoes_recebidas">
@@ -19,10 +20,7 @@
             <p class="text-center">Nenhuma avaliação recebida até o momento.</p>
         {% endif %}
 
-        <!-- Botão de Voltar -->
-        <div class="text-center mt-4">
-            <a href="/cuidador/home_cuidador" class="btn btn-success">Voltar para Home </a>
-        </div>
     </div>
 </section>
+{{ back_to_home_button('cuidador') }}
 {% endblock %}

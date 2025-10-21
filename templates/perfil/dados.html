@@ -1,4 +1,5 @@
 {% extends "base.html" %}
+{% from 'macros/alerts.html' import success_message, error_message %}
 
 {% block conteudo %}
 <div class="container mt-5">
@@ -19,14 +20,12 @@
                 <div class="card-body text-center">
                     <div class="d-flex justify-content-center">
                         <img id="foto-atual" src="{{ usuario.foto or '/static/img/user-default.png' }}"
-                            class="rounded-circle mb-3"
-                            style="width: 150px; height: 150px; object-fit: cover; border: 3px solid #dee2e6;"
+                            class="rounded-circle mb-3 profile-img-150 profile-img-border-gray"
                             alt="Foto do perfil">
                     </div>
-                    <div id="preview-foto-container" style="display: none;">
+                    <div id="preview-foto-container" class="d-none">
                         <div class="d-flex justify-content-center">
-                            <img id="preview-foto" src="" class="rounded-circle mb-2"
-                                style="width: 150px; height: 150px; object-fit: cover; border: 3px solid #28a745;"
+                            <img id="preview-foto" src="" class="rounded-circle mb-2 profile-img-150 profile-img-border-success"
                                 alt="Preview da nova foto">
                         </div>
                         <div class="small text-success mb-2">
@@ -46,8 +45,8 @@
                         <button type="submit" class="btn btn-sm btn-outline-primary" id="btn-alterar" disabled>
                             <i class="bi-camera"></i> Alterar Foto
                         </button>
-                        <button type="button" class="btn btn-sm btn-outline-secondary" id="btn-cancelar"
-                            onclick="cancelarSelecao()" style="display: none;">
+                        <button type="button" class="btn btn-sm btn-outline-secondary d-none" id="btn-cancelar"
+                            onclick="cancelarSelecao()">
                             <i class="bi-x"></i> Cancelar
                         </button>
                     </form>
@@ -62,38 +61,22 @@
     
                 <div class="card-body">
                     {% if request.query_params.get('sucesso') %}
-                    <div class="alert alert-success alert-dismissible fade show" role="alert">
-                        Dados atualizados com sucesso!
-                        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
-                    </div>
+                        {{ success_message('Dados atualizados com sucesso!', dismissible=True) }}
                     {% endif %}
 
                     {% if request.query_params.get('foto_sucesso') %}
-                    <div class="alert alert-success alert-dismissible fade show" role="alert">
-                        Foto atualizada com sucesso!
-                        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
-                    </div>
+                        {{ success_message('Foto atualizada com sucesso!', dismissible=True) }}
                     {% endif %}
 
                     {% if request.query_params.get('erro') == 'tipo_invalido' %}
-                    <div class="alert alert-danger alert-dismissible fade show" role="alert">
-                        Tipo de arquivo inválido! Use apenas JPG, JPEG ou PNG.
-                        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
-                    </div>
+                        {{ error_message('Tipo de arquivo inválido! Use apenas JPG, JPEG ou PNG.', dismissible=True) }}
                     {% endif %}
 
                     {% if request.query_params.get('erro') == 'upload_falhou' %}
-                    <div class="alert alert-danger alert-dismissible fade show" role="alert">
-                        Erro ao fazer upload da foto. Tente novamente.
-                        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
-                    </div>
+                        {{ error_message('Erro ao fazer upload da foto. Tente novamente.', dismissible=True) }}
                     {% endif %}
 
-                    {% if erro %}
-                    <div class="alert alert-danger" role="alert">
-                        {{ erro }}
-                    </div>
-                    {% endif %}
+                    {{ error_message(erro) }}
 
                     <form method="post" action="/perfil/dados">
                         <div class="row">
@@ -136,16 +119,16 @@
                                     <div class="d-flex justify-content-center">
                                         <img id="foto-atual" src="{{ usuario.foto or '/static/img/user-default.png' }}"
                                             class="rounded-circle mb-3"
-                                            style="width: 150px; height: 150px; object-fit: cover; border: 3px solid #dee2e6;"
+                                            class="profile-img-150 profile-img-border-gray"
                                             alt="Foto do perfil">
                                     </div>
 
                                     <!-- Preview da nova foto -->
-                                    <div id="preview-foto-container" style="display: none;">
+                                    <div id="preview-foto-container" class="d-none">
                                         <div class="d-flex justify-content-center">
                                             <img id="preview-foto" src=""
                                                 class="rounded-circle mb-2"
-                                                style="width: 150px; height: 150px; object-fit: cover; border: 3px solid #28a745;"
+                                                class="profile-img-150 profile-img-border-success"
                                                 alt="Preview da nova foto">
                                         </div>
                                         <div class="small text-success mb-2">
@@ -168,7 +151,7 @@
                                         <button type="submit" class="btn btn-sm btn-outline-primary" id="btn-alterar" disabled>
                                             <i class="bi-camera"></i> Alterar Foto
                                         </button>
-                                        <button type="button" class="btn btn-sm btn-outline-secondary" id="btn-cancelar" onclick="cancelarSelecao()" style="display: none;">
+                                        <button type="button" class="btn btn-sm btn-outline-secondary d-none" id="btn-cancelar" onclick="cancelarSelecao()">
                                             <i class="bi-x"></i> Cancelar
                                         </button>
                                     </form>

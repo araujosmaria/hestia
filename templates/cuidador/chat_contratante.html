@@ -1,16 +1,12 @@
 {% extends "base_simples.html" %}
+{% from 'macros/alerts.html' import success_message %}
 
 {% block conteudo %}
 <section class="py-5 bg-light" id="chat-contratante">
     <div class="container">
         <h2 class="text-center mb-4">Chat com o Contratante</h2>
 
-        <!-- Mensagem de sucesso -->
-        {% if mensagem_sucesso %}
-            <div class="alert alert-success text-center">
-                {{ mensagem_sucesso }}
-            </div>
-        {% endif %}
+        {{ success_message(mensagem_sucesso) }}
 
         <!-- Exibição das mensagens -->
         {% if mensagens %}
@@ -41,20 +37,8 @@
         </form>
     </div>
 </section>
+{% endblock %}
 
-<script>
-    document.addEventListener('DOMContentLoaded', function() {
-        const buttons = document.querySelectorAll('.responder-btn');
-        const textarea = document.getElementById('mensagem');
-
-        buttons.forEach(button => {
-            button.addEventListener('click', () => {
-                const autor = button.getAttribute('data-autor');
-                // Preenche o textarea com uma menção e foca o campo
-                textarea.value = `@${autor} `;
-                textarea.focus();
-            });
-        });
-    });
-</script>
+{% block scripts %}
+<script src="/static/js/chat.js"></script>
 {% endblock %}

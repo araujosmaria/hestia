@@ -1,4 +1,5 @@
 {% extends "base_hcontratante.html" %}
+{% from 'macros/alerts.html' import success_message %}
 
 {% block conteudo %}
 <section class="py-5 bg-light" id="home_contratante">
@@ -6,39 +7,13 @@
         <div class="text-center">
             <h1 class="mb-4">Painel do Contratante</h1>
 
-            <h2 class="mb-3" style="color: #2c7a5f; font-weight: bold;">
+            <h2 class="mb-3 text-hestia-primary fw-bold">
                 Bem-vindo(a), {{ user.nome if user else "Visitante"}}!
             </h2>
 
-            {% if request.query_params.get('mensagem') %}
-            <div class="alert alert-success text-center">
-                {{ request.query_params.get('mensagem') }}
-            </div>
-            {% endif %}
+            {{ success_message(request.query_params.get('mensagem')) }}
 
             <p class="lead">Utilize o menu abaixo para acessar suas funcionalidades como contratante:</p>
-
-            <!-- Menu sanduíche de ações -->
-            <!-- <div class="d-flex justify-content-center mt-4">
-                <div class="dropdown">
-                    <button class="btn btn-outline-success dropdown-toggle" type="button" id="menuAcoes" data-bs-toggle="dropdown" aria-expanded="false">
-                        Ações
-                    </button>
-                    <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="menuAcoes">
-                        <li><a class="dropdown-item" href="/contratante/cuidadores">Procurar Cuidadores</a></li>
-                        <li><a class="dropdown-item" href="/contratante/solicitar_verificacao/1">Minhas Verificações</a></li>
-                        <li><a class="dropdown-item" href="/contratante/contratacoes_realizadas">Minhas Contratações</a></li>
-                        <li><a class="dropdown-item" href="/perfil/dados">Editar Perfil</a></li>
-                        <li><a class="dropdown-item" href="/contratante/alterar_senha/1">Alterar Senha</a></li>
-                        <li><a class="dropdown-item" href="/contratante/avaliacoes_realizadas">Avaliações Realizadas</a></li>
-                        <li><a class="dropdown-item" href="/contratante/avaliacoes_recebidas">Avaliações Recebidas</a></li>
-                        <li><a class="dropdown-item" href="/contratante/chamados">Chamados</a></li>
-                        <li><a class="dropdown-item" href="/contratante/chat_geral">Chats</a></li>
-                        <li><hr class="dropdown-divider"></li>
-                        <li><a class="dropdown-item text-danger" href="/logout">Sair</a></li>
-                    </ul>
-                </div>
-            </div> -->
 
         </div>
     </div>
