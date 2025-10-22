@@ -76,3 +76,8 @@ Traceback (most recent call last):
   File "/Volumes/Externo/Ifes/hestia/data/usuario/usuario_repo.py", line 45, in inserir
     cursor.execute(INSERIR_USUARIO, parametros)
 sqlite3.IntegrityError: UNIQUE constraint failed: usuario.cpf
+2025-10-22 12:58:52 - hestia - ERROR - /Volumes/Externo/Ifes/hestia/data/usuario/usuario_repo.py:50 - Erro ao inserir usuário: UNIQUE constraint failed: usuario.cpf
+Traceback (most recent call last):
+  File "/Volumes/Externo/Ifes/hestia/data/usuario/usuario_repo.py", line 45, in inserir
+    cursor.execute(INSERIR_USUARIO, parametros)
+sqlite3.IntegrityError: UNIQUE constraint failed: usuario.cpf

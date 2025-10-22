@@ -32,7 +32,7 @@ from data.usuario.usuario_repo import inserir as inserir_usuario, obter_por_cpf
 from data.cliente.cliente_repo import inserir as inserir_cliente
 from passlib.context import CryptContext
 from util.auth_decorator import criar_sessao, destruir_sessao
-from util.transaction import transaction 
+from util.db_util import get_connection 
 
 router = APIRouter()
 templates = criar_templates("templates/auth")
@@ -210,10 +210,19 @@ async def cadastro_cuidador_post(
             data_cadastro=datetime.now()
         )
 
-        # 6. Inserir no banco usando transação atômica
-        with transaction() as cursor:
+        # 6. Inserir no banco com commit/rollback explícito
+        conn = get_connection()
+        try:
+            cursor = conn.cursor()
             usuario_id = cuidador_repo.inserir(cuidador_obj, cursor)
             cuidador_obj.id = usuario_id
+            conn.commit()
+        except Exception as e:
+            conn.rollback()
+            logger.error(f"Erro ao inserir cuidador: {e}")
+            raise
+        finally:
+            conn.close()
 
         # 7. Criar sessão
         criar_sessao(request, {
@@ -360,10 +369,19 @@ async def post_cadastro_contratante(
             foto=foto_path
         )
 
-        # 6. Inserir no banco usando transação atômica
-        with transaction() as cursor:
+        # 6. Inserir no banco com commit/rollback explícito
+        conn = get_connection()
+        try:
+            cursor = conn.cursor()
             usuario_id = cliente_repo.inserir(cliente_obj, cursor)
             cliente_obj.id = usuario_id
+            conn.commit()
+        except Exception as e:
+            conn.rollback()
+            logger.error(f"Erro ao inserir contratante: {e}")
+            raise
+        finally:
+            conn.close()
 
         # 7. Criar sessão
         criar_sessao(request, {
