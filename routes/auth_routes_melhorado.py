@@ -82,7 +82,7 @@ async def get_login(request: Request, redirect: Optional[str] = None):
             return RedirectResponse("/", status_code=status.HTTP_303_SEE_OTHER)
 
     return templates.TemplateResponse(
-        "login.html",
+        "auth/login.html",
         {"request": request, "redirect": redirect}
     )
 
@@ -187,7 +187,7 @@ async def get_redefinicao_senha(request: Request):
     """
     Exibe formulário para solicitar recuperação de senha
     """
-    return templates.TemplateResponse("redefinicao_senha.html", {"request": request})
+    return templates.TemplateResponse("auth/redefinir_senha.html", {"request": request})
 
 
 @router.post("/redefinicao_senha")
@@ -279,7 +279,7 @@ async def get_confirmar_redefinir_senha(request: Request, token: str):
         return RedirectResponse("/auth/redefinicao_senha", status_code=status.HTTP_303_SEE_OTHER)
 
     return templates.TemplateResponse(
-        "confirmar_redefinir_senha.html",
+        "auth/confirmar_redefinir_senha.html",
         {"request": request, "token": token}
     )
 

@@ -118,3 +118,109 @@ jinja2.exceptions.UndefinedError: 'obter_mensagens' is undefined
 2025-10-21 14:44:17 - hestia - INFO - Exception handlers registrados
 2025-10-21 17:38:52 - hestia - INFO - Sistema de logging iniciado - Nível: INFO
 2025-10-21 17:38:52 - hestia - INFO - Exception handlers registrados
+2025-10-21 23:10:59 - hestia - INFO - Sistema de logging iniciado - Nível: INFO
+2025-10-21 23:11:00 - hestia - INFO - Exception handlers registrados
+2025-10-21 23:24:00 - hestia - WARNING - HTTPException 404: Not Found - Path: /politica-privacidade - IP: 127.0.0.1
+2025-10-21 23:24:02 - hestia - WARNING - HTTPException 404: Not Found - Path: /termos-uso - IP: 127.0.0.1
+2025-10-21 23:24:04 - hestia - WARNING - HTTPException 404: Not Found - Path: /contato - IP: 127.0.0.1
+2025-10-21 23:24:36 - hestia - WARNING - HTTPException 404: Not Found - Path: /.well-known/appspecific/com.chrome.devtools.json - IP: 127.0.0.1
+2025-10-21 23:24:48 - hestia - WARNING - HTTPException 404: Not Found - Path: /.well-known/appspecific/com.chrome.devtools.json - IP: 127.0.0.1
+2025-10-21 23:24:48 - hestia - WARNING - HTTPException 404: Not Found - Path: /.well-known/appspecific/com.chrome.devtools.json - IP: 127.0.0.1
+2025-10-21 23:25:00 - hestia - WARNING - HTTPException 404: Not Found - Path: /.well-known/appspecific/com.chrome.devtools.json - IP: 127.0.0.1
+2025-10-21 23:25:00 - hestia - WARNING - HTTPException 404: Not Found - Path: /static/js/cadastro_cuidador.js - IP: 127.0.0.1
+2025-10-21 23:25:00 - hestia - WARNING - HTTPException 404: Not Found - Path: /static/css/cadastro_contratante.css - IP: 127.0.0.1
+2025-10-21 23:25:23 - hestia - WARNING - HTTPException 404: Not Found - Path: /.well-known/appspecific/com.chrome.devtools.json - IP: 127.0.0.1
+2025-10-21 23:25:23 - hestia - WARNING - HTTPException 404: Not Found - Path: /.well-known/appspecific/com.chrome.devtools.json - IP: 127.0.0.1
+2025-10-21 23:25:25 - hestia - WARNING - HTTPException 404: Not Found - Path: /.well-known/appspecific/com.chrome.devtools.json - IP: 127.0.0.1
+2025-10-21 23:25:33 - hestia - WARNING - HTTPException 404: Not Found - Path: /.well-known/appspecific/com.chrome.devtools.json - IP: 127.0.0.1
+2025-10-21 23:25:33 - hestia - WARNING - HTTPException 404: Not Found - Path: /.well-known/appspecific/com.chrome.devtools.json - IP: 127.0.0.1
+2025-10-21 23:25:35 - hestia - WARNING - HTTPException 404: Not Found - Path: /.well-known/appspecific/com.chrome.devtools.json - IP: 127.0.0.1
+2025-10-21 23:27:46 - hestia - WARNING - HTTPException 404: Not Found - Path: /static/js/cadastro_cuidador.js - IP: 127.0.0.1
+2025-10-21 23:27:46 - hestia - WARNING - HTTPException 404: Not Found - Path: /static/css/cadastro_contratante.css - IP: 127.0.0.1
+2025-10-21 23:29:05 - hestia - WARNING - HTTPException 404: Not Found - Path: /.well-known/appspecific/com.chrome.devtools.json - IP: 127.0.0.1
+2025-10-21 23:29:08 - hestia - WARNING - HTTPException 404: Not Found - Path: /.well-known/appspecific/com.chrome.devtools.json - IP: 127.0.0.1
+2025-10-21 23:29:08 - hestia - WARNING - HTTPException 404: Not Found - Path: /static/js/cadastro_cuidador.js - IP: 127.0.0.1
+2025-10-21 23:29:08 - hestia - WARNING - HTTPException 404: Not Found - Path: /static/css/cadastro_contratante.css - IP: 127.0.0.1
+2025-10-21 23:29:26 - hestia - WARNING - HTTPException 404: Not Found - Path: /.well-known/appspecific/com.chrome.devtools.json - IP: 127.0.0.1
+2025-10-21 23:29:26 - hestia - WARNING - HTTPException 404: Not Found - Path: /static/js/cadastro_cuidador.js - IP: 127.0.0.1
+2025-10-21 23:29:26 - hestia - WARNING - HTTPException 404: Not Found - Path: /static/css/cadastro_contratante.css - IP: 127.0.0.1
+2025-10-21 23:35:01 - hestia - WARNING - HTTPException 404: Not Found - Path: /.well-known/appspecific/com.chrome.devtools.json - IP: 127.0.0.1
+2025-10-21 23:35:01 - hestia - WARNING - HTTPException 404: Not Found - Path: /static/js/cadastro_cuidador.js - IP: 127.0.0.1
+2025-10-21 23:35:01 - hestia - WARNING - HTTPException 404: Not Found - Path: /static/css/cadastro_contratante.css - IP: 127.0.0.1
+2025-10-21 23:35:01 - hestia - WARNING - HTTPException 404: Not Found - Path: /.well-known/appspecific/com.chrome.devtools.json - IP: 127.0.0.1
+2025-10-21 23:35:01 - hestia - WARNING - HTTPException 404: Not Found - Path: /static/css/cadastro_contratante.css - IP: 127.0.0.1
+2025-10-21 23:35:01 - hestia - WARNING - HTTPException 404: Not Found - Path: /static/js/cadastro_cuidador.js - IP: 127.0.0.1
+2025-10-21 23:37:27 - hestia - WARNING - HTTPException 404: Not Found - Path: /.well-known/appspecific/com.chrome.devtools.json - IP: 127.0.0.1
+2025-10-21 23:37:28 - hestia - WARNING - HTTPException 404: Not Found - Path: /.well-known/appspecific/com.chrome.devtools.json - IP: 127.0.0.1
+2025-10-21 23:41:17 - hestia - WARNING - HTTPException 404: Not Found - Path: /.well-known/appspecific/com.chrome.devtools.json - IP: 127.0.0.1
+2025-10-21 23:41:21 - hestia - WARNING - HTTPException 404: Not Found - Path: /.well-known/appspecific/com.chrome.devtools.json - IP: 127.0.0.1
+2025-10-21 23:41:27 - hestia - WARNING - HTTPException 404: Not Found - Path: /.well-known/appspecific/com.chrome.devtools.json - IP: 127.0.0.1
+2025-10-21 23:41:29 - hestia - WARNING - HTTPException 404: Not Found - Path: /.well-known/appspecific/com.chrome.devtools.json - IP: 127.0.0.1
+2025-10-21 23:41:31 - hestia - WARNING - HTTPException 404: Not Found - Path: /.well-known/appspecific/com.chrome.devtools.json - IP: 127.0.0.1
+2025-10-21 23:41:35 - hestia - WARNING - HTTPException 404: Not Found - Path: /.well-known/appspecific/com.chrome.devtools.json - IP: 127.0.0.1
+2025-10-21 23:41:47 - hestia - WARNING - HTTPException 404: Not Found - Path: /.well-known/appspecific/com.chrome.devtools.json - IP: 127.0.0.1
+2025-10-21 23:41:48 - hestia - WARNING - HTTPException 404: Not Found - Path: /.well-known/appspecific/com.chrome.devtools.json - IP: 127.0.0.1
+2025-10-21 23:41:54 - hestia - WARNING - HTTPException 404: Not Found - Path: /.well-known/appspecific/com.chrome.devtools.json - IP: 127.0.0.1
+2025-10-21 23:41:55 - hestia - WARNING - HTTPException 404: Not Found - Path: /.well-known/appspecific/com.chrome.devtools.json - IP: 127.0.0.1
+2025-10-21 23:41:56 - hestia - WARNING - HTTPException 404: Not Found - Path: /.well-known/appspecific/com.chrome.devtools.json - IP: 127.0.0.1
+2025-10-21 23:42:00 - hestia - WARNING - HTTPException 404: Not Found - Path: /.well-known/appspecific/com.chrome.devtools.json - IP: 127.0.0.1
+2025-10-21 23:42:02 - hestia - WARNING - HTTPException 404: Not Found - Path: /.well-known/appspecific/com.chrome.devtools.json - IP: 127.0.0.1
+2025-10-21 23:42:41 - hestia - WARNING - HTTPException 404: Not Found - Path: /.well-known/appspecific/com.chrome.devtools.json - IP: 127.0.0.1
+2025-10-21 23:42:45 - hestia - WARNING - HTTPException 404: Not Found - Path: /.well-known/appspecific/com.chrome.devtools.json - IP: 127.0.0.1
+2025-10-22 00:11:52 - hestia - WARNING - HTTPException 404: Not Found - Path: /.well-known/appspecific/com.chrome.devtools.json - IP: 127.0.0.1
+2025-10-22 00:11:53 - hestia - WARNING - HTTPException 404: Not Found - Path: /.well-known/appspecific/com.chrome.devtools.json - IP: 127.0.0.1
+2025-10-22 00:11:57 - hestia - INFO - Sistema de logging iniciado - Nível: INFO
+2025-10-22 00:11:57 - hestia - INFO - Exception handlers registrados
+2025-10-22 00:12:02 - hestia - WARNING - HTTPException 404: Not Found - Path: /.well-known/appspecific/com.chrome.devtools.json - IP: 127.0.0.1
+2025-10-22 00:12:07 - hestia - WARNING - HTTPException 404: Not Found - Path: /.well-known/appspecific/com.chrome.devtools.json - IP: 127.0.0.1
+2025-10-22 00:12:08 - hestia - WARNING - HTTPException 404: Not Found - Path: /.well-known/appspecific/com.chrome.devtools.json - IP: 127.0.0.1
+2025-10-22 00:12:10 - hestia - WARNING - HTTPException 404: Not Found - Path: /.well-known/appspecific/com.chrome.devtools.json - IP: 127.0.0.1
+2025-10-22 00:12:15 - hestia - WARNING - HTTPException 404: Not Found - Path: /.well-known/appspecific/com.chrome.devtools.json - IP: 127.0.0.1
+2025-10-22 00:12:52 - hestia - WARNING - HTTPException 404: Not Found - Path: /.well-known/appspecific/com.chrome.devtools.json - IP: 127.0.0.1
+2025-10-22 00:12:54 - hestia - WARNING - HTTPException 404: Not Found - Path: /.well-known/appspecific/com.chrome.devtools.json - IP: 127.0.0.1
+2025-10-22 00:12:57 - hestia - WARNING - HTTPException 404: Not Found - Path: /.well-known/appspecific/com.chrome.devtools.json - IP: 127.0.0.1
+2025-10-22 00:13:03 - hestia - WARNING - HTTPException 404: Not Found - Path: /.well-known/appspecific/com.chrome.devtools.json - IP: 127.0.0.1
+2025-10-22 00:13:05 - hestia - WARNING - HTTPException 404: Not Found - Path: /.well-known/appspecific/com.chrome.devtools.json - IP: 127.0.0.1
+2025-10-22 00:13:06 - hestia - WARNING - HTTPException 404: Not Found - Path: /.well-known/appspecific/com.chrome.devtools.json - IP: 127.0.0.1
+2025-10-22 00:13:09 - hestia - WARNING - HTTPException 404: Not Found - Path: /.well-known/appspecific/com.chrome.devtools.json - IP: 127.0.0.1
+2025-10-22 00:15:58 - hestia - WARNING - HTTPException 404: Not Found - Path: /.well-known/appspecific/com.chrome.devtools.json - IP: 127.0.0.1
+2025-10-22 00:15:59 - hestia - WARNING - HTTPException 404: Not Found - Path: /.well-known/appspecific/com.chrome.devtools.json - IP: 127.0.0.1
+2025-10-22 00:16:05 - hestia - WARNING - HTTPException 404: Not Found - Path: /.well-known/appspecific/com.chrome.devtools.json - IP: 127.0.0.1
+2025-10-22 00:20:18 - hestia - WARNING - HTTPException 404: Not Found - Path: /.well-known/appspecific/com.chrome.devtools.json - IP: 127.0.0.1
+2025-10-22 00:33:06 - hestia - WARNING - HTTPException 404: Not Found - Path: /.well-known/appspecific/com.chrome.devtools.json - IP: 127.0.0.1
+2025-10-22 00:44:24 - hestia - INFO - Sistema de logging iniciado - Nível: INFO
+2025-10-22 00:44:24 - hestia - INFO - Exception handlers registrados
+2025-10-22 00:44:30 - hestia - INFO - Sistema de logging iniciado - Nível: INFO
+2025-10-22 00:44:30 - hestia - INFO - Exception handlers registrados
+2025-10-22 00:44:54 - hestia - INFO - Sistema de logging iniciado - Nível: INFO
+2025-10-22 00:44:54 - hestia - INFO - Exception handlers registrados
+2025-10-22 00:47:03 - hestia - INFO - Sistema de logging iniciado - Nível: INFO
+2025-10-22 00:47:05 - hestia - INFO - Sistema de logging iniciado - Nível: INFO
+2025-10-22 00:47:05 - hestia - ERROR - Erro ao inserir usuário: UNIQUE constraint failed: usuario.cpf
+Traceback (most recent call last):
+  File "/Volumes/Externo/Ifes/hestia/data/usuario/usuario_repo.py", line 44, in inserir
+    cursor.execute(INSERIR_USUARIO, parametros)
+sqlite3.IntegrityError: UNIQUE constraint failed: usuario.cpf
+2025-10-22 00:47:35 - hestia - INFO - Sistema de logging iniciado - Nível: INFO
+2025-10-22 00:47:36 - hestia - ERROR - Erro ao inserir usuário: UNIQUE constraint failed: usuario.cpf
+Traceback (most recent call last):
+  File "/Volumes/Externo/Ifes/hestia/data/usuario/usuario_repo.py", line 44, in inserir
+    cursor.execute(INSERIR_USUARIO, parametros)
+sqlite3.IntegrityError: UNIQUE constraint failed: usuario.cpf
+2025-10-22 00:48:11 - hestia - INFO - Sistema de logging iniciado - Nível: INFO
+2025-10-22 00:48:11 - hestia - INFO - Exception handlers registrados
+2025-10-22 00:48:12 - hestia - INFO - Sistema de logging iniciado - Nível: INFO
+2025-10-22 00:48:12 - hestia - INFO - Exception handlers registrados
+2025-10-22 00:48:18 - hestia - INFO - Sistema de logging iniciado - Nível: INFO
+2025-10-22 00:48:19 - hestia - ERROR - Erro ao inserir usuário: UNIQUE constraint failed: usuario.cpf
+Traceback (most recent call last):
+  File "/Volumes/Externo/Ifes/hestia/data/usuario/usuario_repo.py", line 45, in inserir
+    cursor.execute(INSERIR_USUARIO, parametros)
+sqlite3.IntegrityError: UNIQUE constraint failed: usuario.cpf
+2025-10-22 07:49:30 - hestia - INFO - Sistema de logging iniciado - Nível: INFO
+2025-10-22 07:49:31 - hestia - ERROR - Erro ao inserir usuário: UNIQUE constraint failed: usuario.cpf
+Traceback (most recent call last):
+  File "/Volumes/Externo/Ifes/hestia/data/usuario/usuario_repo.py", line 45, in inserir
+    cursor.execute(INSERIR_USUARIO, parametros)
+sqlite3.IntegrityError: UNIQUE constraint failed: usuario.cpf
+2025-10-22 11:38:44 - hestia - INFO - Sistema de logging iniciado - Nível: INFO

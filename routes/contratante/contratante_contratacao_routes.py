@@ -15,7 +15,7 @@ templates = criar_templates("templates")
 @router.get("/contratante/solicitar-contratacao")
 async def get_solicitar_contratacao(request: Request, cuidador_id: Optional[int] = None):
     return templates.TemplateResponse(
-        "contratante/solicitar_contratacao.html",
+        "contratante/contratacoes/solicitar.html",
         {"request": request, "cuidador_id": cuidador_id}
     )
 
@@ -31,7 +31,7 @@ async def post_solicitar_contratacao(
 ):
     mensagem = f"Solicitação do projeto '{nome_projeto}' enviada com sucesso para o cuidador {cuidador_id}!"
     return templates.TemplateResponse(
-        "contratante/solicitar_contratacao.html",
+        "contratante/contratacoes/solicitar.html",
         {"request": request, "mensagem": mensagem, "cuidador_id": cuidador_id}
     )
 
@@ -46,7 +46,7 @@ async def contratacoes_realizadas(request: Request):
         {"id": 2, "projeto": "App Mobile", "contratado": "Maria", "status": "Em andamento", "periodo": "05/08 a 20/08"}
     ]
     return templates.TemplateResponse(
-        "contratante/contratacoes_realizadas.html",
+        "contratante/contratacoes/realizadas.html",
         {"request": request, "contratacoes": contratacoes_fake}
     )
 
@@ -56,7 +56,7 @@ async def contratacoes_realizadas(request: Request):
 @router.get("/contratante/avaliar_contratacao/{id}")
 async def get_avaliar_contratacao(request: Request, id: int):
     return templates.TemplateResponse(
-        "contratante/avaliar_contratacao.html",
+        "contratante/avaliacoes/realizar.html",
         {"request": request, "contratacao_id": id}
     )
 
@@ -72,6 +72,6 @@ async def post_avaliar_contratacao(
 ):
     mensagem = f"Avaliação da contratação {id} enviada com sucesso!"
     return templates.TemplateResponse(
-        "contratante/avaliar_contratacao.html",
+        "contratante/avaliacoes/realizar.html",
         {"request": request, "contratacao_id": id, "mensagem": mensagem}
     )

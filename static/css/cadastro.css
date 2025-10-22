@@ -15,16 +15,14 @@
     box-sizing: border-box;
 }
 
-body {
-    font-family: 'Poppins', sans-serif;
-    background-color: var(--background-color);
+/* Wrapper para centralizar o conteúdo da página de cadastro */
+main {
     display: flex;
     justify-content: center;
     align-items: center;
-    min-height: 100vh;
-    color: var(--text-color);
+    min-height: calc(100vh - 200px); /* Deixa espaço para navbar e footer */
+    padding: 40px 20px;
     position: relative;
-    overflow: hidden; /* Para garantir que as formas de fundo não causem barra de rolagem */
 }
 
 /* Container principal (o "cartão" central) */

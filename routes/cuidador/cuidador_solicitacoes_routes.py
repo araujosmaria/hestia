@@ -19,7 +19,7 @@ async def listar_solicitacoes_contratacao(request: Request):
         {"id": 3, "nome": "Solicitação 3", "status": "Pendente"}
     ]
     return templates.TemplateResponse(
-        "cuidador/solicitacoes_contratacao.html",   # tela de contratação
+        "cuidador/contratacoes/solicitacoes.html",   # tela de contratação
         {"request": request, "solicitacoes": solicitacoes}
     )
 
@@ -69,7 +69,7 @@ async def get_detalhes_solicitacao(request: Request, solicitacao_id: int):
         )
 
     return templates.TemplateResponse(
-        "cuidador/detalhes_solicitacao.html",
+        "cuidador/contratacoes/detalhes.html",
         {"request": request, "solicitacao": solicitacao}
     )
 
@@ -84,7 +84,7 @@ async def listar_solicitacao_verificacao(request: Request):
         {"id": 2, "descricao": "Verificação concluída"}
     ]
     return templates.TemplateResponse(
-        "cuidador/solicitacao_verificacao.html",   # tela de verificações
+        "cuidador/verificacao/solicitacao.html",   # tela de verificações
         {"request": request, "verificacoes": verificacoes}
     )
 

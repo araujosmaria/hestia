@@ -20,7 +20,7 @@ async def get_agenda(request: Request):
         {"id": 3, "data": "2025-08-27", "hora": "10:00", "status": "Disponível"}
     ]
     return templates.TemplateResponse(
-        "cuidador/agenda.html",
+        "cuidador/agenda/visualizar.html",
         {"request": request, "agenda": agenda_fake}
     )
 
@@ -30,7 +30,7 @@ async def get_agenda(request: Request):
 @router.get("/cuidador/agenda/cadastrar")
 async def get_cadastro_disponibilidade(request: Request):
     return templates.TemplateResponse(
-        "cadastro_disponibilidade.html",
+        "cuidador/agenda/adicionar_disponibilidade.html",
         {"request": request}
     )
 
@@ -46,7 +46,7 @@ async def post_cadastro_disponibilidade(
     # Aqui entraria a lógica de salvar no banco
     mensagem = f"Disponibilidade cadastrada: {data} às {hora}"
     return templates.TemplateResponse(
-        "cadastro_disponibilidade.html",
+        "cuidador/agenda/adicionar_disponibilidade.html",
         {"request": request, "mensagem": mensagem}
     )
 
@@ -57,7 +57,7 @@ async def post_cadastro_disponibilidade(
 async def get_remocao_disponibilidade(request: Request, id: int):
     disponibilidade_fake = {"id": id, "data": "2025-08-25", "hora": "09:00"}
     return templates.TemplateResponse(
-        "remoção_disponibilidade.html",
+        "cuidador/agenda/remover_disponibilidade.html",
         {"request": request, "disponibilidade": disponibilidade_fake}
     )
 
@@ -72,7 +72,7 @@ async def post_remocao_disponibilidade(
     # Aqui entraria a lógica de remover do banco
     mensagem = f"Disponibilidade {id} removida com sucesso!"
     return templates.TemplateResponse(
-        "remoção_disponibilidade.html",
+        "cuidador/agenda/remover_disponibilidade.html",
         {"request": request, "mensagem": mensagem}
     )
 
@@ -88,7 +88,7 @@ async def get_editar_agenda(request: Request):
         {"id": 3, "data": "2025-08-27", "hora": "10:00", "status": "Disponível"}
     ]
     return templates.TemplateResponse(
-        "cuidador/editar_agenda.html",
+        "cuidador/agenda/editar.html",
         {"request": request, "agenda": agenda_fake}
     )
 
@@ -112,6 +112,6 @@ async def post_editar_agenda(
         {"id": 4, "data": data, "hora": hora, "status": status}
     ]
     return templates.TemplateResponse(
-        "cuidador/editar_agenda.html",
+        "cuidador/agenda/editar.html",
         {"request": request, "agenda": agenda_fake, "mensagem": mensagem}
     )

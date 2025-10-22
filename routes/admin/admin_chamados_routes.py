@@ -16,14 +16,14 @@ async def get_listar_chamados(request: Request):
         {"id": 1, "titulo": "Erro no login", "status": "Aberto", "descricao": "Usuário não consegue logar"},
         {"id": 2, "titulo": "Atualizar perfil", "status": "Em análise", "descricao": "Não consegue salvar alterações"},
     ]
-    return templates.TemplateResponse("administrador/chamados.html", {
+    return templates.TemplateResponse("administrador/chamados/listagem.html", {
         "request": request,
         "chamados": chamados_fake
     })
 
 @router.get("/admin/chamados/responder/{chamado_id}")
 async def get_responder_chamado(request: Request, chamado_id: int):
-    return templates.TemplateResponse("administrador/responder_chamado.html", {
+    return templates.TemplateResponse("administrador/chamados/responder.html", {
         "request": request,
         "chamado_id": chamado_id
     })
@@ -41,7 +41,7 @@ async def post_responder_chamado(
     ]
 
     return templates.TemplateResponse(
-        "administrador/chamados.html",
+        "administrador/chamados/listagem.html",
         {
             "request": request,
             "chamados": chamados_fake,

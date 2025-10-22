@@ -18,7 +18,7 @@ async def get_chat_com_cuidador(request: Request, id_cuidador: int):
         {"remetente": f"Cuidador {id_cuidador}", "texto": "Claro, posso ajudar sim!"}
     ]
     return templates.TemplateResponse(
-        "contratante/chat_com_cuidador.html",
+        "contratante/chat/com_cuidador.html",
         {"request": request, "mensagens": mensagens_fake, "id_cuidador": id_cuidador}
     )
 
@@ -36,7 +36,7 @@ async def post_chat_com_cuidador(
         {"remetente": f"Cuidador {id_cuidador}", "texto": "Mensagem recebida!"}
     ]
     return templates.TemplateResponse(
-        "contratante/chat_com_cuidador.html",
+        "contratante/chat/com_cuidador.html",
         {"request": request, "mensagens": mensagens_fake, "id_cuidador": id_cuidador}
     )
 
@@ -53,7 +53,7 @@ async def post_chat_geral(
         {"remetente": "Admin", "texto": "Mensagem recebida no chat geral!"}
     ]
     return templates.TemplateResponse(
-        "contratante/chat_geral.html",
+        "contratante/chat/geral.html",
         {"request": request, "mensagens": mensagens_fake}
     )
 
@@ -72,6 +72,6 @@ async def get_chat_geral(request: Request):
         {"id": 3, "nome": "Fernanda", "especialidade": "Acompanhamento hospitalar"},
     ]
     return templates.TemplateResponse(
-        "contratante/chat_geral.html",
+        "contratante/chat/geral.html",
         {"request": request, "mensagens": mensagens_fake, "cuidadores": cuidadores_fake}
     )

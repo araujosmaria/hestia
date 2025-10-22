@@ -13,6 +13,7 @@ def criar_tabela() -> bool:
 
 
 def inserir(usuario: Usuario, cursor: Any = None) -> Optional[int]:
+    import sqlite3
     parametros = (
         usuario.nome,
         usuario.dataNascimento,
@@ -44,6 +45,10 @@ def inserir(usuario: Usuario, cursor: Any = None) -> Optional[int]:
             cursor.execute(INSERIR_USUARIO, parametros)
             conn.commit()
             return cursor.lastrowid
+        except sqlite3.IntegrityError as e:
+            conn.rollback()
+            logger.error(f"Erro ao inserir usuário: {e}", exc_info=True)
+            return None
         except Exception as e:
             conn.rollback()
             logger.error(f"Erro ao inserir usuário: {e}", exc_info=True)

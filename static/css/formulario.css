@@ -1,13 +1,10 @@
-body {
-    background-color: #f0f2f5;
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+/* Wrapper para centralizar o conteúdo dos formulários */
+main.container.my-5 {
     display: flex;
     justify-content: center;
     align-items: center;
-    min-height: 100vh;
-    margin: 0;
-    padding: 20px; /* adiciona espaço igual em todos os lados */
-    box-sizing: border-box; /* garante que o padding seja considerado dentro do tamanho */
+    min-height: calc(100vh - 200px); /* Deixa espaço para navbar e footer */
+    padding: 40px 20px;
 }
 
 .cadastro-container {
@@ -17,7 +14,7 @@ body {
     padding: 40px;
     max-width: 900px; /* Aumentado para acomodar 3 colunas de input */
     width: 100%;
-    margin: 30px auto;
+    margin: 0 auto;
 }
 
 .header-cadastro {

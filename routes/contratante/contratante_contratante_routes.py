@@ -39,7 +39,7 @@ templates = criar_templates("templates")
 
 #     # Renderiza o template garantindo que user sempre exista
 #     return templates.TemplateResponse(
-#         "contratante/home_contratante.html",
+#         "contratante/home.html",
 #         {
 #             "request": request,
 #             "mensagem": mensagem or "",
@@ -58,7 +58,7 @@ async def get_home_contratante(request: Request, mensagem: str | None = None):
 
     user_dict = user.__dict__ if not isinstance(user, dict) else user
     return templates.TemplateResponse(
-        "contratante/home_contratante.html",
+        "contratante/home.html",
         {"request": request, "mensagem": mensagem or "", "user": user_dict}
     )
 
@@ -107,7 +107,7 @@ async def post_alterar_senha(
 @router.get("/contratante/solicitar_verificacao/{id}")
 async def get_solicitar_verificacao(request: Request, id: int):
     return templates.TemplateResponse(
-        "contratante/solicitar_verificacao.html",
+        "contratante/verificacao/solicitar.html",
         {"request": request, "id": id}
     )
 
@@ -122,7 +122,7 @@ async def post_solicitar_verificacao(
 ):
     mensagem = "Verificação solicitada com sucesso!"
     return templates.TemplateResponse(
-        "contratante/solicitar_verificacao.html",
+        "contratante/verificacao/solicitar.html",
         {"request": request, "id": id, "mensagem": mensagem}
     )
 
@@ -140,7 +140,7 @@ chamados_fake = [
 @router.get("/contratante/chamados")
 async def get_chamados(request: Request):
     return templates.TemplateResponse(
-        "contratante/chamados.html",
+        "contratante/chamados/listagem.html",
         {"request": request, "chamados": chamados_fake}
     )
 

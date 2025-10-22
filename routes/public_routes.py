@@ -54,7 +54,7 @@ templates = criar_templates("templates/auth")
 
 @router.get("/", response_class=HTMLResponse)
 async def get_index(request: Request):
-    return templates.TemplateResponse("index.html", {"request": request})
+    return templates.TemplateResponse("public/index.html", {"request": request})
 
 @router.get("/login")
 async def get_login(request: Request, redirect: Optional[str] = None):
@@ -69,7 +69,7 @@ async def get_login(request: Request, redirect: Optional[str] = None):
             return RedirectResponse("/", status_code=303)
     
     return templates.TemplateResponse(
-        "login.html",
+        "auth/login.html",
         {"request": request, "redirect": redirect}
     )
 
@@ -77,7 +77,7 @@ async def get_login(request: Request, redirect: Optional[str] = None):
 async def post_login(request: Request, email: str = Form(...), senha: str = Form(...)):
     usuario = usuario_repo.obter_por_email(email)  
     if not usuario or not verificar_senha(senha, usuario.senha):
-        return templates.TemplateResponse("login.html", {"request": request, "erro": "Usuário ou senha incorretos"})
+        return templates.TemplateResponse("auth/login.html", {"request": request, "erro": "Usuário ou senha incorretos"})
     
     usuario_dict = {
         "id": usuario.id,
@@ -100,12 +100,12 @@ async def logout(request: Request):
 @router.get("/cadastro", response_class=HTMLResponse)
 async def escolher_tipo_usuario(request: Request):
     # Renderiza página para escolher cuidador ou contratante
-    return templates.TemplateResponse("cadastro.html", {"request": request})
+    return templates.TemplateResponse("auth/cadastro.html", {"request": request})
 
 
 @router.get("/cadastro_cuidador", response_class=HTMLResponse)
 async def cadastro_cuidador_form(request: Request):
-    return templates.TemplateResponse("cadastro_cuidador.html", {"request": request})
+    return templates.TemplateResponse("auth/cadastro_cuidador.html", {"request": request})
 
 @router.post("/cadastro_cuidador")
 async def cadastro_cuidador_post(
@@ -246,7 +246,7 @@ async def cadastro_cuidador_post(
 
         # 11. Retornar template com dados e erros
         return templates.TemplateResponse(
-            "cadastro_cuidador.html",
+            "auth/cadastro_cuidador.html",
             {
                 "request": request,
                 "dados": dados_formulario,
@@ -259,7 +259,7 @@ async def cadastro_cuidador_post(
         logger.error(f"Erro no cadastro de cuidador: {e}", exc_info=True)
         informar_erro(request, "Erro ao processar cadastro. Tente novamente.")
         return templates.TemplateResponse(
-            "cadastro_cuidador.html",
+            "auth/cadastro_cuidador.html",
             {
                 "request": request,
                 "dados": dados_formulario,
@@ -270,7 +270,7 @@ async def cadastro_cuidador_post(
 
 @router.get("/cadastro_contratante", response_class=HTMLResponse)
 async def cadastro_contratante_form(request: Request):
-    return templates.TemplateResponse("cadastro_contratante.html", {"request": request})
+    return templates.TemplateResponse("auth/cadastro_contratante.html", {"request": request})
 
 @router.post("/cadastro_contratante")
 async def post_cadastro_contratante(
@@ -396,7 +396,7 @@ async def post_cadastro_contratante(
 
         # 11. Retornar template com dados e erros
         return templates.TemplateResponse(
-            "cadastro_contratante.html",
+            "auth/cadastro_contratante.html",
             {
                 "request": request,
                 "dados": dados_formulario,
@@ -409,7 +409,7 @@ async def post_cadastro_contratante(
         logger.error(f"Erro no cadastro de contratante: {e}", exc_info=True)
         informar_erro(request, "Erro ao processar cadastro. Tente novamente.")
         return templates.TemplateResponse(
-            "cadastro_contratante.html",
+            "auth/cadastro_contratante.html",
             {
                 "request": request,
                 "dados": dados_formulario,
@@ -420,8 +420,8 @@ async def post_cadastro_contratante(
 
 @router.get("/redefinicao_senha")
 async def get_redefinicao_senha(request: Request):
-    return templates.TemplateResponse("redefinicao_senha.html", {"request": request})
+    return templates.TemplateResponse("auth/redefinir_senha.html", {"request": request})
 
 @router.get("/confirmar_redefinir_senha")
 async def get_confirmar_redefinir_senha(request: Request):
-    return templates.TemplateResponse("confirmar_redefinir_senha.html", {"request": request})
+    return templates.TemplateResponse("auth/confirmar_redefinir_senha.html", {"request": request})

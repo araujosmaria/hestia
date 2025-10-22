@@ -34,7 +34,7 @@ async def get_home_cuidador(request: Request, mensagem: Optional[str] = None):
 
     # Renderizar template com dados
     return templates.TemplateResponse(
-        "cuidador/home_cuidador.html",
+        "cuidador/home.html",
         {
             "request": request,
             "mensagem": mensagem,
@@ -87,7 +87,7 @@ async def post_alterar_senha(
 @requer_autenticacao()
 async def get_abertura_chamados(request: Request, usuario_logado: Optional[dict] = None):
     return templates.TemplateResponse(
-        "abertura_chamados.html",
+        "cuidador/chamados/abrir.html",
         {"request": request}
     )
 
@@ -104,7 +104,7 @@ async def post_abertura_chamados(
 ):
     mensagem = f"Chamado '{titulo}' aberto com sucesso!"
     return templates.TemplateResponse(
-        "abertura_chamados.html",
+        "cuidador/chamados/abrir.html",
         {"request": request, "mensagem": mensagem}
     )
 
@@ -119,6 +119,6 @@ async def get_chamados_abertos(request: Request, usuario_logado: Optional[dict] 
         {"id": 2, "titulo": "Erro ao atualizar perfil", "status": "Aberto"}
     ]
     return templates.TemplateResponse(
-        "chamados_abertos.html",
+        "cuidador/chamados/abertos.html",
         {"request": request, "chamados": chamados_fake}
     )

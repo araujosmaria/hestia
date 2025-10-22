@@ -66,8 +66,7 @@ UPDATE usuario SET foto = ? WHERE id_usuario = ?;
 """
 
 VALIDAR_TOKEN = """
-SELECT id_usuario, nome, email, token_redefinicao, data_token
-FROM usuario
+SELECT * FROM usuario
 WHERE token_redefinicao = ?;
 """
 

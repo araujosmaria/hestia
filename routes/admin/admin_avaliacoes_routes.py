@@ -18,7 +18,7 @@ async def get_listar_avaliacoes(request: Request):
         {"id": 2, "usuario": "Maria", "nota": 3, "comentario": "Bom, mas pode melhorar."}
     ]
     return templates.TemplateResponse(
-        "administrador/avaliacoes.html",
+        "administrador/avaliacoes/listagem.html",
         {"request": request, "avaliacoes": avaliacoes_fake}
     )
 
@@ -30,7 +30,7 @@ async def get_listar_avaliacoes(request: Request):
 async def get_moderar_avaliacao(request: Request, id: int):
     avaliacao_fake = {"id": id, "usuario": "João", "nota": 5, "comentario": "Excelente!"}
     return templates.TemplateResponse(
-        "administrador/moderar_avaliacao.html",
+        "administrador/avaliacoes/moderar.html",
         {"request": request, "avaliacao": avaliacao_fake}
     )
 
@@ -45,6 +45,6 @@ async def post_moderar_avaliacao(
 ):
 
     return templates.TemplateResponse(
-        "administrador/avaliacoes.html",
+        "administrador/avaliacoes/listagem.html",
         {"request": request, "mensagem": f"Avaliação {id} moderada com sucesso!"}
     )

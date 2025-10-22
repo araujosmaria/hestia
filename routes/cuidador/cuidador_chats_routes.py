@@ -34,24 +34,24 @@ mensagens_chat_contratante = {
 # Rota para a home do cuidador
 @router.get("/cuidador/home_cuidador")
 async def home_cuidador(request: Request, mensagem: Optional[str] = None):
-    return templates.TemplateResponse("cuidador/home_cuidador.html", {"request": request, "mensagem": mensagem})
+    return templates.TemplateResponse("cuidador/home.html", {"request": request, "mensagem": mensagem})
 
 # Rota para listar chats disponíveis no chat geral (lista de contatos)
 @router.get("/cuidador/chat_geral")
 async def lista_chats_geral(request: Request):
-    return templates.TemplateResponse("cuidador/chat_geral.html", {"request": request, "chats": chats_geral})
+    return templates.TemplateResponse("cuidador/chat/geral.html", {"request": request, "chats": chats_geral})
 
 # Rota para exibir mensagens do chat geral
 @router.get("/cuidador/chat/geral")
 async def exibir_chat_geral(request: Request):
-    return templates.TemplateResponse("cuidador/chat_geral.html", {"request": request, "mensagens": mensagens_chat_geral})
+    return templates.TemplateResponse("cuidador/chat/geral.html", {"request": request, "mensagens": mensagens_chat_geral})
 
 # Rota para exibir chat contratante específico
 @router.get("/cuidador/chat/contratante/{contratante_id}")
 async def chat_contratante(request: Request, contratante_id: int):
     mensagens = mensagens_chat_contratante.get(contratante_id, [])
     return templates.TemplateResponse(
-        "cuidador/chat_contratante.html",
+        "cuidador/chat/com_contratante.html",
         {"request": request, "mensagens": mensagens, "contratante_id": contratante_id, "mensagem_sucesso": None}
     )
 

@@ -18,7 +18,7 @@ async def get_listar_especializacoes(request: Request):
         {"id": 2, "nome": "Enfermagem básica", "descricao": "Aplicação de medicamentos e curativos"}
     ]
     return templates.TemplateResponse(
-        "especializações.html",
+        "cuidador/especializacoes/listagem.html",
         {"request": request, "especializacoes": especializacoes_fake}
     )
 
@@ -28,7 +28,7 @@ async def get_listar_especializacoes(request: Request):
 @router.get("/cuidador/especializacoes/cadastro")
 async def get_cadastro_especializacao(request: Request):
     return templates.TemplateResponse(
-        "cadastro_especialização.html",
+        "cuidador/especializacoes/cadastrar.html",
         {"request": request}
     )
 
@@ -42,7 +42,7 @@ async def post_cadastro_especializacao(
     descricao: str = Form(...)
 ):
     return templates.TemplateResponse(
-        "especializações.html",
+        "cuidador/especializacoes/listagem.html",
         {"request": request, "mensagem": f"Especialização '{nome}' cadastrada com sucesso!"}
     )
 
@@ -53,7 +53,7 @@ async def post_cadastro_especializacao(
 async def get_alteracao_especializacao(request: Request, id: int):
     especializacao_fake = {"id": id, "nome": "Enfermagem básica", "descricao": "Aplicação de medicamentos"}
     return templates.TemplateResponse(
-        "alteração_especialização.html",
+        "cuidador/especializacoes/alterar.html",
         {"request": request, "especializacao": especializacao_fake}
     )
 
@@ -68,7 +68,7 @@ async def post_alteracao_especializacao(
     descricao: str = Form(...)
 ):
     return templates.TemplateResponse(
-        "especializações.html",
+        "cuidador/especializacoes/listagem.html",
         {"request": request, "mensagem": f"Especialização {id} atualizada com sucesso!"}
     )
 
@@ -92,6 +92,6 @@ async def post_exclusao_especializacao(
     id: int = Form(...)
 ):
     return templates.TemplateResponse(
-        "especializações.html",
+        "cuidador/especializacoes/listagem.html",
         {"request": request, "mensagem": f"Especialização {id} excluída com sucesso!"}
     )

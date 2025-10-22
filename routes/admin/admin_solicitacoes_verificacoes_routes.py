@@ -17,14 +17,14 @@ async def get_listar_solicitacoes(request: Request):
         {"id": 2, "nome_contratante": "Ana", "descricao": "Confirmação de documentos", "status": "Em análise"},
     ]
     return templates.TemplateResponse(
-        "administrador/solicitacao_verificacao.html",
+        "administrador/verificacao/solicitacoes.html",
         {"request": request, "solicitacoes": solicitacoes_fake}
     )
 
 @router.get("/admin/solicitacao/analisar/{id}")
 async def get_analisar_solicitacao(request: Request, id: int):
     return templates.TemplateResponse(
-        "administrador/analisar_solicitacao.html",
+        "administrador/verificacao/analisar_solicitacao.html",
         {"request": request, "solicitacao_id": id}
     )
 
@@ -41,6 +41,6 @@ async def post_analisar_solicitacao(
         {"id": 2, "nome_contratante": "Ana", "descricao": "Confirmação de documentos", "status": "Em análise"},
     ]
     return templates.TemplateResponse(
-        "administrador/solicitacao_verificacao.html",
+        "administrador/verificacao/solicitacoes.html",
         {"request": request, "mensagem": mensagem, "solicitacoes": solicitacoes_fake}
     )

@@ -20,7 +20,7 @@ async def get_avaliacoes_realizadas(request: Request):
         {"id": 3, "cuidador": "Fernanda", "nota": 3, "comentario": "Poderia melhorar a comunicação."}
     ]
     return templates.TemplateResponse(
-        "contratante/avaliacoes_realizadas.html",
+        "contratante/avaliacoes/realizadas.html",
         {"request": request, "avaliacoes": avaliacoes_fake}
     )
 
@@ -36,7 +36,7 @@ async def get_alterar_avaliacao(request: Request, id: int):
         "cuidador": "Ana"
     }
     return templates.TemplateResponse(
-        "contratante/alterar_avaliacao.html",
+        "contratante/avaliacoes/alterar.html",
         {"request": request, "avaliacao": avaliacao_fake}
     )
 
@@ -56,7 +56,7 @@ async def post_alterar_avaliacao(
         "cuidador": "Ana"
     }
     return templates.TemplateResponse(
-        "contratante/alterar_avaliacao.html",
+        "contratante/avaliacoes/alterar.html",
         {"request": request, "avaliacao": avaliacao_fake, "mensagem": mensagem}
     )
 

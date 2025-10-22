@@ -56,3 +56,23 @@ Traceback (most recent call last):
     if hasattr(obj, "jinja_pass_arg"):
        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 jinja2.exceptions.UndefinedError: 'obter_mensagens' is undefined
+2025-10-22 00:47:05 - hestia - ERROR - /Volumes/Externo/Ifes/hestia/data/usuario/usuario_repo.py:49 - Erro ao inserir usuário: UNIQUE constraint failed: usuario.cpf
+Traceback (most recent call last):
+  File "/Volumes/Externo/Ifes/hestia/data/usuario/usuario_repo.py", line 44, in inserir
+    cursor.execute(INSERIR_USUARIO, parametros)
+sqlite3.IntegrityError: UNIQUE constraint failed: usuario.cpf
+2025-10-22 00:47:36 - hestia - ERROR - /Volumes/Externo/Ifes/hestia/data/usuario/usuario_repo.py:49 - Erro ao inserir usuário: UNIQUE constraint failed: usuario.cpf
+Traceback (most recent call last):
+  File "/Volumes/Externo/Ifes/hestia/data/usuario/usuario_repo.py", line 44, in inserir
+    cursor.execute(INSERIR_USUARIO, parametros)
+sqlite3.IntegrityError: UNIQUE constraint failed: usuario.cpf
+2025-10-22 00:48:19 - hestia - ERROR - /Volumes/Externo/Ifes/hestia/data/usuario/usuario_repo.py:50 - Erro ao inserir usuário: UNIQUE constraint failed: usuario.cpf
+Traceback (most recent call last):
+  File "/Volumes/Externo/Ifes/hestia/data/usuario/usuario_repo.py", line 45, in inserir
+    cursor.execute(INSERIR_USUARIO, parametros)
+sqlite3.IntegrityError: UNIQUE constraint failed: usuario.cpf
+2025-10-22 07:49:31 - hestia - ERROR - /Volumes/Externo/Ifes/hestia/data/usuario/usuario_repo.py:50 - Erro ao inserir usuário: UNIQUE constraint failed: usuario.cpf
+Traceback (most recent call last):
+  File "/Volumes/Externo/Ifes/hestia/data/usuario/usuario_repo.py", line 45, in inserir
+    cursor.execute(INSERIR_USUARIO, parametros)
+sqlite3.IntegrityError: UNIQUE constraint failed: usuario.cpf

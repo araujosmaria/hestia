@@ -165,7 +165,7 @@ async def perfil_dados(
 
     # Retorno do template
     return templates.TemplateResponse(
-        "perfil/dados.html",
+        "profile/dados.html",
         {
             "request": request,
             "usuario": usuario_logado,

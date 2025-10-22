@@ -20,7 +20,7 @@ administradores: list[dict[str, Any]] = [
 @router.get("/admin/administradores/tela_inicial")
 async def get_tela_inicial_admin(request: Request):
     return templates.TemplateResponse(
-        "administrador/tela_inicial.html",
+        "administrador/home.html",
         {"request": request}
     )
 
@@ -84,7 +84,7 @@ async def get_excluir_administrador(request: Request, id: int):
 async def get_dados_perfil(request: Request, id: int):
     perfil_fake = {"id": id, "nome": "Admin Teste", "email": "admin@teste.com"}
     return templates.TemplateResponse(
-        "administrador/dados_perfil.html",
+        "administrador/perfil.html",
         {"request": request, "perfil": perfil_fake}
     )
 
@@ -106,6 +106,6 @@ async def post_alterar_senha(
     nova_senha: str = Form(...)
 ):
     return templates.TemplateResponse(
-        "administrador/tela_inicial.html",
+        "administrador/home.html",
         {"request": request, "mensagem": "Senha alterada com sucesso!"}
     )
