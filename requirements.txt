@@ -13,6 +13,7 @@ pytest-asyncio
 pytest-cov
 
 passlib[bcrypt]
+bcrypt<4.0.0  # Compatibilidade com passlib 1.7.4
 python-jose[cryptography]
 
 pydantic>=2.0.0

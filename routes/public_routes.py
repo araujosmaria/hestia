@@ -210,19 +210,23 @@ async def cadastro_cuidador_post(
             data_cadastro=datetime.now()
         )
 
-        # 6. Inserir no banco com commit/rollback explícito
-        conn = get_connection()
+        # 6. Inserir no banco (a função inserir já gerencia a conexão)
         try:
-            cursor = conn.cursor()
-            usuario_id = cuidador_repo.inserir(cuidador_obj, cursor)
+            usuario_id = cuidador_repo.inserir(cuidador_obj)
+
+            # Verifica se a inserção foi bem-sucedida
+            if usuario_id is None:
+                logger.warning("Tentativa de cadastro com CPF ou email duplicado")
+                informar_erro(request, "CPF ou email já cadastrado no sistema.")
+                return templates.TemplateResponse(
+                    "auth/cadastro_cuidador.html",
+                    {"request": request, "dados": dados_formulario}
+                )
+
             cuidador_obj.id = usuario_id
-            conn.commit()
         except Exception as e:
-            conn.rollback()
             logger.error(f"Erro ao inserir cuidador: {e}")
             raise
-        finally:
-            conn.close()
 
         # 7. Criar sessão
         criar_sessao(request, {
@@ -369,19 +373,23 @@ async def post_cadastro_contratante(
             foto=foto_path
         )
 
-        # 6. Inserir no banco com commit/rollback explícito
-        conn = get_connection()
+        # 6. Inserir no banco (a função inserir já gerencia a conexão)
         try:
-            cursor = conn.cursor()
-            usuario_id = cliente_repo.inserir(cliente_obj, cursor)
+            usuario_id = cliente_repo.inserir(cliente_obj)
+
+            # Verifica se a inserção foi bem-sucedida
+            if usuario_id is None:
+                logger.warning("Tentativa de cadastro com CPF ou email duplicado")
+                informar_erro(request, "CPF ou email já cadastrado no sistema.")
+                return templates.TemplateResponse(
+                    "auth/cadastro_contratante.html",
+                    {"request": request, "dados": dados_formulario}
+                )
+
             cliente_obj.id = usuario_id
-            conn.commit()
         except Exception as e:
-            conn.rollback()
             logger.error(f"Erro ao inserir contratante: {e}")
             raise
-        finally:
-            conn.close()
 
         # 7. Criar sessão
         criar_sessao(request, {

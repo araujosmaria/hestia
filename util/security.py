@@ -14,13 +14,20 @@ pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
 def criar_hash_senha(senha: str) -> str:
     """
     Cria um hash seguro da senha usando bcrypt
-    
+
     Args:
         senha: Senha em texto plano
-    
+
     Returns:
         Hash da senha
+
+    Note:
+        Bcrypt tem limite de 72 bytes. Senhas maiores são truncadas automaticamente.
     """
+    # Bcrypt tem limite de 72 bytes - trunca se necessário
+    if len(senha.encode('utf-8')) > 72:
+        senha = senha.encode('utf-8')[:72].decode('utf-8', errors='ignore')
+
     return pwd_context.hash(senha)
 
 

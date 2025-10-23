@@ -3,7 +3,7 @@ CREATE TABLE IF NOT EXISTS usuario (
     id_usuario INTEGER PRIMARY KEY AUTOINCREMENT,
     nome TEXT NOT NULL,
     dataNascimento TEXT NOT NULL,
-    email TEXT NOT NULL,
+    email TEXT NOT NULL UNIQUE,
     telefone TEXT,
     cpf TEXT UNIQUE,
     senha TEXT NOT NULL,
